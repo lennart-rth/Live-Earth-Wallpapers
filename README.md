@@ -6,6 +6,6 @@ A little script to update gnome desktop image with a live sattelite image of the
 
 ![Image](eumesat.jpg?raw=true "Eumesat Live image")
 
-![Image](nasa_pic.png?raw=true "Nasa Pic of the day")
+![Image](nasa_pic.jpg?raw=true "Nasa Pic of the day")
 
 
