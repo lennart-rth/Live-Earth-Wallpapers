@@ -1,8 +1,9 @@
-# Live_earth_backgroundchange
-A little script to update gnome desktop image with a live sattelite image of the earth or Nasa Pic of the day.
-
-1. To update background image run: `sh changeBackground.sh`.
-2. More sattelite images can be found here: https://eumetview.eumetsat.int/static-images/latestImages.html 
+# Eumesat-Background
+Set near-realtime sattelite images of the earth full disk natural color enhanced as your background.\
+1. For GNOME Desktop!
+2. Requires Python3
+3. Set a Cronjob to execute `changeBackground.sh` every hour.
+4. More sattelite images can be found here: https://eumetview.eumetsat.int/static-images/latestImages.html 
 
 ![Image](eumesat.jpg?raw=true "Eumesat Live image")
 
