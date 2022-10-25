@@ -1,4 +1,4 @@
-# Eumesat-Background
+# Meteosat-Background
 Set near-realtime sattelite images of the earth full disk natural color enhanced as your background.\
 1. For GNOME Desktop!
 2. Requires Python3
