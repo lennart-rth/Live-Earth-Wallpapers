@@ -17,10 +17,9 @@ def download_pic_of_day():
 
         open(filename, 'wb').write(pic.content)
         
-        os.system("gsettings set org.gnome.desktop.background picture-uri file:/home/lennart/Dokumente/backgroundChange/nasa_pic.png")
-        os.system("gsettings set org.gnome.desktop.background picture-options 'wallpaper' ")
-
-download_pic_of_day()
+        
+if __name__ == "__main__":
+    download_pic_of_day()
 
 
 
