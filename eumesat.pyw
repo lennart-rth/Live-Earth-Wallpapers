@@ -2,7 +2,6 @@ from PIL import Image
 import requests
 from io import BytesIO
 import time 
-import os
 
 filename = '/home/lennart/Dokumente/backgroundChange/eumesat.jpg'
 
@@ -15,7 +14,4 @@ for i in range(3):
 
 img = Image.open(BytesIO(response.content))
 img.save(filename)
-
-os.system("gsettings set org.gnome.desktop.background picture-uri file:/home/lennart/Dokumente/backgroundChange/eumesat.jpg")
-os.system("gsettings set org.gnome.desktop.background picture-options 'scaled' ")
 
