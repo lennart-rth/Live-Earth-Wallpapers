@@ -7,7 +7,7 @@ Set near-realtime satellite images of the earth full disk natural color enhanced
     `gsettings set org.gnome.desktop.background picture-options 'scaled'`
     * Use `feh --bg-max /path/to/image`
     * Use `nitrogen /path/to/image`
-4. With https://github.com/PRATAP-KUMAR/ubuntu-gdm-set-background you can set the Ubuntu Loginscreen.
+4. You can set the Ubuntu Loginscreen with https://github.com/PRATAP-KUMAR/ubuntu-gdm-set-background.
 5. More satellite images can be found here: https://eumetview.eumetsat.int/static-images/latestImages.html 
 
 ![Image](eumesat.jpg?raw=true "Eumesat Live image")
