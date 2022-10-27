@@ -32,10 +32,19 @@ satelliteData = {
         "meteosat-9":(15,0,3),
         "meteosat-11":(15,0,3)}
 
-def getPictureTime(satellite, now):
+def getPictureTime(satellite):
+    now = datetime.datetime.now(datetime.timezone.utc)
     minute = now.minute-(now.minute%satelliteData[satellite][0])
     second = satelliteData[satellite][1]
-    return datetime.datetime(now.year,now.month,now.day,now.hour-1,minute,second).strftime("%Y%m%d%H%M%S")
+
+    lastSatImage = datetime.datetime(now.year,now.month,now.day,now.hour,minute,second)
+    if now.hour <= 1:
+        lastSatImage = (lastSatImage - datetime.timedelta(days=1,hours=1))
+    else:
+        lastSatImage = (lastSatImage - datetime.timedelta(hours=1))
+
+    print(lastSatImage)
+    return (lastSatImage.strftime("%Y%m%d%H%M%S"), lastSatImage.strftime("%Y/%m/%d"))
 
 def calcTileCoordinates(zoomLevel):
     #zoomlevel 1-4 or 1-5 (depending on the satellite)
@@ -57,13 +66,10 @@ def download(url):
             time.sleep(1)
 
 def buildUrl(args):
-    today = datetime.datetime.now(datetime.timezone.utc)
-    date = today.strftime("%Y/%m/%d")
-
     if (args.source == "meteosat-9" or args.source == "meteorsat-10") and args.zoomLevel > 4:
         sys.exit("Meteosat does not support Zoom Levels greater than 4.")
 
-    dateCode = getPictureTime(args.source,datetime.datetime.now(datetime.timezone.utc))
+    (dateCode, date) = getPictureTime(args.source)
     
     base_url = f"https://rammb-slider.cira.colostate.edu/data/imagery/{date}/{args.source}---full_disk/natural_color/{dateCode}/0{args.zoomLevel-1}"
     return base_url
@@ -99,7 +105,7 @@ if __name__ == "__main__":
     base_url = buildUrl(args)
     bg = getImage(args,base_url)
     logDate = datetime.datetime.now(datetime.timezone.utc).strftime("%d_%m_%Y_%H_%M")
-    filename = f"{os.getcwd()}/backgroundImage-{logDate}.png"
+    filename = f"{os.getcwd()}/backgroundImage.png"
     bg.save(filename)
     setBG(args.bgProgram,filename)
 
