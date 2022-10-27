@@ -60,6 +60,9 @@ def buildUrl(args):
     today = datetime.datetime.now(datetime.timezone.utc)
     date = today.strftime("%Y/%m/%d")
 
+    if (args.source == "meteosat-9" or args.source == "meteorsat-10") and args.zoomLevel > 4:
+        sys.exit("Meteosat does not support Zoom Levels greater than 4.")
+
     dateCode = getPictureTime(args.source,datetime.datetime.now(datetime.timezone.utc))
     
     base_url = f"https://rammb-slider.cira.colostate.edu/data/imagery/{date}/{args.source}---full_disk/natural_color/{dateCode}/0{args.zoomLevel-1}"
