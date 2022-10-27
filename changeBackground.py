@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import datetime
 import os
 from PIL import Image
@@ -9,8 +10,8 @@ import time
 
 def parseArgs():
     parser = argparse.ArgumentParser()
-    parser.add_argument("-z", "--zoomLevel", type=int, choices=[1, 2, 3, 4, 5], default=3,
-                            help="Change the ImageSize 1=678, 2=1356, 3=2712, 4=5424, 5=10848 (Meteosat does not support Level 5)")
+    parser.add_argument("-z", "--zoomLevel", type=int, choices=[0, 1, 2, 3, 4], default=3,
+                            help="Change the ImageSize 0=678, 1=1356, 2=2712, 3=5424, 4=10848 (Meteosat does not support Level 4)")
     parser.add_argument("-s", "--source", type=str, choices=["goes-16","goes-17","goes-18","himawari","meteosat-9","meteosat-11"], default="meteosat-9",
                             help="Select Satellite as a source. goes-16, goes-17, goes-18, himawari, meteosat-9 or meteosat-11")
     parser.add_argument("-p", "--bgProgram", type=str, choices=["feh","nitrogen","gsettings"],
@@ -40,19 +41,16 @@ def getPictureTime(satellite):
 
     lastSatImage = datetime.datetime(now.year,now.month,now.day,now.hour,minute,second)
     if now.hour <= 1:
-        lastSatImage = (lastSatImage - datetime.timedelta(days=1,hours=1))
+        lastSatImage = (lastSatImage - datetime.timedelta(days=1,hours=1,minutes=30))
     else:
-        lastSatImage = (lastSatImage - datetime.timedelta(hours=1))
+        lastSatImage = (lastSatImage - datetime.timedelta(hours=1,minutes=30))
 
     print(lastSatImage)
     return (lastSatImage.strftime("%Y%m%d%H%M%S"), lastSatImage.strftime("%Y/%m/%d"))
 
 def calcTileCoordinates(zoomLevel):
-    #zoomlevel 1-4 or 1-5 (depending on the satellite)
-    a = 1
-    r = 2
-    for i in range(1,zoomLevel+1):      #geometric sequence
-        t_n = a * r**(i-1)
+    #zoomlevel 0-3 or 0-4 (depending on the satellite)
+    t_n = 2**zoomLevel
     row = range(0,t_n)
     col = range(0,t_n)
     return list(row), list(col)
@@ -72,7 +70,7 @@ def buildUrl(args):
 
     (dateCode, date) = getPictureTime(args.source)
     
-    base_url = f"https://rammb-slider.cira.colostate.edu/data/imagery/{date}/{args.source}---full_disk/natural_color/{dateCode}/0{args.zoomLevel-1}"
+    base_url = f"https://rammb-slider.cira.colostate.edu/data/imagery/{date}/{args.source}---full_disk/natural_color/{dateCode}/0{args.zoomLevel}"
     return base_url
 
 def getImage(args,base_url):
@@ -81,7 +79,7 @@ def getImage(args,base_url):
     for r in row:
         for c in col:
             url = base_url + f"/{str(r).zfill(3)}_{str(c).zfill(3)}.png"
-            print(f"Downloading Image ({r},{c}).")
+            print(f"Downloading Image ({r},{c}).{url}")
             img = download(url)
 
             new_bg = Image.new('RGB', (img.width*(max(col)+1), img.height*(max(row)+1)))
@@ -89,7 +87,10 @@ def getImage(args,base_url):
             new_bg.paste(img, (img.width*(c), (r)*img.height))
 
             bg = new_bg
-    return bg
+    #zoom out a bit
+    wallpaper = Image.new('RGB', (int(bg.width*1.2),int(bg.height*1.2)))
+    wallpaper.paste(bg, (int(0+(bg.width*0.1)), int(0+(bg.height*0.1))))
+    return wallpaper
 
 def setBG(p, filename):
     if p == "feh":
@@ -109,8 +110,9 @@ if __name__ == "__main__":
     base_url = buildUrl(args)
     bg = getImage(args,base_url)
     logDate = datetime.datetime.now(datetime.timezone.utc).strftime("%d_%m_%Y_%H_%M")
-    filename = f"{os.getcwd()}/backgroundImage.png"
+    filename = f"{os.path.dirname(os.path.realpath(__file__))}/backgroundImage.png"
     bg.save(filename)
+    print(f"Image saved to: {filename}")
     setBG(args.bgProgram,filename)
 
     
