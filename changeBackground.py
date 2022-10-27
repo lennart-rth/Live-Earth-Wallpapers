@@ -16,7 +16,6 @@ def parseArgs():
                             help="Select Satellite as a source. goes-16, goes-17, goes-18, himawari, meteosat-9 or meteosat-11")
     parser.add_argument("-p", "--bgProgram", type=str, choices=["feh","nitrogen","gsettings"],
                             help="Select Programm to set the Background.")
-    parser.add_argument("-l","--lockScreen", action='store_true', help="If set, the Lockscreen will be set too.")
 
     try:
         args = parser.parse_args()
@@ -101,8 +100,8 @@ def setBG(p, filename):
         os.system(f"gsettings set org.gnome.desktop.background picture-uri file:{filename}")
         os.system("gsettings set org.gnome.desktop.background picture-options 'scaled'")
     
-    if args.lockScreen:
-        os.system(f"sudo ./ubuntu-gdm-set-background --image {filename}")
+    #set the Lock screen
+    #os.system(f"sudo ./ubuntu-gdm-set-background --image {filename}")
 
 
 if __name__ == "__main__":
