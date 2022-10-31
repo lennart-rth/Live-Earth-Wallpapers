@@ -1,5 +1,6 @@
 # Live-Earth-Wallpapers
-Set your Desktop background to near realtime picures of the earth.
+Set your Desktop background to near realtime picures of the earth. \
+All geostationary satellites supported!
 
 ### Instalation
 1. `git clone https://github.com/L-Roth/Live-Earth-Wallpapers.git`
@@ -11,8 +12,11 @@ The Image `backgroundImage.png`should have updated.
 
 
 ### Updating the Image
-Set a cronjob to execute the `changeBackground.py` script routinely. \
-E.g: `*/30 * * * * DISPLAY=:0 python3 /path/to/ProjectDir/changeBackground.py -z 3 -s meteosat-11 -p feh` \
+Set a cronjob to execute the `changeBackground.py` script routinely: \
+1. execute `env | grep -i display` to find your exact DISPLAY name. (probably :0 or :0.0)
+2. `*/30 * * * * DISPLAY=:{your display name from 1.} python3 /path/to/ProjectDir/changeBackground.py -z 3 -s meteosat-11 -p feh`
+
+Example: `*/30 * * * * DISPLAY=:0 python3 /path/to/ProjectDir/changeBackground.py -z 3 -s meteosat-11 -p feh` \
 To update the Background you need either `feh`, `nitrogen` or `gsettings` to be installed.
 
 ### Script Parameter Options:

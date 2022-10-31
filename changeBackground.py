@@ -5,7 +5,7 @@ import argparse
 import sys
 
 from full_disks import buildUrl,getImage
-from sentinel import combineURL,fetchImage
+from sentinel import fetchImage
 from utils import setBG
 
 

@@ -1,13 +1,8 @@
 import datetime
-import os
-from xml.sax import parseString
 from PIL import Image
-import argparse
 import sys
-import requests
-from io import BytesIO
-import time
 from utils import download
+import urllib.request, json
 
 satelliteData = {
         #(minute,second,MaxZoomLevel)
@@ -17,6 +12,13 @@ satelliteData = {
         "himawari":(10,0,4),
         "meteosat-9":(15,0,3),
         "meteosat-11":(15,0,3)}
+
+def getTimeCode(sat):
+    url = f"https://rammb-slider.cira.colostate.edu/data/json/{sat}/full_disk/natural_color/latest_times.json"
+    f = urllib.request.urlopen(url)
+    data = json.load(f)
+    latest = data["timestamps_int"][0]
+    return latest
 
 def getPictureTime(satellite):
     now = datetime.datetime.now(datetime.timezone.utc)
@@ -29,8 +31,7 @@ def getPictureTime(satellite):
     else:
         lastSatImage = (lastSatImage - datetime.timedelta(hours=1,minutes=30))
 
-    print(lastSatImage)
-    return (lastSatImage.strftime("%Y%m%d%H%M%S"), lastSatImage.strftime("%Y/%m/%d"))
+    return lastSatImage.strftime("%Y/%m/%d")
 
 def calcTileCoordinates(zoomLevel):
     #zoomlevel 0-3 or 0-4 (depending on the satellite)
@@ -44,7 +45,8 @@ def buildUrl(args):
     if (args.source == "meteosat-9" or args.source == "meteorsat-10") and args.zoomLevel > 4:
         sys.exit("Meteosat does not support Zoom Levels greater than 4.")
 
-    (dateCode, date) = getPictureTime(args.source)
+    date = getPictureTime(args.source)
+    timeCode = getTimeCode(args.source)
     
     base_url = f"https://rammb-slider.cira.colostate.edu/data/imagery/{date}/{args.source}---full_disk/natural_color/{dateCode}/0{args.zoomLevel}"
     return base_url
