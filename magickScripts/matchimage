@@ -1,0 +1,432 @@
+#!/bin/bash
+#
+# Developed by Fred Weinhaus 7/2/2016 .......... revised 7/15/2019
+#
+# ------------------------------------------------------------------------------
+# 
+# Licensing:
+# 
+# Copyright © Fred Weinhaus
+# 
+# My scripts are available free of charge for non-commercial use, ONLY.
+# 
+# For use of my scripts in commercial (for-profit) environments or 
+# non-free applications, please contact me (Fred Weinhaus) for 
+# licensing arrangements. My email address is fmw at alink dot net.
+# 
+# If you: 1) redistribute, 2) incorporate any of these scripts into other 
+# free applications or 3) reprogram them in another scripting language, 
+# then you must contact me for permission, especially if the result might 
+# be used in a commercial or for-profit environment.
+# 
+# My scripts are also subject, in a subordinate manner, to the ImageMagick 
+# license, which can be found at: http://www.imagemagick.org/script/license.php
+# 
+# ------------------------------------------------------------------------------
+# 
+####
+#
+# USAGE: matchimage [-c colormode] infile1 [infile2] outfile
+# USAGE: matchimage [-h or -help]
+# 
+# OPTIONS:
+# 
+# -c     colormode     colorspace mode of processing; options are: rgb, 
+#                      hsi, lab or ycbcr; default=rgb 
+# -m     mean          desired mean in place of mean from infile2; 
+#                      comma separated triplet; 0<=floats<=1; 
+#                      default is no mean provided
+# -s     std           desired std in place of std from infile2; 
+#                      comma separated triplet; 0<=floats<=1; 
+#                      default is no mean provided
+# 
+# infile1 will be be processed to match that of infile2
+# 
+###
+# 
+# NAME: MATCHIMAGE 
+# 
+# PURPOSE: To match the brightness and contrast of one image to another image.
+# 
+# DESCRIPTION: MATCHIMAGE matches the brightness and contrast of one image 
+# (infile1) to that of another image (infile2). This is done via a linear 
+# transformation of each RGB channel or an intensity channel from another 
+# colorspace. The matching uses the mean and standard deviations from each 
+# image according to the equation: (I2-Mean2)/Std2 = (I1-Mean1)/Std1.
+# This equation represents an normalized intensity such that it has zero mean 
+# and approximately the same range of values due to the division by the 
+# standard deviations. We solve this equation to form a linear transformation 
+# between I1 and I2 according to I2=A*I1+B, where A=(Std2/Std1) is the slope 
+# or gain and B=(Mean2-A*Mean1) is the intercept of bias. If no infile2 is 
+# provide and a (set of) mean(s) and standard deviation(s0 are provided in 
+# stead, then infile1 will be matched to the provided mean and standard 
+# deviation.
+#
+# Arguments: 
+# 
+# -c colormode ... COLORMODE is the colorspace mode of processing. The options 
+# are: rgb, hsi, lab or ycbcr. The default=rgb.
+# 
+# -m mean ... MEAN is the desired mean(s) in place of mean(s) from infile2.  
+# Values are optional comma separated triplets in range 0<=floats<=1. If only  
+# one value is provided (and no commas), it will be used for all channels or  
+# the other colorspaces' intensity channel. The default is no mean provided.
+# 
+# -s std ... STD is the desired standard deviation(s) in place of the standard 
+# deviation(s) from infile2. Values are optional comma separated triplets in 
+# range 0<=floats<=1. If only one value is provided  (and no commas), it will 
+# be used for for  all channels or the other colorspaces' intensity channel. 
+# The default is no mean provided.
+# 
+# NOTE: This script will not change colors, only the brightness and contrast. 
+# Therefore it is primarily to normalize similar images to each other as for 
+# example video sequences and not to color match completely different images.
+# 
+# CAUTION: This script may not be backward compatible before IM colorspace  
+# and grayscale changes prior to IM 6.8.6.0. I have not tested it for earlier 
+# releases. Let me know if anyone tries and it fails. See 
+# http://www.imagemagick.org/discourse-server/viewtopic.php?f=4&t=21269
+#
+# CAVEAT: No guarantee that this script will work on all platforms, 
+# nor that trapping of inconsistent parameters is complete and 
+# foolproof. Use At Your Own Risk. 
+# 
+######
+# 
+
+# set default values
+colormode="rgb"			# rgb, hsi, lab or ycbcr
+dmean=""				# desired mean
+dstd=""					# desired std
+
+
+# set directory for temporary files
+dir="."    # suggestions are dir="." or dir="/tmp"
+
+
+# set up functions to report Usage and Usage with Description
+PROGNAME=`type $0 | awk '{print $3}'`  # search for executable on path
+PROGDIR=`dirname $PROGNAME`            # extract directory of program
+PROGNAME=`basename $PROGNAME`          # base name of program
+usage1() 
+	{
+	echo >&2 ""
+	echo >&2 "$PROGNAME:" "$@"
+	sed >&2 -e '1,/^####/d;  /^###/g;  /^#/!q;  s/^#//;  s/^ //;  4,$p' "$PROGDIR/$PROGNAME"
+	}
+usage2() 
+	{
+	echo >&2 ""
+	echo >&2 "$PROGNAME:" "$@"
+	sed >&2 -e '1,/^####/d;  /^######/g;  /^#/!q;  s/^#*//;  s/^ //;  4,$p' "$PROGDIR/$PROGNAME"
+	}
+
+
+# function to report error messages
+errMsg()
+	{
+	echo ""
+	echo $1
+	echo ""
+	usage1
+	exit 1
+	}
+
+
+# function to test for minus at start of value of second part of option 1 or 2
+checkMinus()
+	{
+	test=`echo "$1" | grep -c '^-.*$'`   # returns 1 if match; 0 otherwise
+    [ $test -eq 1 ] && errMsg "$errorMsg"
+	}
+
+# test for correct number of arguments and get values
+if [ $# -eq 0 ]
+	then
+	# help information
+   echo ""
+   usage2
+   exit 0
+elif [ $# -gt 9 ]
+	then
+	errMsg "--- TOO MANY ARGUMENTS WERE PROVIDED ---"
+else
+	while [ $# -gt 0 ]
+		do
+			# get parameter values
+			case "$1" in
+	  -h|-help)    # help information
+				   echo ""
+				   usage2
+				   exit 0
+				   ;;
+			-c)    # get colormode
+				   shift  # to get the next parameter
+				   # test if parameter starts with minus sign 
+				   errorMsg="--- INVALID COLORMODE SPECIFICATION ---"
+				   checkMinus "$1"
+				   colormode=`echo "$1" | tr "[:upper:]" "[:lower:]"`
+				   case "$colormode" in
+						rgb) ;;
+						hsi) ;;
+						lab) ;;
+						ycbcr) ;;
+						*) errMsg "--- COLORMODE=$colormode IS NOT A VALID CHOICE ---" ;;
+				   esac
+				   ;;
+			-m)    # get dmean
+				   shift  # to get the next parameter
+				   # test if parameter starts with minus sign 
+				   errorMsg="--- INVALID MEAN SPECIFICATION ---"
+				   checkMinus "$1"
+				   dmean=`expr "$1" : '\([,.0-9]*\)'`
+				   [ "$dmean" = "" ] && errMsg "--- MEAN=$dmean MUST BE A FLOAT ---"
+				   ;;
+			-s)    # get dstd
+				   shift  # to get the next parameter
+				   # test if parameter starts with minus sign 
+				   errorMsg="--- INVALID STD SPECIFICATION ---"
+				   checkMinus "$1"
+				   dstd=`expr "$1" : '\([,.0-9]*\)'`
+				   [ "$dstd" = "" ] && errMsg "--- STD=$dstd MUST BE A FLOAT ---"
+				   ;;
+			 -)    # STDIN and end of arguments
+				   break
+				   ;;
+			-*)    # any other - argument
+				   errMsg "--- UNKNOWN OPTION ---"
+				   ;;
+			 *)    # end of arguments
+				   break
+				   ;;
+			esac
+			shift   # next option
+	done
+	# get infiles and outfile
+	numfiles="$#"
+	if [ $numfiles -eq 3 ]; then
+		infile1="$1"
+		infile2="$2"
+		outfile="$3"
+	elif [ $numfiles -eq 2 ]; then
+		infile1="$1"
+		outfile="$2"
+	else
+		errMsg "--- INCOMPATIBLE NUMBER OF FILES SPECIFIED ---"
+	fi
+fi
+
+# test that infile1 provided
+[ "$infile1" = "" ] && errMsg "--- NO INPUT FILE 1 SPECIFIED ---"
+
+# test that outfile provided
+[ "$outfile" = "" ] && errMsg "--- NO OUTPUT FILE SPECIFIED ---"
+
+
+# set directory for temporary files
+tmpdir="$dir"
+
+dir="$tmpdir/MATCHIMAGE.$$"
+
+mkdir "$dir" || errMsg "--- FAILED TO CREATE TEMPORARY FILE DIRECTORY ---"
+trap "rm -rf $dir;" 0
+trap "rm -rf $dir; exit 1" 1 2 3 15
+#trap "rm -rf $dir; exit 1" ERR
+
+# get im version
+im_version=`convert -list configure | \
+sed '/^LIB_VERSION_NUMBER */!d;  s//,/;  s/,/,0/g;  s/,0*\([0-9][0-9]\)/\1/g' | head -n 1`
+
+
+# function to get mean of image
+getMeanStd()
+	{
+	img="$1"
+	mean=`convert $img -format "%[fx:mean]" info:`
+	std=`convert $img -format "%[fx:standard_deviation]" info:`
+	#echo "mean=$mean; std=$std;"
+	}
+
+# function to get linear coefs A and B
+getLinearCoefs()
+	{
+	M1="$1"
+	S1="$2"
+	M2="$3"
+	S2="$4"
+	A=`convert xc: -format "%[fx:$S2/$S1]" info:`
+	B=`convert xc: -format "%[fx:$M2-$A*$M1]" info:`
+	#echo "A=$A; B=$B;"
+	}	
+
+
+# read infile1
+convert -quiet "$infile1" $dir/tmpA1.mpc ||
+errMsg  "--- FILE $infile1 DOES NOT EXIST OR IS NOT AN ORDINARY FILE, NOT READABLE OR HAS ZERO SIZE  ---"
+
+if [ $numfiles -eq 3 ]; then
+	# read infile2
+	convert -quiet "$infile2" $dir/tmpA2.mpc ||
+	errMsg  "--- FILE $infile2 DOES NOT EXIST OR IS NOT AN ORDINARY FILE, NOT READABLE OR HAS ZERO SIZE  ---"
+fi
+
+# get channel means and stds
+if [ $numfiles -eq 2 ]; then
+	if [ "$dmean" != "" -a "$dstd" != "" ]; then
+		dmeanr=`echo "$dmean" | cut -d, -f1`
+		dmeang=`echo "$dmean" | cut -d, -f2`
+		dmeanb=`echo "$dmean" | cut -d, -f3`
+		dstdr=`echo "$dstd" | cut -d, -f1`
+		dstdg=`echo "$dstd" | cut -d, -f2`
+		dstdb=`echo "$dstd" | cut -d, -f3`
+		#echo "$dmeanr,$dmeang,$dmeanb; $dstdr,$dstdg,$dstdb;"
+	else
+		errMsg  "--- NO INFILE2 SPECIFIED AND NO DMEAN AND/OR NO STD PROVIDED  ---"
+	fi
+fi
+
+# process image
+if [ "$colormode" = "lab" ]; then
+	convert $dir/tmpA1.mpc -colorspace "$colormode" -separate +channel $dir/tmpL1.mpc
+	getMeanStd "$dir/tmpL1.mpc[0]"
+	mean1=$mean
+	std1=$std
+	
+	
+	if [ $numfiles -eq 3 ]; then
+		convert $dir/tmpA2.mpc -colorspace "$colormode" -channel red -separate +channel $dir/tmpL2.mpc
+		getMeanStd "$dir/tmpL2.mpc"
+		mean2=$mean
+		std2=$std
+	elif [ $numfiles -eq 2 -a "$dmeanr" != "" -a "$dstdr" != "" ]; then
+		mean2=$dmeanr
+		std2=$dstdr
+	fi
+	
+	getLinearCoefs "$mean1" "$std1" "$mean2" "$std2"
+	
+	convert \( $dir/tmpL1.mpc[0] -function polynomial "$A $B" \) \
+		$dir/tmpL1.mpc[1] $dir/tmpL1.mpc[2] \
+		-set colorspace "$colormode" -combine -colorspace sRGB \
+		"$outfile"
+	
+elif [ "$colormode" = "hsi" ]; then
+	convert $dir/tmpA1.mpc -colorspace "$colormode" -separate +channel $dir/tmpI1.mpc
+	getMeanStd "$dir/tmpI1.mpc[2]"
+	mean1=$mean
+	std1=$std
+	
+	if [ $numfiles -eq 3 ]; then
+		convert $dir/tmpA2.mpc -colorspace "$colormode" -channel blue -separate +channel $dir/tmpI2.mpc
+		getMeanStd "$dir/tmpI2.mpc"
+		mean2=$mean
+		std2=$std
+	elif [ $numfiles -eq 2 -a "$dmeanr" != "" -a "$dstdr" != "" ]; then
+		mean2=$dmeanr
+		std2=$dstdr
+	fi
+	
+	getLinearCoefs "$mean1" "$std1" "$mean2" "$std2"
+	
+	convert $dir/tmpI1.mpc[0] $dir/tmpI1.mpc[1]  \
+		\( $dir/tmpI1.mpc[2] -function polynomial "$A $B" \) \
+		-set colorspace "$colormode" -combine -colorspace sRGB \
+		"$outfile"
+
+elif [ "$colormode" = "ycbcr" ]; then
+	convert $dir/tmpA1.mpc -colorspace "$colormode" -separate +channel $dir/tmpY1.mpc
+	getMeanStd "$dir/tmpY1.mpc[0]"
+	mean1=$mean
+	std1=$std
+	
+	if [ $numfiles -eq 3 ]; then
+		convert $dir/tmpA2.mpc -colorspace "$colormode" -channel red -separate +channel $dir/tmpY2.mpc
+		getMeanStd "$dir/tmpY2.mpc"
+		mean2=$mean
+		std2=$std
+	elif [ $numfiles -eq 2 -a "$dmeanr" != "" -a "$dstdr" != "" ]; then
+		mean2=$dmeanr
+		std2=$dstdr
+	fi
+	
+	getLinearCoefs "$mean1" "$std1" "$mean2" "$std2"
+	
+	convert \( $dir/tmpY1.mpc[0] -function polynomial "$A $B" \) \
+		$dir/tmpY1.mpc[1] $dir/tmpY1.mpc[2] \
+		-set colorspace "$colormode" -combine -colorspace sRGB \
+		"$outfile"
+
+elif [ "$colormode" = "rgb" ]; then
+	convert $dir/tmpA1.mpc -separate +channel $dir/tmpRGB1.mpc
+	
+	# get red mean, std for infile 1
+	getMeanStd "$dir/tmpRGB1.mpc[0]"
+	rmean1=$mean
+	rstd1=$std
+
+	# get green mean, std for infile 1
+	getMeanStd "$dir/tmpRGB1.mpc[1]"
+	gmean1=$mean
+	gstd1=$std
+
+	# get blue mean, std for infile 1
+	getMeanStd "$dir/tmpRGB1.mpc[2]"
+	bmean1=$mean
+	bstd1=$std
+	
+
+	if [ $numfiles -eq 3 ]; then
+		convert $dir/tmpA2.mpc -separate +channel $dir/tmpRGB2.mpc
+		# get red mean, std for infile 2
+		getMeanStd "$dir/tmpRGB2.mpc[0]"
+		rmean2=$mean
+		rstd2=$std
+	elif [ $numfiles -eq 2 -a "$dmeanr" != "" -a "$dstdr" != "" ]; then
+		rmean2=$dmeanr
+		rstd2=$dstdr
+	fi
+
+	if [ $numfiles -eq 3 ]; then
+		# get green mean, std for infile 2
+		getMeanStd "$dir/tmpRGB2.mpc[1]"
+		gmean2=$mean
+		gstd2=$std
+	elif [ $numfiles -eq 2 -a "$dmeang" != "" -a "$dstdg" != "" ]; then
+		gmean2=$dmeang
+		gstd2=$dstdg
+	fi
+
+	if [ $numfiles -eq 3 ]; then
+		# get blue mean, std for infile 1
+		getMeanStd "$dir/tmpRGB2.mpc[2]"
+		bmean2=$mean
+		bstd2=$std
+	elif [ $numfiles -eq 2 -a "$dmeanb" != "" -a "$dstdb" != "" ]; then
+		bmean2=$dmeanb
+		bstd2=$dstdb
+	fi
+	
+	# get red A, B coefs
+	getLinearCoefs "$rmean1" "$rstd1" "$rmean2" "$rstd2"
+	RA=$A
+	RB=$B
+
+	# get green A, B coefs
+	getLinearCoefs "$gmean1" "$gstd1" "$gmean2" "$gstd2"
+	GA=$A
+	GB=$B
+
+	# get blue A, B coefs
+	getLinearCoefs "$bmean1" "$bstd1" "$bmean2" "$bstd2"
+	BA=$A
+	BB=$B
+	
+	# adding -set colorspace sRGB before -combine and -colorspace sRGB after causes problems in IM 6.9.9.43
+	convert -respect-parenthesis \( $dir/tmpRGB1.mpc[0] -function polynomial "$RA $RB" \) \
+		\( $dir/tmpRGB1.mpc[1] -function polynomial "$GA $GB" \) \
+		\( $dir/tmpRGB1.mpc[2] -function polynomial "$BA $BB" \) \
+		-combine \
+		"$outfile"
+fi
+
+exit 0
