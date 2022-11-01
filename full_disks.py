@@ -48,7 +48,7 @@ def buildUrl(args):
     date = getPictureTime(args.source)
     timeCode = getTimeCode(args.source)
     
-    base_url = f"https://rammb-slider.cira.colostate.edu/data/imagery/{date}/{args.source}---full_disk/natural_color/{dateCode}/0{args.zoomLevel}"
+    base_url = f"https://rammb-slider.cira.colostate.edu/data/imagery/{date}/{args.source}---full_disk/natural_color/{timeCode}/0{args.zoomLevel}"
     return base_url
 
 def getImage(args,base_url):

@@ -18,9 +18,9 @@ def parseArgs():
     parser.add_argument("-p", "--bgProgram", type=str, choices=["feh","nitrogen","gsettings"],
                             help="Select Programm to set the Background.")
     parser.add_argument("-a", "--latitude", type=float, default=40.474114,
-                            help="Set the latitude of the Background image bounding box you want to set.")
+                            help="Set the latitude of the Background image bounding box you want to set. Only for Sentinel as source.")
     parser.add_argument("-b", "--longitude", type=float, default=8.876953,
-                            help="Set the longitude of the Background image bounding box you want to set.")
+                            help="Set the longitude of the Background image bounding box you want to set. Only for Sentinel as source.")
 
     try:
         args = parser.parse_args()
