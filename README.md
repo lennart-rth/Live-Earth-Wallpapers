@@ -1,6 +1,6 @@
 # Live-Earth-Wallpapers
 Set your Desktop background to near realtime picures of the earth. \
-All geostationary satellites supported!
+High resolution Sentinel images supported!
 
 ### Instalation
 1. `git clone https://github.com/L-Roth/Live-Earth-Wallpapers.git`
@@ -8,6 +8,7 @@ All geostationary satellites supported!
 3. `source venv/bin/activate`
 4. `pip install -r requirements.txt`
 5. Test installation with: `python3 /path/to/projectDir/changeBackground.py -z 0 -s meteosat-11`. \
+6. Install imagemagick for sentinel support (https://imagemagick.org/index.php)
 The Image `backgroundImage.png`should have updated. 
 
 
@@ -23,17 +24,30 @@ To update the Background you need either `feh`, `nitrogen` or `gsettings` to be 
 <pre>options:
   -h, --help            show this help message and exit
   -z {0,1,2,3,4}, --zoomLevel {0,1,2,3,4}
-                        Change the ImageSize 0=678, 1=1356, 2=2712, 3=5424, 4=10848 (Meteosat does not support Level 4)
-  -s {goes-16,goes-17,goes-18,himawari,meteosat-9,meteosat-11}, --source {goes-16,goes-17,goes-18,himawari,meteosat-9,meteosat-11}
-                        Select Satellite as a source. goes-16, goes-17, goes-18, himawari, meteosat-9 or meteosat-11
+                        Change the ImageSize 0=678, 1=1356, 2=2712, 3=5424,
+                        4=10848 (Meteosat does not support Level 4)
+  -s {goes-16,goes-17,goes-18,himawari,meteosat-9,meteosat-11,sentinel}, --source {goes-16,goes-17,goes-18,himawari,meteosat-9,meteosat-11,sentinel}
+                        Select Satellite as a source. goes-16, goes-17,
+                        goes-18, himawari, meteosat-9, meteosat-11,
+                        sentinel
   -p {feh,nitrogen,gsettings}, --bgProgram {feh,nitrogen,gsettings}
                         Select Programm to set the Background.
-usage: changeBackground.py [-h] [-z {0,1,2,3,4}] [-s {goes-16,goes-17,goes-18,himawari,meteosat-9,meteosat-11}] [-p {feh,nitrogen,gsettings}] [-l]
+  -a LATITUDE, --latitude LATITUDE
+                        Set the latitude of the Background image bounding
+                        box you want to set. Only for Sentinel as source.
+  -b LONGITUDE, --longitude LONGITUDE
+                        Set the longitude of the Background image bounding
+                        box you want to set. Only for Sentinel as source.
+usage: changeBackground.py [-h] [-z {0,1,2,3,4}]
+                           [-s {goes-16,goes-17,goes-18,himawari,meteosat-9,meteosat-11,sentinel}]
+                           [-p {feh,nitrogen,gsettings}] [-a LATITUDE]
+                           [-b LONGITUDE]
 </pre>
 
 ### Supported Satellites:
 | **Satellite** | **example Image**                     |
 |---------------|---------------------------------------|
+| Sentinel      | ![alt text](examples/sentinel_caribic.png)![alt text](examples/sentinel_arctic.png)![alt text](examples/sentinel_desert.png)|
 | Goes-16       | ![alt text](examples/goes-16.png)     |
 | Goes-17       | ![alt text](examples/goes-17.png)     |
 | Goes-18       | ![alt text](examples/goes-18.png)     |
@@ -42,3 +56,4 @@ usage: changeBackground.py [-h] [-z {0,1,2,3,4}] [-s {goes-16,goes-17,goes-18,hi
 | Meteosat-11   | ![alt text](examples/meteosat-11.png) |
 
 
+All Scripts in `magickScripts` are from Fred Weinhaus`s Imagemagcik Scripts. (http://www.fmwconcepts.com/imagemagick/index.php)
