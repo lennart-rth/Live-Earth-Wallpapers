@@ -47,7 +47,7 @@ usage: changeBackground.py [-h] [-z {0,1,2,3,4}]
 ### Supported Satellites:
 | **Satellite** | **example Image**                     |
 |---------------|---------------------------------------|
-| Sentinel      | ![alt text](examples/sentinel_caribic.png)![alt text](examples/sentinel_arctic.png)![alt text](examples/sentinel_desert.png)|
+| Sentinel      | ![alt text](examples/caribic.png)![alt text](examples/arctic.png)![alt text](examples/desert.png)|
 | Goes-16       | ![alt text](examples/goes-16.png)     |
 | Goes-17       | ![alt text](examples/goes-17.png)     |
 | Goes-18       | ![alt text](examples/goes-18.png)     |
