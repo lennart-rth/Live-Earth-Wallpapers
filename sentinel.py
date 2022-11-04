@@ -10,43 +10,22 @@ from datetime import date
 import astral
 from astral.sun import sun
 
-def deg2rad(degrees):
-    return math.pi*degrees/180.0
+def boundingBox(latitudeInDegrees, longitudeInDegrees, widthInKm, heightInKm):
+    widthInM = widthInKm*1000
+    heightInM = heightInKm*1000
+    southLat = PointLatLng(latitudeInDegrees,longitudeInDegrees,heightInM,180)[0]
+    northLat = PointLatLng(latitudeInDegrees,longitudeInDegrees,heightInM,0)[0]
+    westLon = PointLatLng(latitudeInDegrees,longitudeInDegrees,widthInM,270)[1]
+    eastLon = PointLatLng(latitudeInDegrees,longitudeInDegrees,widthInM,90)[1]
+    return f"{southLat},{westLon},{northLat},{eastLon}" 
 
-def rad2deg(radians):
-    return 180.0*radians/math.pi
-
-# Semi-axes of WGS-84 geoidal reference
-WGS84_a = 6378137.0  # Major semiaxis [m]
-WGS84_b = 6356752.3  # Minor semiaxis [m]
-
-# Earth radius at a given latitude, according to the WGS-84 ellipsoid [m]
-def WGS84EarthRadius(lat):
-    # http://en.wikipedia.org/wiki/Earth_radius
-    An = WGS84_a*WGS84_a * math.cos(lat)
-    Bn = WGS84_b*WGS84_b * math.sin(lat)
-    Ad = WGS84_a * math.cos(lat)
-    Bd = WGS84_b * math.sin(lat)
-    return math.sqrt( (An*An + Bn*Bn)/(Ad*Ad + Bd*Bd) )
-
-def boundingBox(longitudeInDegrees, latitudeInDegrees, widthInKm, heightInKm):
-    lat = deg2rad(longitudeInDegrees)
-    lon = deg2rad(latitudeInDegrees)
-    widthSide = 1000*widthInKm
-    heightSide = 1000*heightInKm
-
-
-    # Radius of Earth at given latitude
-    radius = WGS84EarthRadius(lat)
-    # Radius of the parallel at given latitude
-    pradius = radius*math.cos(lat)
-
-    latMin = lat - widthSide/radius
-    latMax = lat + widthSide/radius
-    lonMin = lon - heightSide/pradius
-    lonMax = lon + heightSide/pradius
-
-    return (str(rad2deg(lonMin))+","+str(rad2deg(latMin))+","+str(rad2deg(lonMax))+","+str(rad2deg(latMax)))
+def PointLatLng(Lat,Lng, distance, bearing):
+    rad = bearing * math.pi / 180
+    lat1 = Lat * math.pi / 180
+    lng1 = Lng * math.pi / 180
+    lat = math.asin(math.sin(lat1) * math.cos(distance / 6378137) + math.cos(lat1) * math.sin(distance / 6378137) * math.cos(rad))
+    lng = lng1 + math.atan2(math.sin(rad) * math.sin(distance / 6378137) * math.cos(lat1), math.cos(distance / 6378137) - math.sin(lat1) * math.sin(lat))
+    return  round(lat * 180 / math.pi,4), round(lng * 180 / math.pi,4)
 
 def calcDimensions(args):
     zoomLevel = args.zoomLevel
@@ -58,7 +37,7 @@ def calcDimensions(args):
 
 def combineURL(args,satellite,time):
     widthInKm,heightInKm = calcDimensions(args)
-    bbox = boundingBox(args.longitude, args.latitude, widthInKm, heightInKm)
+    bbox = boundingBox(args.latitude, args.longitude, widthInKm, heightInKm)
     url = f"https://view.eumetsat.int/geoserver/wms?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&FORMAT=image/png&TRANSPARENT=true&LAYERS={satellite}&STYLES=&tiled=true&TIME={time}&WIDTH=1920&HEIGHT=1080&CRS=EPSG:4326&BBOX={bbox}"
     return url
 
@@ -150,7 +129,3 @@ def fetchImage(args):
     os.system('rm sentinel_foreground.png sentinel_background.png final_foreground.png colorGraded.png')
     return colorGraded
     
-
-
-# print(boundingBox(8.876953,40.474114,1920/3,1080/3))
-#fetchImage({"latitude":-19.228177,"longitude":121.069336,"zoomLevel":0})
