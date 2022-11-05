@@ -1,14 +1,10 @@
 import math
 import datetime
 from utils import download
-import os
+
 from PIL import Image
 import cv2
 import numpy as np
-
-from datetime import date
-import astral
-from astral.sun import sun
 
 def boundingBox(latitudeInDegrees, longitudeInDegrees, widthInKm, heightInKm):
     widthInM = widthInKm*1000
@@ -41,70 +37,19 @@ def combineURL(args,satellite,time):
     url = f"https://view.eumetsat.int/geoserver/wms?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&FORMAT=image/png&TRANSPARENT=true&LAYERS={satellite}&STYLES=&tiled=true&TIME={time}&WIDTH=1920&HEIGHT=1080&CRS=EPSG:4326&BBOX={bbox}"
     return url
 
-def getNoon(longitude, latitude):
-    pos = astral.Observer(longitude=longitude, latitude=latitude,elevation=0)
-    yesterday = datetime.date.today()-datetime.timedelta(days=1)
-    s = sun(pos, date=yesterday)
-    noon = s["noon"]
-    hour = noon.hour-(noon.hour%3)
-    strTime = str(hour).zfill(2)+":00:00Z"
-    return strTime
-
-def checkForNight(img):
-    #eps:m03_ir108
-    pixels = img.getdata()
-    nblack = 0
-    for pixel in pixels:
-        if pixel[3] != 255:
-            nblack += 1
-    n = len(pixels)
-
-    print(nblack / float(n))
-
-def makeColorgrading(fileName,fileNameOut):
-    #fileNameOut = "final_foreground.png"
-    os.system(f'magickScripts/autolevel -c rgb {fileName} autolevel_foreground.png')
-    os.system('magickScripts/autotone -n -s autolevel_foreground.png autotone_foreground.png')
-    os.system('magickScripts/matchimage -c rgb autotone_foreground.png sentinel_background.png matchimage_foreground.png')
-    os.system(f'magickScripts/autotone -n -s matchimage_foreground.png {fileNameOut}')
-    os.system('rm autolevel_foreground.png autotone_foreground.png matchimage_foreground.png')
-    return fileNameOut
-
-def transparentOverlay(img):
-    h,w,_ = img.shape
-    mask = np.zeros([h,w], dtype="uint8")
-    for i in range(h):
-        for j in range(w):
-            alpha = float(img[i][j][3]/255.0)
-            if alpha >= 0.7:
-                mask[i][j] = 255
-            else:
-                mask[i][j] = 0
-    return mask
-
-def addAlphaChannel(fileNamewithAlpha, fileName):
-    img = cv2.imread(fileNamewithAlpha , cv2.IMREAD_UNCHANGED)
-    final_foreground = cv2.imread(fileName , cv2.IMREAD_UNCHANGED)
-
-    mask = transparentOverlay(img)
-    rgba = cv2.cvtColor(final_foreground, cv2.COLOR_RGB2RGBA)
-    rgba[:, :, 3] = mask
-    cv2.imwrite(fileNamewithAlpha, rgba)
+def white_balance(pilImg):
+    img = np.asarray(pilImg)
+    result = cv2.cvtColor(img, cv2.COLOR_BGR2LAB)
+    avg_a = np.average(result[:, :, 1])
+    avg_b = np.average(result[:, :, 2])
+    result[:, :, 1] = result[:, :, 1] - ((avg_a - 128) * (result[:, :, 0] / 255.0) * 1.1)
+    result[:, :, 2] = result[:, :, 2] - ((avg_b - 128) * (result[:, :, 0] / 255.0) * 1.1)
+    result = cv2.cvtColor(result, cv2.COLOR_LAB2BGR)
+    return Image.fromarray(result)
 
 def fetchImage(args):
-    filenameForeground = "sentinel_foreground.png"
-    filenameBackground = "sentinel_background.png"
-    
-    noonTime = getNoon(args.longitude, args.latitude)
     date = datetime.datetime.now(datetime.timezone.utc)
     date = date-datetime.timedelta(hours=3)
-    noonTime = date.strftime("%Y-%m-%dT")+noonTime
-    print(f"Image for: {noonTime}.")
-
-    #download the low res full disk image. (cureeently only for coller grading)
-    url_background = combineURL(args,"mumi:wideareacoverage_rgb_natural",noonTime)
-    img_back =  download(url_background)
-    img_back.save(filenameBackground)
 
     #download first image
     time = date.strftime("%Y-%m-")+str(date.day-1).zfill(2)+"T00:00:00Z"
@@ -122,10 +67,6 @@ def fetchImage(args):
             a_channel = Image.new('L', img.size, 255)   # 'L' 8-bit pixels, black and white
             img.putalpha(a_channel)
         bg.paste(img, (0, 0),img)
-    bg.save(filenameForeground)
-    colorGradedFileName = makeColorgrading(filenameForeground,"backgroundImage.png")
-    colorGraded = Image.open(colorGradedFileName)
-
-    os.system('rm sentinel_foreground.png sentinel_background.png final_foreground.png colorGraded.png')
+    colorGraded = white_balance(bg)
     return colorGraded
     

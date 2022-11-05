@@ -8,7 +8,6 @@ Supports all known **geostationary** satellites, high resolution **sentinel** im
 3. `source venv/bin/activate`
 4. `pip install -r requirements.txt`
 5. Test installation with: `python3 /path/to/projectDir/changeBackground.py -z 0 -s meteosat-11`.
-6. Install imagemagick for sentinel support (https://imagemagick.org/index.php)
 The Image `backgroundImage.png`should have updated. 
 
 
@@ -49,5 +48,3 @@ options:
 | Meteosat-11   | ![alt text](examples/meteosat-11.png) |
 | sdo           | ![alt text](examples/nasa_sdo.png) |
 
-
-All Scripts in `magickScripts` are from Fred Weinhaus`s Imagemagcik Scripts. (http://www.fmwconcepts.com/imagemagick/index.php)
