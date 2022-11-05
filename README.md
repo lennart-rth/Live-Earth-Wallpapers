@@ -2,8 +2,7 @@
 Set your Desktop background to near realtime picures of the earth. \
 Supports all known **geostationary** satellites, high resolution **sentinel** images and Nasa **Solar Dynamics Observatory** Images!
 
-<details>
-<summary><h3>Installation for LINUX and MacOS</h3></summary>
+<h3>Installation for LINUX and MacOS</h3>
 
 1. `git clone https://github.com/L-Roth/Live-Earth-Wallpapers.git`
 2. `cd Live-Earth-Wallpapers`
@@ -11,16 +10,14 @@ Supports all known **geostationary** satellites, high resolution **sentinel** im
 4. `./install.sh ["your choosen flags"]` Replace the brackets with all flags and arguments you want for your Script. For Options see [Script options](#scriptOptions)\
 **Do not include the brackets!**
 5. Check if crontab is installed: `crontab -l`
-</details>
-<details>
-<summary><h3>Installation for Windows</h3></summary>
+<h3>Installation for Windows</h3>
 
 1. `git clone https://github.com/L-Roth/Live-Earth-Wallpapers.git`
 2. setup a Windows-Task-Scheduler to run `changeBackground.py`. every 30 min.\
 E.g.: `path_to_project/Live-Earth-Wallpapers/venv/bin/python3 path_to_project/Live-Earth-Wallpapers/changeBackground.py  -z 3 -s goes-16`
 3. Use Programms like [backgroundswitcher](https://johnsad.ventures/software/backgroundswitcher/windows/) or [bionix](https://bionixwallpaper.com/desktop-wallpaper-app-download/) to periodicly change your background to the image `backgroundImage.png` in the project folder.
 Make sure to update image 2-3 min. later than the TaskScheduler runs.
-</details>
+
 
 ### Requirements
 1. `crontab`
@@ -70,14 +67,24 @@ options:
 </pre>
 
 ### Supported Satellites:
+
+Sentinel
 | **Satellite** | **Example image**                     |
 |---------------|---------------------------------------|
-| Sentinel      | ![alt text](examples/caribic.png)![alt text](examples/arctic.png)![alt text](examples/desert.png)|
-| Goes-16       | ![alt text](examples/goes-16.png)     |
-| Goes-17       | ![alt text](examples/goes-17.png)     |
-| Goes-18       | ![alt text](examples/goes-18.png)     |
-| Himamwari-8   | ![alt text](examples/himawari.png)    |
-| Meteosat-9    | ![alt text](examples/meteosat-9.png)  |
-| Meteosat-11   | ![alt text](examples/meteosat-11.png) |
-| sdo           | ![alt text](examples/nasa_sdo.png) |
+| Sentinel      | <p float="left">![alt text](examples/caribic.png)![alt text](examples/arctic.png)![alt text](examples/desert.png)</p>|
 
+| **Satellite** | **example Image**                                                                                   |
+|---------------|-----------------------------------------------------------------------------------------------------|
+| Goes-16       | <p float="left">![alt text](examples/goes-16_natural_color.png)![alt text](examples/goes-16_geocolor.png)</p>         |
+| Goes-17       | <p float="left">![alt text](examples/goes-17_natural_color.png)![alt text](examples/goes-17_geocolor.png)</p>         |
+| Goes-18       | <p float="left">![alt text](examples/goes-18_natural_color.png)![alt text](examples/goes-18_geocolor.png)</p>         |
+| Himamwari-8   | <p float="left">![alt text](examples/himawari-8_natural_color.png)![alt text](examples/himawari-8_geocolor.png)</p>   |
+| Meteosat-9    | <p float="left">![alt text](examples/meteosat-9_natural_color.png)![alt text](examples/meteosat-9_geocolor.png)</p>   |
+| Meteosat-11   | <p float="left">![alt text](examples/meteosat-11_natural_color.png)![alt text](examples/meteosat-11_geocolor.png)</p> |
+
+SDO
+| normal                               | pfss (magentometer)                     |
+|--------------------------------------|-----------------------------------------|
+| ![alt text](examples/1024_0171.jpg)  | ![alt text](examples/1024_0171pfss.jpg) |
+| ![alt text](examples/1024_0304.jpg)  | ![alt text](examples/1024_0304pfss.jpg) |
+| ![alt text](examples/1024_HMIIC.jpg) |                                         |
