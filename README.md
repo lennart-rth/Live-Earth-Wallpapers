@@ -7,9 +7,10 @@ Supports all known **geostationary** satellites, high resolution **sentinel** im
 
 1. `git clone https://github.com/L-Roth/Live-Earth-Wallpapers.git`
 2. `cd Live-Earth-Wallpapers`
-3. `./install.sh ["your choosen flags"]` Replace the brackets with all flags and arguments you want for your Script. For Options see [Script options](#scriptOptions)\
+3. `chmod +x install.sh`
+4. `./install.sh ["your choosen flags"]` Replace the brackets with all flags and arguments you want for your Script. For Options see [Script options](#scriptOptions)\
 **Do not include the brackets!**
-4. Check if crontab is installed: `crontab -l`
+5. Check if crontab is installed: `crontab -l`
 </details>
 <details>
 <summary><h3>Installation for Windows</h3></summary>
@@ -48,7 +49,8 @@ To update the Background you need either `feh`, `nitrogen` or `gsettings` to be 
 </details>
 
 <h3 id="scriptOptions">Script Parameter Options:</h3>
-<pre>usage: changeBackground.py [-h] [-z {0,1,2,3,4}] [-s {goes-16,goes-17,goes-18,himawari,meteosat-9,meteosat-11,sentinel,sdo}] [-p {feh,nitrogen,gsettings}] [-a LATITUDE] [-b LONGITUDE]
+<pre>usage: changeBackground.py [-h] [-z {0,1,2,3,4}] [-s {goes-16,goes-17,goes-18,himawari,meteosat-9,meteosat-11,sentinel,sdo}]
+                           [-m {geocolor,natural_color,0171,0171pfss,0304,0304pfss,HMIIC}] [-p {feh,nitrogen,gsettings}] [-a LATITUDE] [-b LONGITUDE]
 
 options:
   -h, --help            show this help message and exit
@@ -56,6 +58,9 @@ options:
                         Change the ImageSize 0=678, 1=1356, 2=2712, 3=5424, 4=10848 (Meteosat does not support Level 4)
   -s {goes-16,goes-17,goes-18,himawari,meteosat-9,meteosat-11,sentinel,sdo}, --source {goes-16,goes-17,goes-18,himawari,meteosat-9,meteosat-11,sentinel,sdo}
                         Select Satellite as a source. goes-16, goes-17, goes-18, himawari, meteosat-9, meteosat-11, sentinel, sdo (NASA Solar Dynamics Observatory)
+  -m {geocolor,natural_color,0171,0171pfss,0304,0304pfss,HMIIC}, --colorMode {geocolor,natural_color,0171,0171pfss,0304,0304pfss,HMIIC}
+                        Select a color composite.
+                        Geocolor and natural_color for goes, meteosat and himawari. The rest is only for SDO.
   -p {feh,nitrogen,gsettings}, --bgProgram {feh,nitrogen,gsettings}
                         Select Programm to set the Background.
   -a LATITUDE, --latitude LATITUDE
