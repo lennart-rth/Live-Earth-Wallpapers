@@ -2,12 +2,29 @@
 Set your Desktop background to near realtime picures of the earth. \
 Supports all known **geostationary** satellites, high resolution **sentinel** images and Nasa **Solar Dynamics Observatory** Images!
 
-### Installation
+<details>
+<summary><h3>Installation for LINUX and MacOS</h3></summary>
+
 1. `git clone https://github.com/L-Roth/Live-Earth-Wallpapers.git`
 2. `cd Live-Earth-Wallpapers`
-3. `./install.sh ["your choosen flags"]` Replace the brackets with all flags and arguments you want for your arguments. For Options see [Script options](###Script-Parameter-Options:)\
+3. `./install.sh ["your choosen flags"]` Replace the brackets with all flags and arguments you want for your Script. For Options see [Script options](#scriptOptions)\
 **Do not include the brackets!**
 4. Check if crontab is installed: `crontab -l`
+</details>
+<details>
+<summary><h3>Installation for Windows</h3></summary>
+
+1. `git clone https://github.com/L-Roth/Live-Earth-Wallpapers.git`
+2. setup a Windows-Task-Scheduler to run `changeBackground.py`. every 30 min.\
+E.g.: `path_to_project/Live-Earth-Wallpapers/venv/bin/python3 path_to_project/Live-Earth-Wallpapers/changeBackground.py  -z 3 -s goes-16`
+3. Use Programms like [backgroundswitcher](https://johnsad.ventures/software/backgroundswitcher/windows/) or [bionix](https://bionixwallpaper.com/desktop-wallpaper-app-download/) to periodicly change your background to the image `backgroundImage.png` in the project folder.
+Make sure to update image 2-3 min. later than the TaskScheduler runs.
+</details>
+
+### Requirements
+1. `crontab`
+2. `python3`
+3. `feh`, `nitrogen` or `gsettings` to update the background image
 
 <details>
 <summary><h3>Manual installation</h3></summary>
@@ -30,7 +47,7 @@ Example: `*/30 * * * * DISPLAY=:0 python3 /path/to/ProjectDir/changeBackground.p
 To update the Background you need either `feh`, `nitrogen` or `gsettings` to be installed.
 </details>
 
-### Script Parameter Options:
+<h3 id="scriptOptions">Script Parameter Options:</h3>
 <pre>usage: changeBackground.py [-h] [-z {0,1,2,3,4}] [-s {goes-16,goes-17,goes-18,himawari,meteosat-9,meteosat-11,sentinel,sdo}] [-p {feh,nitrogen,gsettings}] [-a LATITUDE] [-b LONGITUDE]
 
 options:
@@ -48,7 +65,7 @@ options:
 </pre>
 
 ### Supported Satellites:
-| **Satellite** | **example Image**                     |
+| **Satellite** | **Example image**                     |
 |---------------|---------------------------------------|
 | Sentinel      | ![alt text](examples/caribic.png)![alt text](examples/arctic.png)![alt text](examples/desert.png)|
 | Goes-16       | ![alt text](examples/goes-16.png)     |
