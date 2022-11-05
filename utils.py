@@ -16,7 +16,7 @@ def download(url):
 def setBG(p, filename):
     if p == "feh":
         os.system(f"feh --bg-max {filename}")
-    elif p == "notrogen":
+    elif p == "nitrogen":
         os.system(f"nitrogen {filename}")
     elif p == "gsettings":
         os.system(f"gsettings set org.gnome.desktop.background picture-uri file:{filename}")
