@@ -64,6 +64,11 @@ options:
                         Set the longitude of the Background image bounding box you want to set. Only for Sentinel as source.
 </pre>
 
+### TODO:
+Feel free to solve these and open pull requests!
+1. Add Windows support. A good start would be [this](https://www.windows-commandline.com/change-windows-wallpaper-command-line/).
+2. Add asynchronous image loading for the geosationary satellites.
+
 ### Supported Satellites:
 | **Satellite** | **Example image**                     |
 |---------------|---------------------------------------|
