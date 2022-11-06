@@ -13,7 +13,7 @@ Supports all known **geostationary** satellites, high resolution **sentinel** im
 
 <h3>Installation for Windows</h3>
 
-*(Disclamer: Windows setup by `install.sh` and the `-p windows` flags is not tested yet, as I have no access to a Windows Mashine.)*\
+*(Disclamer: Windows setup by `install.sh` and the `-p windows` flags is not tested yet, as I have no access to a Windows Mashine.)*
 1. `git clone https://github.com/L-Roth/Live-Earth-Wallpapers.git`
 2. setup a Windows-Task-Scheduler to run `changeBackground.py`. every 30 min.\
 E.g.: `path_to_project/Live-Earth-Wallpapers/venv/Scripts/python.exe path_to_project/Live-Earth-Wallpapers/changeBackground.py  -z 3 -s goes-16 -p windows`
@@ -87,8 +87,8 @@ Sentinel
 | Meteosat-11   | <p float="left">![alt text](examples/meteosat-11_natural_color.png)![alt text](examples/meteosat-11_geocolor.png)</p> |
 
 SDO
-| normal                               | pfss (magentometer)                     |
-|--------------------------------------|-----------------------------------------|
-| ![alt text](examples/1024_0171.jpg)  | ![alt text](examples/1024_0171pfss.jpg) |
-| ![alt text](examples/1024_0304.jpg)  | ![alt text](examples/1024_0304pfss.jpg) |
-| ![alt text](examples/1024_HMIIC.jpg) |                                         |
+| mode         | normal                               | pfss (magentometer)                     |
+|--------------|--------------------------------------|-----------------------------------------|
+| 0171/0171pfss| ![alt text](examples/1024_0171.jpg)  | ![alt text](examples/1024_0171pfss.jpg) |
+| 0304/pfss    | ![alt text](examples/1024_0304.jpg)  | ![alt text](examples/1024_0304pfss.jpg) |
+| HMIIC        | ![alt text](examples/1024_HMIIC.jpg) |                                         |
