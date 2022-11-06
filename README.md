@@ -14,7 +14,7 @@ Supports all known **geostationary** satellites, high resolution **sentinel** im
 
 1. `git clone https://github.com/L-Roth/Live-Earth-Wallpapers.git`
 2. setup a Windows-Task-Scheduler to run `changeBackground.py`. every 30 min.\
-E.g.: `path_to_project/Live-Earth-Wallpapers/venv/bin/python3 path_to_project/Live-Earth-Wallpapers/changeBackground.py  -z 3 -s goes-16`
+E.g.: `path_to_project/Live-Earth-Wallpapers/venv/Scripts/python.exe path_to_project/Live-Earth-Wallpapers/changeBackground.py  -z 3 -s goes-16`
 3. Use Programms like [backgroundswitcher](https://johnsad.ventures/software/backgroundswitcher/windows/) or [bionix](https://bionixwallpaper.com/desktop-wallpaper-app-download/) to periodicly change your background to the image `backgroundImage.png` in the project folder.
 Make sure to update image 2-3 min. later than the TaskScheduler runs.
 

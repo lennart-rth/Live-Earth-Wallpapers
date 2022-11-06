@@ -48,16 +48,16 @@ def white_balance(pilImg):
     return Image.fromarray(result)
 
 def fetchImage(args):
-    date = datetime.datetime.now(datetime.timezone.utc)
-    date = date-datetime.timedelta(hours=3)
+    dateWithDelay = datetime.datetime.now(datetime.timezone.utc)
+    dateWithDelay = dateWithDelay-datetime.timedelta(hours=3)
 
     #download first image
-    time = date.strftime("%Y-%m-")+str(date.day-1).zfill(2)+"T00:00:00Z"
+    time = dateWithDelay.strftime("%Y-%m-")+str(dateWithDelay.day-1).zfill(2)+"T00:00:00Z"
     url = combineURL(args,"copernicus:daily_sentinel3ab_olci_l1_rgb_fulres",time)
     bg =  download(url)
-    #download the rest 
+    #download the rest in reversed so the latest images is always on top
     for day in reversed(range(2,5)):
-        time = date.strftime("%Y-%m-")+str(date.day-day).zfill(2)+"T00:00:00Z"
+        time = dateWithDelay.strftime("%Y-%m-")+str(dateWithDelay.day-day).zfill(2)+"T00:00:00Z"
         print(f"Downloading Image from {time}...")
         url = combineURL(args,"copernicus:daily_sentinel3ab_olci_l1_rgb_fulres",time)
         print(f"with URl:   {url}")

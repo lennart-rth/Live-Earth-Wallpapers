@@ -21,6 +21,8 @@ def parseArgs():
                             help="Select Satellite as a source. goes-16, goes-17, goes-18, himawari, meteosat-9, meteosat-11, sentinel, sdo (NASA Solar Dynamics Observatory)")
     parser.add_argument("-m", "--colorMode", type=str, choices=["geocolor","natural_color","0171", "0171pfss", "0304", "0304pfss","HMIIC"],
                             help="Select a color composite. geocolor and natural_color for goes, meteosat and himawari. The rest is only for SDO")
+    parser.add_argument("-o", "--outFile", type=str,
+                            help="Full path to a dir to save all loaded images. If not specified no images will be saved. Useful for Timelapse generation")
     parser.add_argument("-p", "--bgProgram", type=str, choices=["feh","nitrogen","gsettings"],
                             help="Select Programm to set the Background.")
     parser.add_argument("-a", "--latitude", type=float, default=40.474114,
@@ -55,4 +57,9 @@ if __name__ == "__main__":
     filename = f"{os.path.dirname(os.path.realpath(__file__))}/backgroundImage.png"
     bg.save(filename)
     print(f"Image saved to: {filename}")
+
+    if args.outFile is not None:
+        imagePath = f"{args.outFile}/{logDate}.png"
+        bg.save(imagePath)
+
     setBG(args.bgProgram,filename)
