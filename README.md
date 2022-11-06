@@ -62,7 +62,7 @@ options:
                         Select a color composite. geocolor and natural_color for goes, meteosat and himawari. The rest is only for SDO
   -o OUTFILE, --outFile OUTFILE
                         Full path to a dir to save all loaded images. If not specified no images will be saved. Useful for Timelapse generation
-  -p {feh,nitrogen,gsettings}, --bgProgram {feh,nitrogen,gsettings}
+  -p {feh,nitrogen,gsettings}, --bgProgram {feh,nitrogen,gsettings,windows}
                         Select Programm to set the Background.
   -a LATITUDE, --latitude LATITUDE
                         Set the latitude of the Background image bounding box you want to set. Only for Sentinel as source.
