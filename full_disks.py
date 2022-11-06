@@ -76,4 +76,10 @@ def getImage(args,base_url):
     #zoom out a bit
     wallpaper = Image.new('RGB', (int(bg.width*1.2),int(bg.height*1.2)))
     wallpaper.paste(bg, (int(0+(bg.width*0.1)), int(0+(bg.height*0.1))))
-    return wallpaper
+
+    #make image size to fit 16:9 dimesnions.
+    h = wallpaper.height
+    w = int((h/9)*16)   #width is chosen that height is maximum and the dimesnions still fit 16:9 monitors.
+    finalImage = Image.new('RGB', (w,h))
+    finalImage.paste(wallpaper, (int((w/2)-(wallpaper.width/2)),0)) #position image in the center and maximized
+    return finalImage

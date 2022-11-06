@@ -15,6 +15,7 @@ DISPLAY=${VAR##*=}
 HOMEPATH=$(dirname -- "$( readlink -f -- "$0"; )")
 ENVPATH="$HOMEPATH/venv/bin/python3"
 SCRIPTPATH="$HOMEPATH/changeBackground.py"
+IMAGEFILE="$HOMEPATH/backgroundImage.png"
 
 #get the provided flags
 FLAGS=""
@@ -46,6 +47,12 @@ setup_taskscheduler () {
     echo "successfull!"
 }
 
+write_appleScript_file () {
+  echo "#!/bin/bash
+osascript -e 'tell application \"System Events\" to tell every desktop to set picture to \"$IMAGEFILE\"'
+" > apple_set_bg.sh
+}
+
 # Detect the platform
 OS="`uname`"
 case $OS in
@@ -60,6 +67,7 @@ case $OS in
   'Darwin') 
     OS='Mac'
     setup_cronjob
+    write_appleScript_file
     ;;
   *) 
     setup_cronjob
@@ -67,3 +75,4 @@ case $OS in
 esac
 
 echo "Detected $OS as your Operating System!"
+

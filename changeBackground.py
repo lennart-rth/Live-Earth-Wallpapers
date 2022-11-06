@@ -12,6 +12,7 @@ from nasa_sdo import getSDOImage
 
 
 sources = ["goes-16", "goes-17", "goes-18", "himawari", "meteosat-9", "meteosat-11", "sentinel", "sdo"]
+random_sources = ["goes-16", "goes-17", "goes-18", "himawari", "meteosat-9", "meteosat-11", "sdo"]
 
 def parseArgs():
     parser = argparse.ArgumentParser()
@@ -23,7 +24,7 @@ def parseArgs():
                             help="Select a color composite. geocolor and natural_color for goes, meteosat and himawari. The rest is only for SDO")
     parser.add_argument("-o", "--outFile", type=str,
                             help="Full path to a dir to save all loaded images. If not specified no images will be saved. Useful for Timelapse generation")
-    parser.add_argument("-p", "--bgProgram", type=str, choices=["feh","nitrogen","gsettings"],
+    parser.add_argument("-p", "--bgProgram", type=str, choices=["feh","nitrogen","gsettings","osascript","apple_defaults","windows"],
                             help="Select Programm to set the Background.")
     parser.add_argument("-a", "--latitude", type=float, default=40.474114,
                             help="Set the latitude of the Background image bounding box you want to set. Only for Sentinel as source.")
@@ -41,7 +42,7 @@ if __name__ == "__main__":
     args = parseArgs()
 
     if args.source is None:
-        args.source = random.choice(sources)
+        args.source = random.choice(random_sources)
 
     if args.source != "sentinel" and args.source != "sdo":
         base_url = buildUrl(args)

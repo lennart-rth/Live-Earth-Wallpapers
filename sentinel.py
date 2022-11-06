@@ -33,6 +33,8 @@ def calcDimensions(args):
 
 def combineURL(args,satellite,time):
     widthInKm,heightInKm = calcDimensions(args)
+    if args.latitude == None or args.longitude == None:
+        raise ValueError("No coordinates specified! You need to specifiy coordinates by passing the parametera -a and -b.")
     bbox = boundingBox(args.latitude, args.longitude, widthInKm, heightInKm)
     url = f"https://view.eumetsat.int/geoserver/wms?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&FORMAT=image/png&TRANSPARENT=true&LAYERS={satellite}&STYLES=&tiled=true&TIME={time}&WIDTH=1920&HEIGHT=1080&CRS=EPSG:4326&BBOX={bbox}"
     return url
@@ -46,6 +48,22 @@ def white_balance(pilImg):
     result[:, :, 2] = result[:, :, 2] - ((avg_b - 128) * (result[:, :, 0] / 255.0) * 1.1)
     result = cv2.cvtColor(result, cv2.COLOR_LAB2BGR)
     return Image.fromarray(result)
+
+
+def auto_white_balance(pilImg, p=.6):
+    im = np.asarray(pilImg)
+    # get mean values
+    p0, p1 = np.percentile(im, p), np.percentile(im, 100-p)
+
+    for i in range(3):
+        ch = im[:,:,i]
+        # get channel values
+        pc0, pc1 = np.percentile(ch, p), np.percentile(ch, 100-p)
+        # stretch channel to same range as mean
+        ch = (p1 - p0) * (ch - pc0) / (pc1 - pc0) + p0
+        im[:,:,i] = ch
+        
+    return Image.fromarray(im)
 
 def fetchImage(args):
     dateWithDelay = datetime.datetime.now(datetime.timezone.utc)
