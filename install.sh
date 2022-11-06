@@ -1,10 +1,12 @@
 #!/bin/bash
 
 #install Python venv
+echo "Installing python dependecies..."
 python3 -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
 deactivate
+echo "successfull"
 
 #find display Name
 VAR=$(env | grep -i display)
@@ -26,9 +28,42 @@ done
 # echo $ENVPATH
 # echo $SCRIPTPATH
 # echo $FLAGS
- 
-#set the cronjob
-crontab -l > mycron
-echo "*/30 * * * * DISPLAY=${DISPLAY} ${ENVPATH} ${SCRIPTPATH} ${FLAGS}" >> mycron
-crontab mycron
-rm mycron
+
+setup_cronjob () {
+    #set the cronjob
+    crontab -l > mycron
+    echo "*/30 * * * * DISPLAY=${DISPLAY} ${ENVPATH} ${SCRIPTPATH} ${FLAGS}" >> mycron
+    crontab mycron
+    echo "Writing Cronjobs:"
+    cat mycron
+    rm mycron
+    echo "successfull!"
+}
+
+setup_taskscheduler () {
+    echo "Writing Task-Scheduler..."
+    SCHTASKS /CREATE /SC DAILY /TN "FOLDERPATH\TASKNAME" /TR "C:\SOURCE\FOLDER\APP-OR-SCRIPT" /ST HH:MMExampleSCHTASKS /CREATE /SC DAILY /TN "MyTasks\Live-Earth_Wallpapers" /TR  /ST 11:00
+    echo "successfull!"
+}
+
+# Detect the platform
+OS="`uname`"
+case $OS in
+  'Linux')
+    OS='Linux'
+    setup_cronjob
+    ;;
+  'WindowsNT')
+    OS='Windows'
+    setup_taskscheduler
+    ;;
+  'Darwin') 
+    OS='Mac'
+    setup_cronjob
+    ;;
+  *) 
+    setup_cronjob
+    ;;
+esac
+
+echo "Detected $OS as your Operating System!"

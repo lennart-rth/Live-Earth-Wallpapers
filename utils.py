@@ -21,6 +21,9 @@ def setBG(p, filename):
     elif p == "gsettings":
         os.system(f"gsettings set org.gnome.desktop.background picture-uri file:{filename}")
         os.system("gsettings set org.gnome.desktop.background picture-options 'scaled'")
+    elif p == "windows":
+        os.system('reg add "HKEY_CURRENT_USER\Control Panel\Desktop" /v Wallpaper /t REG_SZ /d  wallpaper_path /f')
+        os.system('RUNDLL32.EXE user32.dll,UpdatePerUserSystemParameter')
     
-    #set the Lock screen
+    #set the Ubuntu Lock screen
     #os.system(f"sudo ./ubuntu-gdm-set-background --image {filename}")

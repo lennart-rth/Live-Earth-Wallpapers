@@ -10,12 +10,15 @@ Supports all known **geostationary** satellites, high resolution **sentinel** im
 4. `./install.sh ["your choosen flags"]` Replace the brackets with all flags and arguments you want for your Script. For Options see [Script options](#scriptOptions)\
 **Do not include the brackets!**
 5. Check if crontab is installed: `crontab -l`
+
 <h3>Installation for Windows</h3>
 
+*(Disclamer: Windows setup by `install.sh` and the `-p windows` flags is not tested yet, as I have no access to a Windows Mashine.)*\
 1. `git clone https://github.com/L-Roth/Live-Earth-Wallpapers.git`
 2. setup a Windows-Task-Scheduler to run `changeBackground.py`. every 30 min.\
-E.g.: `path_to_project/Live-Earth-Wallpapers/venv/Scripts/python.exe path_to_project/Live-Earth-Wallpapers/changeBackground.py  -z 3 -s goes-16`
-3. Use Programms like [backgroundswitcher](https://johnsad.ventures/software/backgroundswitcher/windows/) or [bionix](https://bionixwallpaper.com/desktop-wallpaper-app-download/) to periodicly change your background to the image `backgroundImage.png` in the project folder.
+E.g.: `path_to_project/Live-Earth-Wallpapers/venv/Scripts/python.exe path_to_project/Live-Earth-Wallpapers/changeBackground.py  -z 3 -s goes-16 -p windows`
+Manual setup is recommended however you can use `./install.sh` to setup a Task Scheduler. Make sure to execute this with **System Adminstrator Rights**!
+3. Use -p flag with "windows" or use programms like [backgroundswitcher](https://johnsad.ventures/software/backgroundswitcher/windows/) or [bionix](https://bionixwallpaper.com/desktop-wallpaper-app-download/) to periodicly change your background to the image `backgroundImage.png` in the project folder.
 Make sure to update image 2-3 min. later than the TaskScheduler runs.
 
 
@@ -46,8 +49,8 @@ To update the Background you need either `feh`, `nitrogen` or `gsettings` to be 
 </details>
 
 <h3 id="scriptOptions">Script Parameter Options:</h3>
-<pre>usage: changeBackground.py [-h] [-z {0,1,2,3,4}] [-s {goes-16,goes-17,goes-18,himawari,meteosat-9,meteosat-11,sentinel,sdo}]
-                           [-m {geocolor,natural_color,0171,0171pfss,0304,0304pfss,HMIIC}] [-p {feh,nitrogen,gsettings}] [-a LATITUDE] [-b LONGITUDE]
+<pre>usage: changeBackground.py [-h] [-z {0,1,2,3,4}] [-s {goes-16,goes-17,goes-18,himawari,meteosat-9,meteosat-11,sentinel,sdo}] [-m {geocolor,natural_color,0171,0171pfss,0304,0304pfss,HMIIC}]
+                           [-o OUTFILE] [-p {feh,nitrogen,gsettings}] [-a LATITUDE] [-b LONGITUDE]
 
 options:
   -h, --help            show this help message and exit
@@ -56,8 +59,9 @@ options:
   -s {goes-16,goes-17,goes-18,himawari,meteosat-9,meteosat-11,sentinel,sdo}, --source {goes-16,goes-17,goes-18,himawari,meteosat-9,meteosat-11,sentinel,sdo}
                         Select Satellite as a source. goes-16, goes-17, goes-18, himawari, meteosat-9, meteosat-11, sentinel, sdo (NASA Solar Dynamics Observatory)
   -m {geocolor,natural_color,0171,0171pfss,0304,0304pfss,HMIIC}, --colorMode {geocolor,natural_color,0171,0171pfss,0304,0304pfss,HMIIC}
-                        Select a color composite.
-                        Geocolor and natural_color for goes, meteosat and himawari. The rest is only for SDO.
+                        Select a color composite. geocolor and natural_color for goes, meteosat and himawari. The rest is only for SDO
+  -o OUTFILE, --outFile OUTFILE
+                        Full path to a dir to save all loaded images. If not specified no images will be saved. Useful for Timelapse generation
   -p {feh,nitrogen,gsettings}, --bgProgram {feh,nitrogen,gsettings}
                         Select Programm to set the Background.
   -a LATITUDE, --latitude LATITUDE
