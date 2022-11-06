@@ -34,7 +34,7 @@ For **Linux** use feh, nitrogen or gsettings as -p flag.\
 For **MacOs** use feh, osascript or apple_defaults as -p flag.\
 For **Windows** use windows as -p flag.
 
-Experience shows that not every programm will work. But most of the time at least one programm will work.;)
+Experience shows that not every programm will work. But most of the time at least one will.;)
 
 <details>
 <summary><h3>Manual installation</h3></summary>
