@@ -30,10 +30,10 @@ def setBG(p, filename):
     elif p == "apple_defaults":
         os.system('''defaults write com.apple.desktop Background '{defaults = {ImageFilePath = "'''+str(filename)+'''"; };}';''')
     
-    #set the Ubuntu Lock screen
+    #set the Ubuntu lock screen
     #os.system(f"sudo ./ubuntu-gdm-set-background --image {filename}")
 
-#function to make Black box around Image
+#function to add black rim around image
 def make_border(image, width,height):
     width_diff = width/image.width
     height_diff = height/image.height
