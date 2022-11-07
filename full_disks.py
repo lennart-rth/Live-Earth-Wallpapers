@@ -1,4 +1,5 @@
 import datetime
+from multiprocessing.pool import ThreadPool as Pool
 from PIL import Image
 import sys
 from utils import download
@@ -49,18 +50,41 @@ def buildUrl(args):
 
 def getImage(args,base_url):
     row, col = calcTileCoordinates(args.zoomLevel)
-    bg = Image.new('RGB', (0,0))
+    image_width = 678
+    image_height = 678
+
+    bg = Image.new('RGB', (image_width*len(col),image_height*len(row)))
+    row_col_pairs = []
     for r in row:
         for c in col:
-            url = base_url + f"/{str(r).zfill(3)}_{str(c).zfill(3)}.png"
-            print(f"Downloading Image ({r},{c}).{url}")
-            img = download(url)
+            row_col_pairs.append([r, c])
 
-            new_bg = Image.new('RGB', (img.width*(max(col)+1), img.height*(max(row)+1)))
-            new_bg.paste(bg, (0, 0))
-            new_bg.paste(img, (img.width*(c), (r)*img.height))
+    img_map = {}
 
-            bg = new_bg
+    def download_func(row_col):
+        r = row_col[0]
+        c = row_col[1]
+        url = base_url + f"/{str(r).zfill(3)}_{str(c).zfill(3)}.png"
+        print(f"Downloading Image ({r},{c}).{url}")
+        img = download(url)
+        # store the images in a dict so we don't have to care about the order they're downloaded in
+        img_map[str(r)+ ":" + str(c)] = img
+        return img
+        
+    import time
+    start = time.time()
+
+    with Pool(len(row_col_pairs)) as pool:
+        pool.map(download_func, row_col_pairs)
+
+    for r in row:
+        for c in col:
+            img = img_map[str(r)+ ":" + str(c)]
+            bg.paste(img, (image_width*(c), (r)*image_height))
+            
+
+    end = time.time()
+    print("Downloads took: ", end - start)
     #zoom out a bit
     wallpaper = Image.new('RGB', (int(bg.width*1.2),int(bg.height*1.2)))
     wallpaper.paste(bg, (int(0+(bg.width*0.1)), int(0+(bg.height*0.1))))
