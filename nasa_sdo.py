@@ -17,6 +17,4 @@ def getSDOImage(args):
     img = download(url)
     img = img.resize((1080,1080))
 
-    wallpaper = Image.new('RGB', (1920,1080))
-    wallpaper.paste(img, (int(960-(img.width/2)),0))
-    return wallpaper
+    return img
