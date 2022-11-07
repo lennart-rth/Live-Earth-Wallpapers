@@ -23,20 +23,36 @@ def PointLatLng(Lat,Lng, distance, bearing):
     lng = lng1 + math.atan2(math.sin(rad) * math.sin(distance / 6378137) * math.cos(lat1), math.cos(distance / 6378137) - math.sin(lat1) * math.sin(lat))
     return  round(lat * 180 / math.pi,4), round(lng * 180 / math.pi,4)
 
-def calcDimensions(args):
+def calcCoordinateDimensions(args):
     zoomLevel = args.zoomLevel
     maxZoom = 1000        #km for the width
-    variableZoom = 850
+    variableZoom = 850    #the maximum kilometeres we can zoom in from the "maxZoom" 
+    #maxZoom - variableZoom determines the min zoom level
+
     widthInKm = maxZoom-(((zoomLevel/4))*variableZoom)
-    heightInKm = (widthInKm/16)*9
+    if args.width is not None and args.height is not None:
+        heightInKm = int(widthInKm/(args.width/args.height))
+    else:       #default for args.width and args.heigth is 1920 and 1080
+        heightInKm = int(widthInKm/(16/9))
+
     return widthInKm,heightInKm
 
+def calcImageDimensions(args):
+    pixelWidth = 1920
+    if args.width is not None and args.height is not None:
+        pixelHeight = pixelWidth / (args.width/args.height)
+    else:
+        pixelHeight = pixelWidth / (16/9)
+
+    return int(pixelWidth), int(pixelHeight)
+
 def combineURL(args,satellite,time):
-    widthInKm,heightInKm = calcDimensions(args)
+    widthInKm,heightInKm = calcCoordinateDimensions(args)
+    widthInPx,heightInPx = calcImageDimensions(args)
     if args.latitude == None or args.longitude == None:
         raise ValueError("No coordinates specified! You need to specifiy coordinates by passing the parametera -a and -b.")
     bbox = boundingBox(args.latitude, args.longitude, widthInKm, heightInKm)
-    url = f"https://view.eumetsat.int/geoserver/wms?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&FORMAT=image/png&TRANSPARENT=true&LAYERS={satellite}&STYLES=&tiled=true&TIME={time}&WIDTH=1920&HEIGHT=1080&CRS=EPSG:4326&BBOX={bbox}"
+    url = f"https://view.eumetsat.int/geoserver/wms?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&FORMAT=image/png&TRANSPARENT=true&LAYERS={satellite}&STYLES=&tiled=true&TIME={time}&WIDTH={widthInPx}&HEIGHT={heightInPx}&CRS=EPSG:4326&BBOX={bbox}"
     return url
 
 def white_balance(pilImg):
