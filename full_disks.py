@@ -18,20 +18,9 @@ def getTimeCode(sat):
     f = urllib.request.urlopen(url)
     data = json.load(f)
     latest = data["timestamps_int"][0]
-    return latest
+    date = datetime.datetime.strptime(str(latest), '%Y%m%d%H%M%S').strftime("%Y/%m/%d")
 
-def getPictureTime(satellite):
-    now = datetime.datetime.now(datetime.timezone.utc)
-    minute = now.minute-(now.minute%satelliteData[satellite][0])
-    second = satelliteData[satellite][1]
-
-    lastSatImage = datetime.datetime(now.year,now.month,now.day,now.hour,minute,second)
-    if now.hour <= 1:
-        lastSatImage = (lastSatImage - datetime.timedelta(days=1,hours=1,minutes=30))
-    else:
-        lastSatImage = (lastSatImage - datetime.timedelta(hours=1,minutes=30))
-
-    return lastSatImage.strftime("%Y/%m/%d")
+    return latest, date
 
 def calcTileCoordinates(zoomLevel):
     #zoomlevel 0-3 or 0-4 (depending on the satellite)
@@ -45,8 +34,7 @@ def buildUrl(args):
     if (args.source == "meteosat-9" or args.source == "meteorsat-10") and args.zoomLevel > 4:
         sys.exit("Meteosat does not support Zoom Levels greater than 4.")
 
-    date = getPictureTime(args.source)
-    timeCode = getTimeCode(args.source) 
+    timeCode, date = getTimeCode(args.source) 
 
     name = args.colorMode
     if name == None:
@@ -77,9 +65,4 @@ def getImage(args,base_url):
     wallpaper = Image.new('RGB', (int(bg.width*1.2),int(bg.height*1.2)))
     wallpaper.paste(bg, (int(0+(bg.width*0.1)), int(0+(bg.height*0.1))))
 
-    #make image size to fit 16:9 dimesnions.
-    h = wallpaper.height
-    w = int((h/9)*16)   #width is chosen that height is maximum and the dimesnions still fit 16:9 monitors.
-    finalImage = Image.new('RGB', (w,h))
-    finalImage.paste(wallpaper, (int((w/2)-(wallpaper.width/2)),0)) #position image in the center and maximized
-    return finalImage
+    return wallpaper

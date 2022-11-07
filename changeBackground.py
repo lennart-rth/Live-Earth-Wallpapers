@@ -7,10 +7,8 @@ import random
 
 from full_disks import buildUrl,getImage
 from sentinel import fetchImage
-from utils import setBG
+from utils import setBG, make_border
 from nasa_sdo import getSDOImage
-
-from utils import make_border
 
 
 sources = ["goes-16", "goes-17", "goes-18", "himawari", "meteosat-9", "meteosat-11", "sentinel", "sdo"]
@@ -76,8 +74,5 @@ if __name__ == "__main__":
     if args.outFile is not None:
         imagePath = f"{args.outFile}/{logDate}.png"
         bg.save(imagePath)
-
-    
-
 
     setBG(args.bgProgram,filename)
