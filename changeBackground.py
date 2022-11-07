@@ -10,6 +10,8 @@ from sentinel import fetchImage
 from utils import setBG
 from nasa_sdo import getSDOImage
 
+from utils import make_border
+
 
 sources = ["goes-16", "goes-17", "goes-18", "himawari", "meteosat-9", "meteosat-11", "sentinel", "sdo"]
 random_sources = ["goes-16", "goes-17", "goes-18", "himawari", "meteosat-9", "meteosat-11", "sdo"]
@@ -30,6 +32,10 @@ def parseArgs():
                             help="Set the latitude of the Background image bounding box you want to set. Only for Sentinel as source.")
     parser.add_argument("-b", "--longitude", type=float, default=8.876953,
                             help="Set the longitude of the Background image bounding box you want to set. Only for Sentinel as source.")
+    parser.add_argument("-w", "--width",type=int,
+                        help="wanted width of the Wallpaper Image")
+    parser.add_argument("-he", "--height",type=int,
+                        help="wanted heigth of the Wallpaper Image")
 
     try:
         args = parser.parse_args()
@@ -54,6 +60,14 @@ if __name__ == "__main__":
     elif args.source == "sentinel":
         bg = fetchImage(args)
 
+    if args.width is not None:
+        if args.height is not None:
+            bg=make_border(bg,args.width,args.height)
+        else:
+            bg=make_border(bg,args.width,bg.size[1])
+    elif args.height is not None:
+        bg=make_border(bg,bg.size[0],args.height)
+
     logDate = datetime.datetime.now(datetime.timezone.utc).strftime("%d_%m_%Y_%H_%M")
     filename = f"{os.path.dirname(os.path.realpath(__file__))}/backgroundImage.png"
     bg.save(filename)
@@ -62,5 +76,8 @@ if __name__ == "__main__":
     if args.outFile is not None:
         imagePath = f"{args.outFile}/{logDate}.png"
         bg.save(imagePath)
+
+    
+
 
     setBG(args.bgProgram,filename)

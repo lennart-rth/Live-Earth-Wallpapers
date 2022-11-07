@@ -31,3 +31,14 @@ def setBG(p, filename):
     
     #set the Ubuntu Lock screen
     #os.system(f"sudo ./ubuntu-gdm-set-background --image {filename}")
+
+#function to make Black box around Image
+def make_border(image, width,height):
+    old_im=image
+    old_size = old_im.size
+    new_size=(width,height)
+
+    new_im = Image.new("RGB", new_size)   ## luckily, this is already black!
+    box = tuple((n - o) // 2 for n, o in zip(new_size, old_size))
+    new_im.paste(old_im, box)
+    return new_im
