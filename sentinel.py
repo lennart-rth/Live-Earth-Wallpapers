@@ -36,7 +36,7 @@ def combineURL(args,satellite,time):
     if args.latitude == None or args.longitude == None:
         raise ValueError("No coordinates specified! You need to specifiy coordinates by passing the parametera -a and -b.")
     bbox = boundingBox(args.latitude, args.longitude, widthInKm, heightInKm)
-    url = f"https://view.eumetsat.int/geoserver/wms?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&FORMAT=image/png&TRANSPARENT=true&LAYERS={satellite}&STYLES=&tiled=true&TIME={time}&WIDTH=1920&HEIGHT=1080&CRS=EPSG:4326&BBOX={bbox}"
+    url = f"https://view.eumetsat.int/geoserver/wms?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&FORMAT=image/png&TRANSPARENT=true&LAYERS={satellite}&STYLES=&tiled=true&TIME={time}&WIDTH={args.width}&HEIGHT={args.height}&CRS=EPSG:4326&BBOX={bbox}"
     return url
 
 def white_balance(pilImg):
@@ -69,22 +69,31 @@ def fetchImage(args):
     dateWithDelay = datetime.datetime.now(datetime.timezone.utc)
     dateWithDelay = dateWithDelay-datetime.timedelta(hours=3)
 
-    #download first image
-    time = dateWithDelay.strftime("%Y-%m-")+str(dateWithDelay.day-1).zfill(2)+"T00:00:00Z"
-    url = combineURL(args,"copernicus:daily_sentinel3ab_olci_l1_rgb_fulres",time)
-    bg =  download(url)
-    #download the rest in reversed so the latest images is always on top
-    for day in reversed(range(2,5)):
+    from multiprocessing.pool import ThreadPool as Pool
+
+    def download_func(day):
         time = dateWithDelay.strftime("%Y-%m-")+str(dateWithDelay.day-day).zfill(2)+"T00:00:00Z"
-        print(f"Downloading Image from {time}...")
         url = combineURL(args,"copernicus:daily_sentinel3ab_olci_l1_rgb_fulres",time)
-        print(f"with URl:   {url}")
-        print()
+        print(f"Downloading Image from {time}...\nwith URl:   {url}")
         img =  download(url)
+        return img
+
+
+    with Pool(4) as pool:
+        imgs = pool.map(download_func, [i for i in range(1,5)])
+
+    # Use the first image as the base
+    bg = imgs[0] 
+
+    # Overlay the next 3 days worth of images overtop
+    for day in reversed(range(1,4)):
+        img = imgs[day]
         if img.mode == "RGB":
             a_channel = Image.new('L', img.size, 255)   # 'L' 8-bit pixels, black and white
             img.putalpha(a_channel)
+
         bg.paste(img, (0, 0),img)
+
     colorGraded = white_balance(bg)
     return colorGraded
     

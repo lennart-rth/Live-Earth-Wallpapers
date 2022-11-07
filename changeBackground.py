@@ -32,9 +32,9 @@ def parseArgs():
                             help="Set the latitude of the Background image bounding box you want to set. Only for Sentinel as source.")
     parser.add_argument("-b", "--longitude", type=float, default=8.876953,
                             help="Set the longitude of the Background image bounding box you want to set. Only for Sentinel as source.")
-    parser.add_argument("-w", "--width",type=int,
+    parser.add_argument("-w", "--width",type=int, default=1920,
                         help="wanted width of the Wallpaper Image")
-    parser.add_argument("-he", "--height",type=int,
+    parser.add_argument("-he", "--height",type=int, default=1080,
                         help="wanted heigth of the Wallpaper Image")
 
     try:
