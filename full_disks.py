@@ -61,10 +61,7 @@ def build_url(args):
 
 def get_image(args, base_url):
     row, col = calc_tile_coordinates(args.zoomLevel)
-    # image_width = 678
-    # image_height = 678
 
-    # bg = Image.new('RGB', (image_width*len(col),image_height*len(row)))
     row_col_pairs = []
 
     for r in row:
