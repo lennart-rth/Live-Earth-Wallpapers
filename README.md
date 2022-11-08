@@ -2,8 +2,8 @@
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 ![Linux](https://svgshare.com/i/Zhy.svg)
 ![macOS](https://svgshare.com/i/ZjP.svg)
-![Windows](https://svgshare.com/i/ZhY.svg)
 [![made-with-python](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)](https://www.python.org/)
+<!---![Windows](https://svgshare.com/i/ZhY.svg)-->
 <!---Source of the Badges: https://github.com/Naereen/badges -->
 # Live-Earth-Wallpapers
 Set your Desktop background to near realtime picures of the earth. \
@@ -17,7 +17,7 @@ Supports all known **geostationary** satellites, high resolution **sentinel** im
 E.g. for Linux `./changeBackground -dir ./`
 
 <details>
-<summary><h3>Manual setup and installation for LINUX and MacOS</h3></summary>
+<summary><h3>Manual setup and installation for UNIX</h3></summary>
 
 
 1. `git clone https://github.com/L-Roth/Live-Earth-Wallpapers.git`
@@ -29,6 +29,7 @@ E.g. for Linux `./changeBackground -dir ./`
 *For mac: Depending on your Security Settings you might need to add the newly created venv to the $PATH. See this [post on StackOverflow](https://stackoverflow.com/a/65831474)*
 </details>
 
+<!---
 <details>
 <summary><h3>Manual setup and Installation for Windows</h3></summary>
 
@@ -40,6 +41,7 @@ Manual setup is recommended however you can use `./install.sh` to setup a Task S
 3. Use -p flag with "windows" or use programms like [backgroundswitcher](https://johnsad.ventures/software/backgroundswitcher/windows/) or [bionix](https://bionixwallpaper.com/desktop-wallpaper-app-download/) to periodicly change your background to the image `backgroundImage.png` in the project folder.
 Make sure to update image 2-3 min. later than the TaskScheduler runs.
 </details>
+-->
 <details>
 <summary><h3>Even more manual installation</h3></summary>
 
@@ -51,7 +53,7 @@ Make sure to update image 2-3 min. later than the TaskScheduler runs.
 The Image `backgroundImage.png`should have updated. 
 </details>
 <details>
-<summary><h3>Manually updating the Image</h3></summary>
+<summary><h3>Manually setting Cronjobs</h3></summary>
 
 Set a cronjob to execute the `changeBackground.py` script routinely:
 1. execute `env | grep -i display` to find your exact DISPLAY name. (probably :0 or :0.0)
