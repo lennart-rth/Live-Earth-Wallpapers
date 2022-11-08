@@ -65,7 +65,7 @@ To update the Background you need either `feh`, `nitrogen` or `gsettings` to be 
 options:
   -h, --help            show this help message and exit
   -z {0,1,2,3,4}, --zoomLevel {0,1,2,3,4}
-                        Change the ImageSize 0=678, 1=1356, 2=2712, 3=5424, 4=10848 (Meteosat does not support Level 4)
+                        Only for sentinel. Used to specify the scale of the image in km. -z 0 is 1000km in width and -z 4 is 150km in width
   -s {goes-16,goes-17,goes-18,himawari,meteosat-9,meteosat-11,sentinel,sdo}, --source {goes-16,goes-17,goes-18,himawari,meteosat-9,meteosat-11,sentinel,sdo}
                         Select Satellite as a source. goes-16, goes-17, goes-18, himawari, meteosat-9, meteosat-11, sentinel, sdo (NASA Solar Dynamics Observatory)
   -m {geocolor,natural_color,0171,0171pfss,0304,0304pfss,HMIIC}, --colorMode {geocolor,natural_color,0171,0171pfss,0304,0304pfss,HMIIC}
@@ -85,7 +85,7 @@ options:
 </pre>
 
 ### Explanation
-**-z** The zoom Factor. For Sentinel this is related to the distance in Km of the image covers. (0=1000km 4=150km) For goes/himawari/meteosat this specefies the resolution of the image.\
+**-z** The zoom Factor for Sentinel. This is related to the distance in Km, the image covers. (0=1000km 4=150km). This is auto calculated for every other satellite.
 **-w -he** This specefies the image size in pixels. It will scale the image to fit inside the given pixels and fill the rest with black color. When used togehter with `-z` it will scale the image. No matter how large the image was before. In other words: If you want a high resolution image. set -z to a large number and pass a corresponding image size with it.\
 **-p** This lets you choose between one of the programms to set the Image as your background.\
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;For **Linux** use feh, nitrogen or gsettings as -p flag.\

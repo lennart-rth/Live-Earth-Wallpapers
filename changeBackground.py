@@ -39,7 +39,7 @@ def parseArgs():
         type=int,
         choices=[0, 1, 2, 3, 4],
         default=3,
-        help="Change the ImageSize 0=678, 1=1356, 2=2712, 3=5424, 4=10848 (Meteosat does not support Level 4)",
+        help="Only for sentinel. Used to specify the scale of the image in km. -z 0 is 1000km in width and -z 4 is 150km in width.",
     )
     parser.add_argument(
         "-s",
