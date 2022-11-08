@@ -117,7 +117,9 @@ def parseArgs():
 if __name__ == "__main__":
     args = parseArgs()
 
-    if args.width is not None and args.height is not None and args.source != "sentinel":
+    if (
+        args.width is not None or args.height is not None
+    ) and args.source != "sentinel":
         bigger = min([args.width, args.height])
 
         for i in range(0, len(sizes)):
@@ -141,6 +143,12 @@ if __name__ == "__main__":
 
     if args.width is not None and args.height is not None:
         bg = make_border(bg, args.width, args.height)
+
+    elif args.width is not None:
+        bg = make_border(bg, args.width, bg.size[1])
+
+    elif args.height is not None:
+        bg = make_border(bg, bg.size[0], args.height)
 
     log_date = datetime.datetime.now(datetime.timezone.utc).strftime("%d_%m_%Y_%H_%M")
     filename = f"{os.path.dirname(os.path.realpath(__file__))}/backgroundImage.png"
