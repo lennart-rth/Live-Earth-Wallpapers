@@ -30,6 +30,8 @@ random_sources = [
     "sdo",
 ]
 
+sizes = [678, 1356,2227, 5424, 10848]
+
 
 def parseArgs():
     parser = argparse.ArgumentParser()
@@ -114,6 +116,17 @@ def parseArgs():
 
 if __name__ == "__main__":
     args = parseArgs()
+
+    if (
+        args.width is not None or args.height is not None
+    ) and args.source != "sentinel":
+        smaller = min([args.width if args.width is not None else sys.maxsize, args.height if args.height is not None else sys.maxsize])
+
+        for i in range(0, len(sizes)):
+            if smaller < sizes[i]:
+                break
+
+        args.zoomLevel = i
 
     if args.source is None:
         args.source = random.choice(random_sources)
