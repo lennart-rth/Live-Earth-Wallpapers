@@ -67,7 +67,7 @@ def parseArgs():
         "-o",
         "--outFile",
         type=str,
-        help="Full path to a dir to save all loaded images. If not specified no images will be saved. Useful for Timelapse generation",
+        help="Full path to a dir to save all loaded images named by theyr timestamp. If not specified no images will be saved. Useful for Timelapse generation",
     )
     parser.add_argument(
         "-p",
@@ -103,6 +103,9 @@ def parseArgs():
     parser.add_argument(
         "-he", "--height", type=int, help="wanted heigth of the Wallpaper Image"
     )
+    parser.add_argument(
+        "-dir", "--directory", type=str, help="The home direktory to save the backgroundImage.png. There is no need to specify this. Its done automaticly."
+    )
 
     try:
         args = parser.parse_args()
@@ -114,6 +117,10 @@ def parseArgs():
 
 if __name__ == "__main__":
     args = parseArgs()
+
+    #this is where the internal image file is store
+    if args.directory is None:
+        args.directory = os.path.dirname(os.path.realpath(__file__))
 
     if args.source is None:
         args.source = random.choice(random_sources)
@@ -138,7 +145,7 @@ if __name__ == "__main__":
         bg = make_border(bg, bg.size[0], args.height)
 
     log_date = datetime.datetime.now(datetime.timezone.utc).strftime("%d_%m_%Y_%H_%M")
-    filename = f"{os.path.dirname(os.path.realpath(__file__))}/backgroundImage.png"
+    filename = f"{args.directory}/backgroundImage.png"
     bg.save(filename)
     print(f"Image saved to: {filename}")
 

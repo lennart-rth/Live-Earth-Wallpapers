@@ -29,14 +29,6 @@ Manual setup is recommended however you can use `./install.sh` to setup a Task S
 3. Use -p flag with "windows" or use programms like [backgroundswitcher](https://johnsad.ventures/software/backgroundswitcher/windows/) or [bionix](https://bionixwallpaper.com/desktop-wallpaper-app-download/) to periodicly change your background to the image `backgroundImage.png` in the project folder.
 Make sure to update image 2-3 min. later than the TaskScheduler runs.
 
-
-### Requirements
-1. `crontab`
-2. `python3`
-3. `feh`, `nitrogen` or `gsettings` to update the background image
-
-Experience shows that not every programm will work. But most of the time at least one will.;)
-
 <details>
 <summary><h3>Manual installation</h3></summary>
 
@@ -91,6 +83,7 @@ options:
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;For **Linux** use feh, nitrogen or gsettings as -p flag.\
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;For **MacOs** use feh, osascript or apple_defaults as -p flag.\
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;For **Windows** use windows as -p flag.\
+Experience shows that not every programm will work. But most of the time at least one will.;)\
 **-a -b** This specefies the location for the sentinel image. It has no effekt, when used in combination with every other satellite.
 
 ### Supported Satellites:
@@ -120,3 +113,7 @@ SDO
 1. Read the [Contributing](CONTRIBUTING.md) Readme.
 2. Filter issues by "For Contributers" Label to find topics to work on.
 3. Feel free to add your own ideas/ features or open a Discussion in the Discussions tab.
+
+### building from source
+1. `pyinstaller  --onefile --nowindow changeBackground.py `
+2. call executable with `-dir ./` flag

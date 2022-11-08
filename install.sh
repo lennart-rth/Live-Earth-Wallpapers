@@ -20,7 +20,7 @@ IMAGEFILE="$HOMEPATH/backgroundImage.png"
 #get the provided flags
 FLAGS=""
 for parameter in "$@" 
-do
+do  
     FLAGS="$FLAGS $parameter"
 done
 
@@ -33,7 +33,7 @@ done
 setup_cronjob () {
     #set the cronjob
     crontab -l > mycron
-    echo "*/30 * * * * DISPLAY=${DISPLAY} ${ENVPATH} ${SCRIPTPATH} ${FLAGS}" >> mycron
+    echo "*/30 * * * * DISPLAY=${DISPLAY} ${ENVPATH} ${SCRIPTPATH} -dir ${HOMEPATH} ${FLAGS}" >> mycron
     crontab mycron
     echo "Writing Cronjobs:"
     cat mycron
