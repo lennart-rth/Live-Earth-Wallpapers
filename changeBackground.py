@@ -117,7 +117,7 @@ def parseArgs():
 if __name__ == "__main__":
     args = parseArgs()
 
-    if args.width is not None and args.height is not None:
+    if args.width is not None and args.height is not None and args.source != "sentinel":
         bigger = min([args.width, args.height])
 
         for i in range(0, len(sizes)):
