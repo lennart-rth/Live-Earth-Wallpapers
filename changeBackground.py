@@ -133,7 +133,7 @@ if __name__ == "__main__":
 
     elif args.width is not None:
         bg = make_border(bg, args.width, bg.size[1])
-        
+
     elif args.height is not None:
         bg = make_border(bg, bg.size[0], args.height)
 

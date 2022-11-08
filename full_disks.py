@@ -2,6 +2,7 @@ import datetime
 import json
 import sys
 import urllib.request
+from multiprocessing.pool import ThreadPool as Pool
 
 from PIL import Image
 
@@ -60,13 +61,39 @@ def build_url(args):
 
 def get_image(args, base_url):
     row, col = calc_tile_coordinates(args.zoomLevel)
-    bg = Image.new("RGB", (0, 0))
+
+    row_col_pairs = []
+
     for r in row:
         for c in col:
-            url = base_url + f"/{str(r).zfill(3)}_{str(c).zfill(3)}.png"
-            print(f"Downloading Image ({r},{c}).{url}")
-            img = download(url)
+            row_col_pairs.append([r, c])
 
+    img_map = {}
+
+    def download_func(row_col):
+        r = row_col[0]
+        c = row_col[1]
+        url = base_url + f"/{str(r).zfill(3)}_{str(c).zfill(3)}.png"
+        print(f"Downloading Image ({r},{c}).{url}")
+        img = download(url)
+        # store the images in a dict so we don't have to care about the order they're downloaded in
+        img_map[str(r) + ":" + str(c)] = img
+        return img
+
+    import time
+
+    start = time.time()
+
+    with Pool(len(row_col_pairs)) as pool:
+        pool.map(download_func, row_col_pairs)
+        print("Stiching images...")
+
+    bg = Image.new("RGB", (0, 0))
+
+    # stich the images together based n the position in the grid.
+    for r in row:
+        for c in col:
+            img = img_map[str(r) + ":" + str(c)]
             new_bg = Image.new(
                 "RGB", (img.width * (max(col) + 1), img.height * (max(row) + 1))
             )
@@ -74,6 +101,9 @@ def get_image(args, base_url):
             new_bg.paste(img, (img.width * (c), (r) * img.height))
 
             bg = new_bg
+
+    end = time.time()
+    print("Downloads took: ", end - start)
     # zoom out a bit
     wallpaper = Image.new("RGB", (int(bg.width * 1.2), int(bg.height * 1.2)))
     wallpaper.paste(bg, (int(0 + (bg.width * 0.1)), int(0 + (bg.height * 0.1))))
