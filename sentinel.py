@@ -14,23 +14,17 @@ def bounding_box(latitude_in_deg, longitude_in_deg, width_in_km, height_in_km):
     south_lat = point_lat_long(latitude_in_deg, longitude_in_deg, height_in_m, 180)[0]
     north_lat = point_lat_long(latitude_in_deg, longitude_in_deg, height_in_m, 0)[0]
     west_lon = point_lat_long(latitude_in_deg, longitude_in_deg, width_in_m, 270)[1]
-    west_lon = point_lat_long(latitude_in_deg, longitude_in_deg, width_in_m, 90)[1]
-    return f"{south_lat},{west_lon},{north_lat},{west_lon}"
+    east_lon = point_lat_long(latitude_in_deg, longitude_in_deg, width_in_m, 90)[1]
+    return f"{south_lat},{west_lon},{north_lat},{east_lon}"
 
 
-def point_lat_long(lat, long, distance, bearing):
+def point_lat_long(Lat,Lng, distance, bearing):
     rad = bearing * math.pi / 180
-    lat1 = lat * math.pi / 180
-    lng1 = long * math.pi / 180
-    lat = math.asin(
-        math.sin(lat1) * math.cos(distance / 6378137)
-        + math.cos(lat1) * math.sin(distance / 6378137) * math.cos(rad)
-    )
-    lng = lng1 + math.atan2(
-        math.sin(rad) * math.sin(distance / 6378137) * math.cos(lat1),
-        math.cos(distance / 6378137) - math.sin(lat1) * math.sin(lat),
-    )
-    return round(lat * 180 / math.pi, 4), round(lng * 180 / math.pi, 4)
+    lat1 = Lat * math.pi / 180
+    lng1 = Lng * math.pi / 180
+    lat = math.asin(math.sin(lat1) * math.cos(distance / 6378137) + math.cos(lat1) * math.sin(distance / 6378137) * math.cos(rad))
+    lng = lng1 + math.atan2(math.sin(rad) * math.sin(distance / 6378137) * math.cos(lat1), math.cos(distance / 6378137) - math.sin(lat1) * math.sin(lat))
+    return  round(lat * 180 / math.pi,4), round(lng * 180 / math.pi,4)
 
 
 def calc_coord_dimension(args):
@@ -84,23 +78,6 @@ def white_balance(pilImg):
     result = cv2.cvtColor(result, cv2.COLOR_LAB2BGR)
     return Image.fromarray(result)
 
-
-def auto_white_balance(pilImg, p=0.6):
-    im = np.asarray(pilImg)
-    # get mean values
-    p0, p1 = np.percentile(im, p), np.percentile(im, 100 - p)
-
-    for i in range(3):
-        ch = im[:, :, i]
-        # get channel values
-        pc0, pc1 = np.percentile(ch, p), np.percentile(ch, 100 - p)
-        # stretch channel to same range as mean
-        ch = (p1 - p0) * (ch - pc0) / (pc1 - pc0) + p0
-        im[:, :, i] = ch
-
-    return Image.fromarray(im)
-
-
 def fetch_image(args):
     date_with_delay = datetime.datetime.now(datetime.timezone.utc)
     date_with_delay = date_with_delay - datetime.timedelta(hours=3)
@@ -125,7 +102,7 @@ def fetch_image(args):
     bg = imgs[0]
 
     # Overlay the next 3 days worth of images overtop
-    for day in reversed(range(1, 4)):
+    for day in range(1, 4):
         img = imgs[day]
         if img.mode == "RGB":
             a_channel = Image.new(

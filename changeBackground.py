@@ -130,8 +130,10 @@ if __name__ == "__main__":
 
     if args.width is not None and args.height is not None:
         bg = make_border(bg, args.width, args.height)
+
     elif args.width is not None:
         bg = make_border(bg, args.width, bg.size[1])
+        
     elif args.height is not None:
         bg = make_border(bg, bg.size[0], args.height)
 
