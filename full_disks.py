@@ -1,9 +1,8 @@
 import datetime
-from multiprocessing.pool import ThreadPool as Pool
-from PIL import Image
 import json
 import sys
 import urllib.request
+from multiprocessing.pool import ThreadPool as Pool
 
 from PIL import Image
 
@@ -59,12 +58,13 @@ def build_url(args):
     base_url = f"https://rammb-slider.cira.colostate.edu/data/imagery/{date}/{args.source}---full_disk/{name}/{time_code}/0{args.zoomLevel}"
     return base_url
 
-def getImage(args, base_url):
-    row, col = calcTileCoordinates(args.zoomLevel)
-    image_width = 678
-    image_height = 678
 
-    bg = Image.new('RGB', (image_width*len(col),image_height*len(row)))
+def get_image(args, base_url):
+    row, col = calc_tile_coordinates(args.zoomLevel)
+    # image_width = 678
+    # image_height = 678
+
+    # bg = Image.new('RGB', (image_width*len(col),image_height*len(row)))
     row_col_pairs = []
 
     for r in row:
@@ -80,25 +80,35 @@ def getImage(args, base_url):
         print(f"Downloading Image ({r},{c}).{url}")
         img = download(url)
         # store the images in a dict so we don't have to care about the order they're downloaded in
-        img_map[str(r)+ ":" + str(c)] = img
+        img_map[str(r) + ":" + str(c)] = img
         return img
-        
+
     import time
+
     start = time.time()
 
     with Pool(len(row_col_pairs)) as pool:
         pool.map(download_func, row_col_pairs)
+        print("Stiching images...")
 
+    bg = Image.new("RGB", (0, 0))
+
+    # stich the images together based n the position in the grid.
     for r in row:
         for c in col:
-            img = img_map[str(r)+ ":" + str(c)]
-            bg.paste(img, (image_width*(c), (r)*image_height))
-            
+            img = img_map[str(r) + ":" + str(c)]
+            new_bg = Image.new(
+                "RGB", (img.width * (max(col) + 1), img.height * (max(row) + 1))
+            )
+            new_bg.paste(bg, (0, 0))
+            new_bg.paste(img, (img.width * (c), (r) * img.height))
+
+            bg = new_bg
 
     end = time.time()
     print("Downloads took: ", end - start)
-    #zoom out a bit
-    wallpaper = Image.new('RGB', (int(bg.width*1.2),int(bg.height*1.2)))
-    wallpaper.paste(bg, (int(0+(bg.width*0.1)), int(0+(bg.height*0.1))))
+    # zoom out a bit
+    wallpaper = Image.new("RGB", (int(bg.width * 1.2), int(bg.height * 1.2)))
+    wallpaper.paste(bg, (int(0 + (bg.width * 0.1)), int(0 + (bg.height * 0.1))))
 
     return wallpaper
