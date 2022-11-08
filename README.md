@@ -9,7 +9,16 @@
 Set your Desktop background to near realtime picures of the earth. \
 Supports all known **geostationary** satellites, high resolution **sentinel** images and Nasa **Solar Dynamics Observatory** Images!
 
-<h3>Installation for LINUX and MacOS</h3>
+### Installation
+1. Download latest release and unzip it.
+2. Place it somewhere appropriate. For example in `/usr/bin/`
+3. Execute `install.sh` and pass all the parameter you want for your Desktop image. E.g. `install.sh -s meteosat-11 -z 3`
+4. That's it! You can test your installation by calling the binary with `-dir` set to `./`.\
+E.g. for Linux `./changeBackground -dir ./`
+
+<details>
+<summary><h3>Manual setup and installation for LINUX and MacOS</h3></summary>
+
 
 1. `git clone https://github.com/L-Roth/Live-Earth-Wallpapers.git`
 2. `cd Live-Earth-Wallpapers`
@@ -18,8 +27,10 @@ Supports all known **geostationary** satellites, high resolution **sentinel** im
 **Do not include the brackets!**
 5. Check if crontab is installed: `crontab -l`\
 *For mac: Depending on your Security Settings you might need to add the newly created venv to the $PATH. See this [post on StackOverflow](https://stackoverflow.com/a/65831474)*
+</details>
 
-<h3>Installation for Windows</h3>
+<details>
+<summary><h3>Manual setup and Installation for Windows</h3></summary>
 
 *(Disclamer: Windows setup by `install.sh` and the `-p windows` flag is not tested yet, as I have no access to a Windows mashine.)*
 1. `git clone https://github.com/L-Roth/Live-Earth-Wallpapers.git`
@@ -28,7 +39,7 @@ E.g.: `path_to_project/Live-Earth-Wallpapers/venv/Scripts/python.exe path_to_pro
 Manual setup is recommended however you can use `./install.sh` to setup a Task Scheduler. Make sure to execute this with **System Adminstrator Rights**!
 3. Use -p flag with "windows" or use programms like [backgroundswitcher](https://johnsad.ventures/software/backgroundswitcher/windows/) or [bionix](https://bionixwallpaper.com/desktop-wallpaper-app-download/) to periodicly change your background to the image `backgroundImage.png` in the project folder.
 Make sure to update image 2-3 min. later than the TaskScheduler runs.
-
+</details>
 
 ### Requirements
 1. `crontab`
@@ -38,7 +49,7 @@ Make sure to update image 2-3 min. later than the TaskScheduler runs.
 Experience shows that not every programm will work. But most of the time at least one will.;)
 
 <details>
-<summary><h3>Manual installation</h3></summary>
+<summary><h3>Even more manual installation</h3></summary>
 
 1. `git clone https://github.com/L-Roth/Live-Earth-Wallpapers.git`
 2. `python3 -m venv venv`
