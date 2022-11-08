@@ -30,6 +30,8 @@ random_sources = [
     "sdo",
 ]
 
+sizes = [678, 1356,2227, 5424, 10848]
+
 
 def parseArgs():
     parser = argparse.ArgumentParser()
@@ -121,6 +123,16 @@ if __name__ == "__main__":
     #this is where the internal image file is store
     if args.directory is None:
         args.directory = os.path.dirname(os.path.realpath(__file__))
+    if (
+        args.width is not None or args.height is not None
+    ) and args.source != "sentinel":
+        smaller = min([args.width if args.width is not None else sys.maxsize, args.height if args.height is not None else sys.maxsize])
+
+        for i in range(0, len(sizes)):
+            if smaller < sizes[i]:
+                break
+
+        args.zoomLevel = i
 
     if args.source is None:
         args.source = random.choice(random_sources)
