@@ -30,7 +30,7 @@ random_sources = [
     "sdo",
 ]
 
-sizes = [678, 1356, 5424, 10848]
+sizes = [678, 1356,2227, 5424, 10848]
 
 
 def parseArgs():
@@ -120,10 +120,10 @@ if __name__ == "__main__":
     if (
         args.width is not None or args.height is not None
     ) and args.source != "sentinel":
-        bigger = min([args.width, args.height])
+        smaller = min([args.width if args.width is not None else sys.maxsize, args.height if args.height is not None else sys.maxsize])
 
         for i in range(0, len(sizes)):
-            if bigger < sizes[i]:
+            if smaller < sizes[i]:
                 break
 
         args.zoomLevel = i
