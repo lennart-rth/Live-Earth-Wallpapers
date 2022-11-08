@@ -30,6 +30,7 @@ random_sources = [
     "sdo",
 ]
 
+sizes=[678,1356,5424,10848]
 
 def parseArgs():
     parser = argparse.ArgumentParser()
@@ -129,7 +130,7 @@ if __name__ == "__main__":
         bg = get_image(args, base_url)
 
     if args.width is not None and args.height is not None:
-        bg = make_border(bg, args.width, args.height)
+        bigger=max([args.width,args.height])
 
     elif args.width is not None:
         bg = make_border(bg, args.width, bg.size[1])
