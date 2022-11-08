@@ -30,7 +30,8 @@ random_sources = [
     "sdo",
 ]
 
-sizes=[678,1356,5424,10848]
+sizes = [678, 1356, 5424, 10848]
+
 
 def parseArgs():
     parser = argparse.ArgumentParser()
@@ -117,14 +118,13 @@ if __name__ == "__main__":
     args = parseArgs()
 
     if args.width is not None and args.height is not None:
-        bigger=max([args.width,args.height])
+        bigger = min([args.width, args.height])
 
-        for i in range (0,sizes):
-            if(bigger<sizes[i]):
+        for i in range(0, len(sizes)):
+            if bigger < sizes[i]:
                 break
-        
-        args.zoomLevel=i
 
+        args.zoomLevel = i
 
     if args.source is None:
         args.source = random.choice(random_sources)
@@ -140,13 +140,12 @@ if __name__ == "__main__":
         bg = get_image(args, base_url)
 
     if args.width is not None and args.height is not None:
-            bg=make_border(bg,args.width,args.height)
+        bg = make_border(bg, args.width, args.height)
 
     log_date = datetime.datetime.now(datetime.timezone.utc).strftime("%d_%m_%Y_%H_%M")
     filename = f"{os.path.dirname(os.path.realpath(__file__))}/backgroundImage.png"
     bg.save(filename)
     print(f"Image saved to: {filename}")
-
 
     if args.outFile is not None:
         image_path = f"{args.outFile}/{log_date}.png"

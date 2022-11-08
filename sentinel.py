@@ -18,13 +18,19 @@ def bounding_box(latitude_in_deg, longitude_in_deg, width_in_km, height_in_km):
     return f"{south_lat},{west_lon},{north_lat},{east_lon}"
 
 
-def point_lat_long(Lat,Lng, distance, bearing):
+def point_lat_long(Lat, Lng, distance, bearing):
     rad = bearing * math.pi / 180
     lat1 = Lat * math.pi / 180
     lng1 = Lng * math.pi / 180
-    lat = math.asin(math.sin(lat1) * math.cos(distance / 6378137) + math.cos(lat1) * math.sin(distance / 6378137) * math.cos(rad))
-    lng = lng1 + math.atan2(math.sin(rad) * math.sin(distance / 6378137) * math.cos(lat1), math.cos(distance / 6378137) - math.sin(lat1) * math.sin(lat))
-    return  round(lat * 180 / math.pi,4), round(lng * 180 / math.pi,4)
+    lat = math.asin(
+        math.sin(lat1) * math.cos(distance / 6378137)
+        + math.cos(lat1) * math.sin(distance / 6378137) * math.cos(rad)
+    )
+    lng = lng1 + math.atan2(
+        math.sin(rad) * math.sin(distance / 6378137) * math.cos(lat1),
+        math.cos(distance / 6378137) - math.sin(lat1) * math.sin(lat),
+    )
+    return round(lat * 180 / math.pi, 4), round(lng * 180 / math.pi, 4)
 
 
 def calc_coord_dimension(args):
@@ -77,6 +83,7 @@ def white_balance(pilImg):
     )
     result = cv2.cvtColor(result, cv2.COLOR_LAB2BGR)
     return Image.fromarray(result)
+
 
 def fetch_image(args):
     date_with_delay = datetime.datetime.now(datetime.timezone.utc)
