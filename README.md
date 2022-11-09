@@ -11,9 +11,10 @@ Supports all known **geostationary** satellites, high resolution **sentinel** im
 
 ### Installation
 1. Download latest release and unzip it.
-2. Place it somewhere appropriate. For example in `/usr/bin/`
-3. Execute `install.sh` and pass all the parameter you want for your Desktop image. E.g. `install.sh -s meteosat-11 -z 3`
-4. That's it! You can test your installation by calling the binary with `-dir` set to `./`.\
+2. `chmod +x install.sh`
+3. Place the folder somewhere appropriate. For example in `/usr/bin/`
+4. Execute `install.sh` and pass all the parameter you want for your Desktop image. E.g. `install.sh -s meteosat-11 -z 3`
+5. That's it! You can test your installation by calling the binary with `-dir` set to `./`.\
 E.g. for Linux `./changeBackground -dir ./`
 
 <details>
