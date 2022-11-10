@@ -1,7 +1,7 @@
+import ctypes
 import os
 import time
 from io import BytesIO
-import ctypes # to change wallpaper in windows
 
 import requests
 from PIL import Image
