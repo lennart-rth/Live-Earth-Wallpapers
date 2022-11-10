@@ -1,3 +1,4 @@
+import ctypes
 import os
 import time
 from io import BytesIO
@@ -31,10 +32,8 @@ def set_background(p, filename):
         os.system("gsettings set org.gnome.desktop.background picture-options 'scaled'")
 
     elif p == "windows":
-        os.system(
-            'reg add "HKEY_CURRENT_USER\Control Panel\Desktop" /v Wallpaper /t REG_SZ /d  wallpaper_path /f'
-        )
-        os.system("RUNDLL32.EXE user32.dll,UpdatePerUserSystemParameter")
+        SPI_SETDESKWALLPAPER = 20 
+        ctypes.windll.user32.SystemParametersInfoW(SPI_SETDESKWALLPAPER, 0, filename, 0)
 
     elif p == "osascript":
         os.system(f"/bin/bash apple_set_bg.sh")
