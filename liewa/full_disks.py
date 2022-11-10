@@ -3,6 +3,7 @@ import json
 import sys
 import urllib.request
 from multiprocessing.pool import ThreadPool as Pool
+import time
 
 from PIL import Image
 
@@ -80,7 +81,7 @@ def get_image(args, base_url):
         img_map[str(r) + ":" + str(c)] = img
         return img
 
-    import time
+    
 
     start = time.time()
 

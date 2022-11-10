@@ -3,8 +3,8 @@ from PIL import Image
 from utils import download
 
 
-def get_sdo_image(args):
-    name = args.colorMode
+def load_sdo(args):
+    name = args["bandwidth"]
     supported_args = ["0171", "0171pfss", "0304", "0304pfss", "HMIIC"]
 
     if name == None:
@@ -19,6 +19,7 @@ def get_sdo_image(args):
 
     print(f"Downloading Image ({url})")
     img = download(url)
-    img = img.resize((1080, 1080))
+
+    img = img.resize((1080, 1080))#?
 
     return img

@@ -5,10 +5,10 @@ import os
 import random
 import sys
 
-from full_disks import build_url, get_image
-from nasa_sdo import get_sdo_image
-from sentinel import fetch_image
-from utils import make_border, set_background
+from src.lieawa.full_disks import build_url, get_image
+from src.lieawa.nasa_sdo import get_sdo_image
+from src.lieawa.sentinel import fetch_image
+from src.lieawa.utils import make_border, set_background
 
 sources = [
     "goes-16",
