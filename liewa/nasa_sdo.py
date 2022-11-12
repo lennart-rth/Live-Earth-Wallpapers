@@ -1,6 +1,15 @@
 from PIL import Image
 
+import bisect
 from utils import download
+
+sizes = [512,1024,2048,4096]
+
+def calc_scale(args):
+    min_side = min(args["width"],args["height"])
+    print(sizes[bisect.bisect_left(sizes,min_side)])
+    return sizes[bisect.bisect_left(sizes,min_side)]
+
 
 
 def load_sdo(args):
@@ -15,11 +24,11 @@ def load_sdo(args):
             "Wrong parameter for colorMode: SDO only support '' as colorMode!"
         )
 
-    url = f"https://sdo.gsfc.nasa.gov/assets/img/latest/latest_2048_{name}.jpg"
+    scale = calc_scale(args)
+
+    url = f"https://sdo.gsfc.nasa.gov/assets/img/latest/latest_{scale}_{name}.jpg"
 
     print(f"Downloading Image ({url})")
     img = download(url)
-
-    img = img.resize((1080, 1080))#?
 
     return img

@@ -20,31 +20,30 @@ def parse_image(config_file_dir):
 
     bg = Image.new("RGB",bg_size,ImageColor.getrgb("#"+bg_color))
 
-    for planet,value in config["planets"].items():
+    for satellite,value in config["planets"].items():
         pos = (value["x"], value["y"])
         im_size = (value["width"], value["height"])
 
-        if planet == "sentinel":
+        if satellite == "sentinel":
             raw_img = load_sentinel(value)
 
-        elif planet == "sdo":
+        elif satellite == "sdo":
             raw_img = load_sdo(value)
 
         #load static image of planet into the bg
-        elif planet == "external_planet":
+        elif satellite == "external_planet":
             # raw_img = load_external(value)
             pass
 
         # meteosat, goes or himawari
         else:
-            raw_img = load_geostationary(value)
+            raw_img = load_geostationary(value,satellite)
 
-        #this only scales down because raw_img is already the closed img size rounded up
         resized_img = raw_img.resize(im_size)
         bg.paste(resized_img, pos)
     
     return bg
 
 
-im = parse_image("./recources")
-im.show()
+# im = parse_image("./recources")
+# im.show()

@@ -35,32 +35,22 @@ def point_lat_long(Lat, Lng, distance, bearing):
 
 def calc_coord_dimension(args):
     zoom_level = args["scale"]
-    max_zoom = 1000  # km for the width
-    variable_zooom = 850  # the maximum kilometeres we can zoom in from the "maxZoom"
-    # maxZoom - variableZoom determines the min zoom level
+    width = args["width"]
+    height = args["height"]
 
-    width_in_km = max_zoom - (((zoom_level / 4)) * variable_zooom)
-    if args["width"] is not None and args["height"] is not None:
-        height_in_km = int(width_in_km / (args["width"] / args["height"]))
-    else:  # default for args.width and args.heigth is 1920 and 1080
-        height_in_km = int(width_in_km / (16 / 9))
-
-    return width_in_km, height_in_km
-
-
-def calc_img_dimensions(args):
-    pixel_width = 1920
-    if args["width"] is not None and args["height"] is not None:
-        pixel_height = pixel_width / (args["width"] / args["height"])
+    if width >= height:
+        width_in_km = zoom_level
+        height_in_km = width_in_km / (16 / 9)
     else:
-        pixel_height = pixel_width / (16 / 9)
-
-    return int(pixel_width), int(pixel_height)
-
+        height_in_km = zoom_level
+        width_in_km = height_in_km / (16 / 9)
+        
+    return width_in_km, height_in_km
 
 def combine_url(args, satellite, time):
     width_in_km, height_in_km = calc_coord_dimension(args)
-    width_in_px, height_in_px = calc_img_dimensions(args)
+    width_in_px = args["width"]
+    height_in_px = args["height"]
     if args["latitude"] == None or args["longitude"] == None:
         raise ValueError(
             "No coordinates specified! You need to set coordinates."

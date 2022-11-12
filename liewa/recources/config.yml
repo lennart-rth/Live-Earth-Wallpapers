@@ -1,33 +1,35 @@
 settings:
-  height: 3000
-  width: 3000
+  height: 1200
+  width: 1200
   bg-color: d14a2d
 
 planets:
   # meteosat-11:
-  #   x: 10
-  #   y: 20
-  #   width: 300
-  #   height: 300
+  #   x: 0
+  #   y: 0
+  #   width: 1000
+  #   height: 1000
+  #   color: geocolor
 
   # goes-16:
-  #   x: 30
-  #   y: 40
-  #   width: 300
-  #   height: 300
+  #   x: 500
+  #   y: 0
+  #   width: 500
+  #   height: 500
+  #   color: natural_color
 
-  sentinel:
-    x: 300
-    y: 400
-    width: 300
-    height: 300
-    scale: 2
-    latitude: 22
-    longitude: 9
+  # sentinel:
+  #   x: 300
+  #   y: 400
+  #   width: 600
+  #   height: 400
+  #   scale: 200
+  #   latitude: 53
+  #   longitude: 9
   
   sdo:
     x: 1
     y: 1
-    width: 200
-    height: 200
+    width: 100
+    height: 100
     bandwidth: "0304"

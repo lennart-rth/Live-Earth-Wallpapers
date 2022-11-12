@@ -37,7 +37,9 @@ def parseArgs():
 if __name__ == '__main__':
     args = parseArgs()
     img = parse_image(args.config)
-    set_background(img)
+    file_name = "./recources/background.png"
+    save_image(img, file_name)
+    set_background(file_name)
 
     if args.output is not None:
         save_image(img, args.output)
