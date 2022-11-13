@@ -35,16 +35,24 @@ Supports all known **geostationary** satellites, high resolution **sentinel** im
 ***
 ## Installation
 1. `pip install liewa`
-2. execute `env | grep -i display` to find your exact DISPLAY name. (probably :0 or :0.0)
-3. Run the program routinely
-  * **For Linux, Mac:** Paste this `*/30 * * * * DISPLAY=:{your display name from 1.} liewa` in your crontab file. You can open the file with `crontab -e`. This will execute the background change every 30 min.
-  * **For Windows:** Set a Taks with Windows Task-Scheduler to execute a `run_script.bat` file (Set this as Programm `C:\\path\to\folder\run_script.bat`). Content ofthe File:
-  ```
-  @echo off
-  START /wait /B liewa -c C:\\Users\ab\Desktop\config_mama.yml
-  ```
-4. Paste this `@reboot liewa` in your crontab file. You can open the file with `crontab -e`. This will execute execute the background change on startup.
-4. customize the image composition by writing your own `config.yml` file or using the preinstalled. (See [Usage](#Usage))
+2. Run the program routinely\
+*Note: this is only temporary and will be replaced with automatic systemd installation.*
+  * **For Linux, Mac:**
+    * Run `execute `env | grep -i display` to find your exact DISPLAY name. (probably :0 or :0.0)` To find your Display Name.
+    * Paste this into a file called `run_script.py`: 
+    ```
+    from liewa import __main__
+    __main__.main()
+    ```
+    * Paste  `*/30 * * * * DISPLAY=:{your display name from 1.} python3 path/to/your/run_script.py` in your crontab file. You can open the file with `crontab -e`. This will execute the background change every 30 min.
+    * Paste  `@reboot liewa` in your crontab file. You can open the file with `crontab -e`. This will execute execute the background change on startup.\
+  * **For Windows:**
+    * Set a Taks with Windows Task-Scheduler to execute a `run_script.bat` file (Set this as Programm `C:\\path\to\folder\run_script.bat`). Content of the File:
+    ```
+    @echo off
+    START /wait /B liewa -c C:\\Users\ab\Desktop\config_mama.yml
+    ```
+3. customize the image composition by writing your own `config.yml` file or using the preinstalled. (See [Usage](#Usage))
 
 **Make sure that the pip directory for packages is in the system Path Variable!**\
 If not see tutorials for [Unix](https://linuxhint.com/add-path-permanently-linux/) or [Windows](https://www.computerhope.com/issues/ch000549.htm).\
