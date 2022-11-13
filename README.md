@@ -1,3 +1,4 @@
+[![PyPI version](https://badge.fury.io/py/liewa.svg)](https://badge.fury.io/py/liewa)
 ![Linux](https://svgshare.com/i/Zhy.svg)
 ![macOS](https://svgshare.com/i/ZjP.svg)
 ![Windows](https://svgshare.com/i/ZhY.svg)
@@ -27,7 +28,7 @@ Supports all known **geostationary** satellites, high resolution **sentinel** im
 <!-- ![alt text](examples/desert.png) -->
 ![](https://github.com/lennart-rth/Live-Earth-Wallpapers/blob/main/examples/desert.png)
 *Example Output of the Sentinel satellite. Learn how to generate custom images for your location at the [Wiki Page](https://github.com/lennart-rth/Live-Earth-Wallpapers/wiki)*
-### Now its your turn! Build images to your need by writing your own config.yml file.
+### Now its your turn! Build images to your needs by writing your own config.yml file.
 ### More at the [Wiki Page](https://github.com/lennart-rth/Live-Earth-Wallpapers/wiki).
 ### You can present your creations in the [Discussions Page](https://github.com/lennart-rth/Live-Earth-Wallpapers/discussions/) under "Show and tell"
 
@@ -35,7 +36,13 @@ Supports all known **geostationary** satellites, high resolution **sentinel** im
 ## Installation
 1. `pip install liewa`
 2. execute `env | grep -i display` to find your exact DISPLAY name. (probably :0 or :0.0)
-3. Paste this `*/30 * * * * DISPLAY=:{your display name from 1.} liewa` in your crontab file. You can open the file with `crontab -e`. This will execute the background change every 30 min.
+3. Run the program routinely
+  * **For Linux, Mac:** Paste this `*/30 * * * * DISPLAY=:{your display name from 1.} liewa` in your crontab file. You can open the file with `crontab -e`. This will execute the background change every 30 min.
+  * **For Windows:** Set a Taks with Windows Task-Scheduler to execute a `run_script.bat` file (Set this as Programm `C:\\path\to\folder\run_script.bat`). Content ofthe File:
+  ```
+  @echo off
+  START /wait /B liewa -c C:\\Users\ab\Desktop\config_mama.yml
+  ```
 4. Paste this `@reboot liewa` in your crontab file. You can open the file with `crontab -e`. This will execute execute the background change on startup.
 4. customize the image composition by writing your own `config.yml` file or using the preinstalled. (See [Usage](#Usage))
 
