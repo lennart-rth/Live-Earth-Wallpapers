@@ -12,11 +12,11 @@ def check_for_program(program):
 
 def set_background(file_name):
     system = platform.system()
-
+    
     if check_for_program("feh"):
-        subprocess.call(["feh", "--bg-max", file_name])
+        subprocess.call(["feh", "--bg-fill", file_name],timeout=10)
     elif check_for_program("nitrogen"):
-        subprocess.call(["nitrogen", file_name])
+        subprocess.call(["nitrogen", file_name],timeout=10)
     elif system == "Windows":
         try:
             import win32api
@@ -44,34 +44,50 @@ def set_background(file_name):
             except:
                 raise ValueError("Could not set the Wallpaper.")
     elif system == "Darwin":
+        # subprocess.call(
+        #     [
+        #         "osascript",
+        #         "-e",
+        #         'tell application "System Events"\n',
+        #         "-e",
+        #         "set theDesktops to a reference to every desktop\n",
+        #         "-e",
+        #         "repeat with aDesktop in theDesktops\n",
+        #         "-e",
+        #         'set the picture of aDesktop to "' + file_name + '"\n',
+        #         "-e",
+        #         'end repeat\n',
+        #         "-e",
+        #         'end tell',
+        #     ]
+        # )
         subprocess.call(
             [
-                "osascript",
-                "-e",
-                'tell application "System Events"\n'
-                "set theDesktops to a reference to every desktop\n"
-                "repeat with aDesktop in theDesktops\n"
-                'set the picture of aDesktop to "' + file_name + '"\nend repeat\nend tell',
+                'osascript',
+                '-e',
+                'tell application "System Events"\n',
+                '-e',
+                '\tset desktopCount to count of desktops\n',
+                '-e',
+                '\trepeat with desktopNumber from 1 to desktopCount\n',
+                '-e',
+                '\t\ttell desktop desktopNumber\n',
+                '-e',
+                '\t\t\tset picture to "'+file_name+'"\n',
+                '-e',
+                '\t\tend tell\n',
+                '-e',
+                '\tend repeat\n',
+                '-e',
+                'end tell'
             ]
-        )
-        subprocess.call(
-            ["osascript",
-            "-e",
-            'tell application "System Events"\n',
-            "set desktopCount to count of desktops\n",
-            "repeat with desktopNumber from 1 to desktopCount\n",
-            "tell desktop desktopNumber\n",
-            'set picture to "' + file_name + '"\n',
-            "end tell\n",
-            "end repeat\n",
-            "end tell\n"]
-            )
+        ,timeout=10)
     elif system == "Linux":
         try:
-            subprocess.call(["gsettings", "set", "org.gnome.desktop.background", "picture-uri", "file:" + file_name]) 
-            subprocess.call(["gsettings", "set", "org.gnome.desktop.background", "picture-uri-dark", "file:" + file_name]) 
-            subprocess.call(["gsettings", "set", "org.gnome.desktop.background", "picture-options", "scaled"])
-            subprocess.call(["gsettings", "set", "org.gnome.desktop.background", "primary-color", "#000000"])
+            subprocess.call(["gsettings", "set", "org.gnome.desktop.background", "picture-uri", "file:" + file_name],timeout=10) 
+            subprocess.call(["gsettings", "set", "org.gnome.desktop.background", "picture-uri-dark", "file:" + file_name],timeout=10) 
+            subprocess.call(["gsettings", "set", "org.gnome.desktop.background", "picture-options", "scaled"],timeout=10)
+            subprocess.call(["gsettings", "set", "org.gnome.desktop.background", "primary-color", "#000000"],timeout=10)
         except: None  
 
     # # set the Ubuntu lock screen

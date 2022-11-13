@@ -1,0 +1,11 @@
+settings:
+  width: 1920
+  height: 1080
+  bg-color: "#000000"
+
+planets:
+  meteosat-11:
+    x: 960
+    y: 540
+    size: 1040
+    color: natural_color

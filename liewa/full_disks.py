@@ -7,14 +7,14 @@ import time
 
 from PIL import Image
 
-from utils import download
+from liewa.utils import download
 
-sizes = {"goes-16":(678,678),
-"goes-17":(678,678),
-"goes-18":(678,678),
-"himawari":(688,688),
-"meteosat-9":(464,464),
-"meteosat-11":(464,464)}
+sizes = {"goes-16":678,
+"goes-17":678,
+"goes-18":678,
+"himawari":688,
+"meteosat-9":464,
+"meteosat-11":464}
 
 def get_time_code(sat):
     url = f"https://rammb-slider.cira.colostate.edu/data/json/{sat}/full_disk/natural_color/latest_times.json"
@@ -34,10 +34,9 @@ def calc_tile_coordinates(zoomLevel):
     return list(row), list(col)
 
 def calc_scale(args,satellite):
-    size = min(sizes[satellite][0],sizes[satellite][1])
-    minimum_side = min(args["width"],args["height"])
-    print(int(minimum_side/min(size,size)))
-    return int(minimum_side/min(size,size))
+    size = sizes[satellite]
+    minimum_side = args["size"]
+    return int(minimum_side/size)
 
 def build_url(args,satellite,scale):
     if (

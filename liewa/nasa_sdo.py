@@ -1,13 +1,12 @@
 from PIL import Image
 
 import bisect
-from utils import download
+from liewa.utils import download
 
 sizes = [512,1024,2048,4096]
 
 def calc_scale(args):
-    min_side = min(args["width"],args["height"])
-    print(sizes[bisect.bisect_left(sizes,min_side)])
+    min_side = args["size"]
     return sizes[bisect.bisect_left(sizes,min_side)]
 
 
@@ -21,7 +20,7 @@ def load_sdo(args):
 
     if name not in supported_args:
         raise ValueError(
-            "Wrong parameter for colorMode: SDO only support '' as colorMode!"
+            f"Wrong parameter for colorMode: SDO only support '{supported_args}' as colorMode!"
         )
 
     scale = calc_scale(args)

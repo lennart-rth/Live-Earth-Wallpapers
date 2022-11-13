@@ -1,0 +1,17 @@
+settings:
+  width: 1920
+  height: 1080
+  bg-color: "#000000"
+
+planets:
+  meteosat-11:
+    x: 1200
+    y: 540
+    size: 300
+    color: natural_color
+    
+  sdo:
+    x: -200
+    y: 540
+    size: 1400
+    bandwidth: "0304"
