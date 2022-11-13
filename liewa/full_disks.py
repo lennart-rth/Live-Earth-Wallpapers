@@ -3,21 +3,18 @@ import json
 import sys
 import urllib.request
 from multiprocessing.pool import ThreadPool as Pool
+import time
 
 from PIL import Image
 
-from utils import download
+from liewa.utils import download
 
-satellite_data = {
-    # (minute,second,MaxZoomLevel)
-    "goes-16": (10, 20, 4),
-    "goes-17": (10, 31, 4),
-    "goes-18": (10, 20, 4),
-    "himawari": (10, 0, 4),
-    "meteosat-9": (15, 0, 3),
-    "meteosat-11": (15, 0, 3),
-}
-
+sizes = {"goes-16":678,
+"goes-17":678,
+"goes-18":678,
+"himawari":688,
+"meteosat-9":464,
+"meteosat-11":464}
 
 def get_time_code(sat):
     url = f"https://rammb-slider.cira.colostate.edu/data/json/{sat}/full_disk/natural_color/latest_times.json"
@@ -36,16 +33,20 @@ def calc_tile_coordinates(zoomLevel):
     col = range(0, t_n)
     return list(row), list(col)
 
+def calc_scale(args,satellite):
+    size = sizes[satellite]
+    minimum_side = args["size"]
+    return int(minimum_side/size)
 
-def build_url(args):
+def build_url(args,satellite,scale):
     if (
-        args.source == "meteosat-9" or args.source == "meteorsat-10"
-    ) and args.zoomLevel > 4:
+        satellite == "meteosat-9" or satellite == "meteorsat-10"
+    ) and scale > 4:
         sys.exit("Meteosat does not support Zoom Levels greater than 4.")
 
-    time_code, date = get_time_code(args.source)
+    time_code, date = get_time_code(satellite)
 
-    name = args.colorMode
+    name = args["color"]
     if name == None:
         name = "natural_color"  # default color mode
 
@@ -55,12 +56,14 @@ def build_url(args):
             "Wrong parameter for colorMode: Meteorsat and Goes only support 'natural_color' or 'geocolor' as colorMode!"
         )
 
-    base_url = f"https://rammb-slider.cira.colostate.edu/data/imagery/{date}/{args.source}---full_disk/{name}/{time_code}/0{args.zoomLevel}"
+    base_url = f"https://rammb-slider.cira.colostate.edu/data/imagery/{date}/{satellite}---full_disk/{name}/{time_code}/0{scale}"
     return base_url
 
 
-def get_image(args, base_url):
-    row, col = calc_tile_coordinates(args.zoomLevel)
+def load_geostationary(args,satellite):
+    scale = calc_scale(args,satellite)
+    base_url = build_url(args,satellite,scale)
+    row, col = calc_tile_coordinates(scale)
 
     row_col_pairs = []
 
@@ -80,7 +83,7 @@ def get_image(args, base_url):
         img_map[str(r) + ":" + str(c)] = img
         return img
 
-    import time
+    
 
     start = time.time()
 
@@ -104,8 +107,5 @@ def get_image(args, base_url):
 
     end = time.time()
     print("Downloads took: ", end - start)
-    # zoom out a bit
-    wallpaper = Image.new("RGB", (int(bg.width * 1.2), int(bg.height * 1.2)))
-    wallpaper.paste(bg, (int(0 + (bg.width * 0.1)), int(0 + (bg.height * 0.1))))
 
-    return wallpaper
+    return bg
