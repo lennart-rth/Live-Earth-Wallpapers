@@ -1,11 +1,7 @@
-![GitHub license](https://img.shields.io/github/license/Naereen/StrapDown.js.svg)
 ![Linux](https://svgshare.com/i/Zhy.svg)
 ![macOS](https://svgshare.com/i/ZjP.svg)
 ![Windows](https://svgshare.com/i/ZhY.svg)
-![made-with-python](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)
-![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)
-
-<!---Source of the Badges: https://github.com/Naereen/badges -->
+![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)
 
 # Live-Earth-Wallpapers aka liewa
 Set your Desktop background to near realtime picures of the earth.
