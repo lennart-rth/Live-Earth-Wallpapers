@@ -28,8 +28,8 @@ Supports all known **geostationary** satellites, high resolution **sentinel** im
 <!-- ![alt text](examples/desert.png) -->
 ![](https://github.com/lennart-rth/Live-Earth-Wallpapers/blob/main/examples/desert.png)
 *Example Output of the Sentinel satellite. Learn how to generate custom images for your location at the [Wiki Page](https://github.com/lennart-rth/Live-Earth-Wallpapers/wiki)*
-### Now its your turn! Build images to your needs by writing your own config.yml file.
-### More at the [Wiki Page](https://github.com/lennart-rth/Live-Earth-Wallpapers/wiki).
+### Build images to your needs by writing your own config.yml file.
+### Read more at the [Wiki Page](https://github.com/lennart-rth/Live-Earth-Wallpapers/wiki).
 ### You can present your creations in the [Discussions Page](https://github.com/lennart-rth/Live-Earth-Wallpapers/discussions/) under "Show and tell"
 
 ***

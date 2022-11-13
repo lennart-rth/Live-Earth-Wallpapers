@@ -85,7 +85,7 @@ def load_sentinel(args):
         time = (
             date_with_delay.strftime("%Y-%m-")
             + str(date_with_delay.day - day).zfill(2)
-            + "T00:00:00Z"
+            + "T20:45:00.000Z"
         )
         url = combine_url(args, "copernicus:daily_sentinel3ab_olci_l1_rgb_fulres", time)
         print(f"Downloading Image from {time}...\nwith URl:   {url}")
