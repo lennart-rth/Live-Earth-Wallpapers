@@ -5,6 +5,7 @@ import os
 import random
 import sys
 
+from apod import get_apod_image
 from full_disks import build_url, get_image
 from nasa_sdo import get_sdo_image
 from sentinel import fetch_image
@@ -19,6 +20,7 @@ sources = [
     "meteosat-11",
     "sentinel",
     "sdo",
+    "apod",
 ]
 random_sources = [
     "goes-16",
@@ -28,6 +30,7 @@ random_sources = [
     "meteosat-9",
     "meteosat-11",
     "sdo",
+    "apod",
 ]
 
 sizes = [678, 1356,2227, 5424, 10848]
@@ -142,6 +145,9 @@ if __name__ == "__main__":
 
     elif args.source == "sentinel":
         bg = fetch_image(args)
+
+    elif args.source == "apod":
+        bg = get_apod_image(args)
 
     else:
         base_url = build_url(args)

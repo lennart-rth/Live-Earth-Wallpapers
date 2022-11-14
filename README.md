@@ -41,6 +41,10 @@ E.g.: `path_to_project/Live-Earth-Wallpapers/venv/Scripts/python.exe path_to_pro
 Manual setup is recommended however you can use `./install.sh` to setup a Task Scheduler. Make sure to execute this with **System Adminstrator Rights**!
 3. Use -p flag with "windows" or use programms like [backgroundswitcher](https://johnsad.ventures/software/backgroundswitcher/windows/) or [bionix](https://bionixwallpaper.com/desktop-wallpaper-app-download/) to periodicly change your background to the image `backgroundImage.png` in the project folder.
 Make sure to update image 2-3 min. later than the TaskScheduler runs.
+
+schtasks for windows
+`schtasks /create /sc HOURLY /tn Live-Earth-Wallpaper /tr "py D:\fawaz\Documents\dev\Live-Earth-Wallpapers\changeBackground.py -z 0 -s meteosat-9 -he 1080 -w 1920 -p windows"`
+
 </details>
 -->
 <details>
