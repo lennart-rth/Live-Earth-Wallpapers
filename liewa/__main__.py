@@ -57,5 +57,5 @@ def main():
         file_name = get_current_time() + ".png"
         save_image(img, args.output, file_name)
 
-if __name__ == '__main__':
-  main() 
+# if __name__ == '__main__':
+#   main() 
