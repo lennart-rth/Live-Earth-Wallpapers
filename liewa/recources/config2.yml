@@ -1,0 +1,11 @@
+settings:
+  width: 1920
+  height: 1080
+  bg-color: "#000000"
+
+planets:
+  goes-16:
+    x: 960
+    y: 540
+    size: 1040
+    color: geocolor

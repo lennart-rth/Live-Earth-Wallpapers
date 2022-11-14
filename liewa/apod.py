@@ -1,10 +1,10 @@
 from bs4 import BeautifulSoup
 import requests
 
-from utils import download
+from liewa.utils import download
 
 # ? this function scrapes the website if they add another image to the website before the apod image this function will not work, image does not have id tag.
-def get_apod_image(args):
+def load_apod(args):
 	
 	url = "https://apod.nasa.gov/apod/"
 	res = requests.get(url)
@@ -17,6 +17,6 @@ def get_apod_image(args):
 	img = download(imgURL)
 	
 	# TODO: work on resize
-	img = img.resize((args.width, args.height))
+	# img = img.resize((args.width, args.height))
 
 	return img
