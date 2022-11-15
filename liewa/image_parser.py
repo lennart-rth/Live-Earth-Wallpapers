@@ -1,5 +1,5 @@
 import yaml
-from PIL import Image, ImageColor
+from PIL import Image, ImageColor, ImageOps
 from liewa.apod import load_apod
 from liewa.sentinel import load_sentinel
 from liewa.nasa_sdo import load_sdo
@@ -33,7 +33,14 @@ def parse_image(config_file_dir):
 
         elif satellite == "apod":
             raw_img = load_apod()
-            resized_img = raw_img.resize((value["size"],value["size"]))
+
+            im_size = (value["width"], value["height"])
+            if value['fit'] == "fill":
+                resized_img = raw_img.resize(im_size)
+            elif value['fit'] == "contain":
+                resized_img = ImageOps.contain(raw_img, im_size)
+            elif value['fit'] == "cover":
+                resized_img = ImageOps.fit(raw_img, im_size)
 
         #load static image of planet into the bg
         elif satellite == "external_planet":
