@@ -30,7 +30,7 @@ Supports all known **geostationary** satellites, high resolution **sentinel** im
 *Example Output of the Sentinel satellite. Learn how to generate custom images for your location at the [Wiki Page](https://github.com/lennart-rth/Live-Earth-Wallpapers/wiki)*
 <!-- ![alt text](examples/apod-cover.png) -->
 ![](https://github.com/lennart-rth/Live-Earth-Wallpapers/blob/main/examples/apod-cover.png)
-*Example Output of the astronomy of the day feed.*
+*Example Output for astronomy picture of the day feed (apod)(2022 November 15).*
 ### Build images to your needs by writing your own config.yml file.
 ### Read more on the [Wiki Page](https://github.com/lennart-rth/Live-Earth-Wallpapers/wiki).
 ### You can present your creations in the [Discussions Page](https://github.com/lennart-rth/Live-Earth-Wallpapers/discussions/) under "Show and tell"
