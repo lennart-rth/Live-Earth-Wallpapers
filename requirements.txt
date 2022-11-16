@@ -1,3 +1,4 @@
+beautifulsoup4==4.11.1
 numpy==1.23.4
 opencv_python==4.6.0.66
 Pillow==9.3.0
