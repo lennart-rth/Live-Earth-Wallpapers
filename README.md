@@ -6,7 +6,7 @@
 
 # Live-Earth-Wallpapers aka liewa
 Set your Desktop background to near realtime picures of the earth.
-Supports all known **geostationary** satellites, high resolution **sentinel** images and Nasa **Solar Dynamics Observatory** Images! For Linux, Windows and MacOs!
+Supports all known **geostationary** satellites, high resolution **sentinel** images, Nasa **Solar Dynamics Observatory** Images and Nasa astronomy picture of the day (Apod)! For Linux, Windows and MacOs!
 
 ***
 ## Examples
