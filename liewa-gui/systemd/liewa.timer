@@ -1,0 +1,8 @@
+[Unit]
+Description=Run very useful script every 30 
+[Timer]
+OnBootSec=10
+OnUnitActiveSec=30
+AccuracySec=1ms
+[Install]
+WantedBy=timers.target

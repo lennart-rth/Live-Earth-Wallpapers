@@ -1,0 +1,5 @@
+[Unit]
+Description=Very useful script
+[Service]
+Type=simple
+ExecStart=/home/lennart/.local/bin/liewa
