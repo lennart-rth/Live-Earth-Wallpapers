@@ -75,5 +75,5 @@ Read the [Wiki](https://github.com/lennart-rth/Live-Earth-Wallpapers/wiki) for a
 ***
 ## For Contributers
 1. Read the [Contributing](CONTRIBUTING.md) Readme.
-2. Filter issues by "For Contributers" Label to find topics to work on.
+2. Filter Discussions by "For Contributers" Label to find topics to work on.
 3. Feel free to add your own ideas, features or open a Discussion in the Discussions tab.
