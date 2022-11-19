@@ -17,7 +17,7 @@ Always add a appropiate label to your Issue
 
 ## Want to contribute but dont know where to start?
 We have list of Features/Issues you could implement/fix.\
-Filter the issues for the "For Contributers" label to find them.
+Filter the Discussions or Issues for the "For Contributers" label to find them.
 
 
 ## Instructions for Developers
