@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>399</width>
-    <height>612</height>
+    <width>365</width>
+    <height>700</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -19,7 +19,7 @@
   <property name="minimumSize">
    <size>
     <width>365</width>
-    <height>612</height>
+    <height>700</height>
    </size>
   </property>
   <property name="maximumSize">
@@ -54,7 +54,7 @@
        <string/>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="image_compostion">
        <property name="whatsThis">
@@ -66,6 +66,9 @@
        <layout class="QVBoxLayout" name="verticalLayout_7">
         <item>
          <layout class="QVBoxLayout" name="verticalLayout_3">
+          <property name="sizeConstraint">
+           <enum>QLayout::SetMinimumSize</enum>
+          </property>
           <item>
            <widget class="QLabel" name="canvas_size">
             <property name="font">
@@ -222,13 +225,26 @@
                </widget>
               </item>
               <item>
+               <widget class="QLabel" name="size_error_label">
+                <property name="enabled">
+                 <bool>true</bool>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">color: rgb(255, 0, 0);</string>
+                </property>
+                <property name="text">
+                 <string>invalid size!</string>
+                </property>
+               </widget>
+              </item>
+              <item>
                <spacer name="horizontalSpacer_3">
                 <property name="orientation">
                  <enum>Qt::Horizontal</enum>
                 </property>
                 <property name="sizeHint" stdset="0">
                  <size>
-                  <width>40</width>
+                  <width>10</width>
                   <height>20</height>
                  </size>
                 </property>
@@ -350,61 +366,51 @@ color: rgb(255, 0, 4);</string>
                 <verstretch>0</verstretch>
                </sizepolicy>
               </property>
+              <property name="maximumSize">
+               <size>
+                <width>325</width>
+                <height>83</height>
+               </size>
+              </property>
              </widget>
             </item>
             <item>
              <widget class="QWidget" name="widget" native="true">
-              <widget class="QPushButton" name="add_planet_btn">
-               <property name="geometry">
-                <rect>
-                 <x>0</x>
-                 <y>0</y>
-                 <width>80</width>
-                 <height>23</height>
-                </rect>
-               </property>
-               <property name="styleSheet">
-                <string notr="true"/>
-               </property>
-               <property name="text">
-                <string>Add</string>
-               </property>
-              </widget>
-              <widget class="QPushButton" name="edit_planet_btn">
-               <property name="geometry">
-                <rect>
-                 <x>0</x>
-                 <y>30</y>
-                 <width>80</width>
-                 <height>23</height>
-                </rect>
-               </property>
-               <property name="text">
-                <string>Edit</string>
-               </property>
-              </widget>
-              <widget class="QPushButton" name="delete_planet_btn">
-               <property name="geometry">
-                <rect>
-                 <x>0</x>
-                 <y>60</y>
-                 <width>80</width>
-                 <height>23</height>
-                </rect>
-               </property>
-               <property name="styleSheet">
-                <string notr="true"/>
-               </property>
-               <property name="text">
-                <string>Delete</string>
-               </property>
-               <property name="autoDefault">
-                <bool>false</bool>
-               </property>
-               <property name="default">
-                <bool>false</bool>
-               </property>
-              </widget>
+              <layout class="QVBoxLayout" name="verticalLayout_9">
+               <item>
+                <widget class="QPushButton" name="add_planet_btn">
+                 <property name="styleSheet">
+                  <string notr="true"/>
+                 </property>
+                 <property name="text">
+                  <string>Add</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="edit_planet_btn">
+                 <property name="text">
+                  <string>Edit</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="delete_planet_btn">
+                 <property name="styleSheet">
+                  <string notr="true"/>
+                 </property>
+                 <property name="text">
+                  <string>Delete</string>
+                 </property>
+                 <property name="autoDefault">
+                  <bool>false</bool>
+                 </property>
+                 <property name="default">
+                  <bool>false</bool>
+                 </property>
+                </widget>
+               </item>
+              </layout>
              </widget>
             </item>
            </layout>
@@ -423,7 +429,7 @@ color: rgb(255, 0, 4);</string>
                </size>
               </property>
               <property name="text">
-               <string>use custom config</string>
+               <string>custom config</string>
               </property>
               <property name="checked">
                <bool>false</bool>
@@ -459,30 +465,62 @@ color: rgb(255, 0, 4);</string>
            </widget>
           </item>
           <item>
-           <layout class="QHBoxLayout" name="horizontalLayout">
-            <item>
-             <widget class="QGraphicsView" name="graphicsView">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="autoFillBackground">
-               <bool>false</bool>
-              </property>
-              <property name="verticalScrollBarPolicy">
-               <enum>Qt::ScrollBarAlwaysOff</enum>
-              </property>
-              <property name="horizontalScrollBarPolicy">
-               <enum>Qt::ScrollBarAlwaysOff</enum>
-              </property>
-              <property name="sizeAdjustPolicy">
-               <enum>QAbstractScrollArea::AdjustToContents</enum>
-              </property>
-             </widget>
-            </item>
-           </layout>
+           <widget class="QGraphicsView" name="graphicsView">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>100</width>
+              <height>150</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>9999</width>
+              <height>150</height>
+             </size>
+            </property>
+            <property name="autoFillBackground">
+             <bool>false</bool>
+            </property>
+            <property name="verticalScrollBarPolicy">
+             <enum>Qt::ScrollBarAlwaysOff</enum>
+            </property>
+            <property name="horizontalScrollBarPolicy">
+             <enum>Qt::ScrollBarAlwaysOff</enum>
+            </property>
+            <property name="sizeAdjustPolicy">
+             <enum>QAbstractScrollArea::AdjustToContents</enum>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout">
+          <item>
+           <spacer name="horizontalSpacer_5">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>10</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QPushButton" name="save_yml_btn">
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
           </item>
          </layout>
         </item>
@@ -568,6 +606,16 @@ color: rgb(255, 0, 4);</string>
             <item>
              <layout class="QHBoxLayout" name="horizontalLayout_8">
               <item>
+               <widget class="QLabel" name="status_label_color">
+                <property name="styleSheet">
+                 <string notr="true"/>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+               </widget>
+              </item>
+              <item>
                <widget class="QLabel" name="status_label_text">
                 <property name="font">
                  <font>
@@ -576,17 +624,6 @@ color: rgb(255, 0, 4);</string>
                 </property>
                 <property name="text">
                  <string>Running</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QLabel" name="status_label_color">
-                <property name="styleSheet">
-                 <string notr="true">background-color: rgb(30, 255, 105);
-color: rgb(4, 255, 0);</string>
-                </property>
-                <property name="text">
-                 <string>-------</string>
                 </property>
                </widget>
               </item>
@@ -606,7 +643,7 @@ color: rgb(4, 255, 0);</string>
               <item>
                <widget class="QPushButton" name="reload_status_btn">
                 <property name="text">
-                 <string>Reload</string>
+                 <string/>
                 </property>
                </widget>
               </item>
@@ -630,7 +667,7 @@ color: rgb(4, 255, 0);</string>
       </widget>
      </widget>
     </item>
-    <item alignment="Qt::AlignRight">
+    <item>
      <widget class="QDialogButtonBox" name="dialog_buttons">
       <property name="maximumSize">
        <size>
@@ -639,7 +676,10 @@ color: rgb(4, 255, 0);</string>
        </size>
       </property>
       <property name="layoutDirection">
-       <enum>Qt::LeftToRight</enum>
+       <enum>Qt::RightToLeft</enum>
+      </property>
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
       </property>
       <property name="standardButtons">
        <set>QDialogButtonBox::Apply|QDialogButtonBox::Cancel</set>
@@ -668,12 +708,12 @@ color: rgb(4, 255, 0);</string>
    <slot>setDisabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>74</x>
-     <y>108</y>
+     <x>88</x>
+     <y>139</y>
     </hint>
     <hint type="destinationlabel">
-     <x>103</x>
-     <y>77</y>
+     <x>117</x>
+     <y>107</y>
     </hint>
    </hints>
   </connection>
@@ -684,8 +724,8 @@ color: rgb(4, 255, 0);</string>
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>74</x>
-     <y>108</y>
+     <x>88</x>
+     <y>139</y>
     </hint>
     <hint type="destinationlabel">
      <x>119</x>
@@ -700,8 +740,8 @@ color: rgb(4, 255, 0);</string>
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>74</x>
-     <y>108</y>
+     <x>88</x>
+     <y>139</y>
     </hint>
     <hint type="destinationlabel">
      <x>184</x>
@@ -736,8 +776,8 @@ color: rgb(4, 255, 0);</string>
      <y>402</y>
     </hint>
     <hint type="destinationlabel">
-     <x>346</x>
-     <y>311</y>
+     <x>333</x>
+     <y>377</y>
     </hint>
    </hints>
   </connection>
@@ -752,8 +792,8 @@ color: rgb(4, 255, 0);</string>
      <y>402</y>
     </hint>
     <hint type="destinationlabel">
-     <x>346</x>
-     <y>282</y>
+     <x>333</x>
+     <y>348</y>
     </hint>
    </hints>
   </connection>
@@ -768,8 +808,8 @@ color: rgb(4, 255, 0);</string>
      <y>402</y>
     </hint>
     <hint type="destinationlabel">
-     <x>346</x>
-     <y>253</y>
+     <x>333</x>
+     <y>319</y>
     </hint>
    </hints>
   </connection>
@@ -784,8 +824,8 @@ color: rgb(4, 255, 0);</string>
      <y>402</y>
     </hint>
     <hint type="destinationlabel">
-     <x>147</x>
-     <y>195</y>
+     <x>161</x>
+     <y>240</y>
     </hint>
    </hints>
   </connection>
@@ -800,8 +840,8 @@ color: rgb(4, 255, 0);</string>
      <y>402</y>
     </hint>
     <hint type="destinationlabel">
-     <x>74</x>
-     <y>108</y>
+     <x>88</x>
+     <y>139</y>
     </hint>
    </hints>
   </connection>
@@ -816,8 +856,8 @@ color: rgb(4, 255, 0);</string>
      <y>402</y>
     </hint>
     <hint type="destinationlabel">
-     <x>103</x>
-     <y>77</y>
+     <x>117</x>
+     <y>107</y>
     </hint>
    </hints>
   </connection>
@@ -880,8 +920,8 @@ color: rgb(4, 255, 0);</string>
      <y>402</y>
     </hint>
     <hint type="destinationlabel">
-     <x>72</x>
-     <y>184</y>
+     <x>86</x>
+     <y>210</y>
     </hint>
    </hints>
   </connection>
@@ -896,8 +936,8 @@ color: rgb(4, 255, 0);</string>
      <y>402</y>
     </hint>
     <hint type="destinationlabel">
-     <x>375</x>
-     <y>215</y>
+     <x>341</x>
+     <y>241</y>
     </hint>
    </hints>
   </connection>
@@ -908,12 +948,12 @@ color: rgb(4, 255, 0);</string>
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>84</x>
-     <y>184</y>
+     <x>98</x>
+     <y>210</y>
     </hint>
     <hint type="destinationlabel">
-     <x>375</x>
-     <y>215</y>
+     <x>341</x>
+     <y>241</y>
     </hint>
    </hints>
   </connection>
@@ -928,8 +968,8 @@ color: rgb(4, 255, 0);</string>
      <y>402</y>
     </hint>
     <hint type="destinationlabel">
-     <x>349</x>
-     <y>403</y>
+     <x>342</x>
+     <y>420</y>
     </hint>
    </hints>
   </connection>
@@ -940,12 +980,12 @@ color: rgb(4, 255, 0);</string>
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>111</x>
-     <y>214</y>
+     <x>125</x>
+     <y>240</y>
     </hint>
     <hint type="destinationlabel">
-     <x>375</x>
-     <y>215</y>
+     <x>341</x>
+     <y>241</y>
     </hint>
    </hints>
   </connection>
@@ -956,12 +996,12 @@ color: rgb(4, 255, 0);</string>
    <slot>setDisabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>63</x>
-     <y>214</y>
+     <x>77</x>
+     <y>240</y>
     </hint>
     <hint type="destinationlabel">
-     <x>54</x>
-     <y>184</y>
+     <x>68</x>
+     <y>210</y>
     </hint>
    </hints>
   </connection>
@@ -972,12 +1012,12 @@ color: rgb(4, 255, 0);</string>
    <slot>setDisabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>93</x>
-     <y>389</y>
+     <x>106</x>
+     <y>419</y>
     </hint>
     <hint type="destinationlabel">
-     <x>134</x>
-     <y>178</y>
+     <x>175</x>
+     <y>210</y>
     </hint>
    </hints>
   </connection>
@@ -988,12 +1028,12 @@ color: rgb(4, 255, 0);</string>
    <slot>setDisabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>50</x>
-     <y>397</y>
+     <x>63</x>
+     <y>419</y>
     </hint>
     <hint type="destinationlabel">
-     <x>41</x>
-     <y>236</y>
+     <x>53</x>
+     <y>280</y>
     </hint>
    </hints>
   </connection>
@@ -1004,8 +1044,8 @@ color: rgb(4, 255, 0);</string>
    <slot>setDisabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>58</x>
-     <y>391</y>
+     <x>71</x>
+     <y>419</y>
     </hint>
     <hint type="destinationlabel">
      <x>82</x>
@@ -1020,8 +1060,8 @@ color: rgb(4, 255, 0);</string>
    <slot>setDisabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>58</x>
-     <y>397</y>
+     <x>71</x>
+     <y>419</y>
     </hint>
     <hint type="destinationlabel">
      <x>62</x>
@@ -1036,8 +1076,8 @@ color: rgb(4, 255, 0);</string>
    <slot>setDisabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>105</x>
-     <y>391</y>
+     <x>118</x>
+     <y>419</y>
     </hint>
     <hint type="destinationlabel">
      <x>149</x>
@@ -1052,8 +1092,8 @@ color: rgb(4, 255, 0);</string>
    <slot>setDisabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>125</x>
-     <y>392</y>
+     <x>138</x>
+     <y>419</y>
     </hint>
     <hint type="destinationlabel">
      <x>211</x>
@@ -1068,12 +1108,12 @@ color: rgb(4, 255, 0);</string>
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>63</x>
-     <y>112</y>
+     <x>77</x>
+     <y>139</y>
     </hint>
     <hint type="destinationlabel">
-     <x>140</x>
-     <y>111</y>
+     <x>167</x>
+     <y>139</y>
     </hint>
    </hints>
   </connection>
@@ -1084,12 +1124,12 @@ color: rgb(4, 255, 0);</string>
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>71</x>
-     <y>105</y>
+     <x>85</x>
+     <y>139</y>
     </hint>
     <hint type="destinationlabel">
-     <x>210</x>
-     <y>112</y>
+     <x>232</x>
+     <y>139</y>
     </hint>
    </hints>
   </connection>
