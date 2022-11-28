@@ -1,22 +1,17 @@
 planets:
-  goes-17:
-    color: geocolor
-    size: 600
-    x: 400
+  goes-16:
+    color: natural_color
+    size: 640
+    x: 500
     y: 500
-  sdo:
-    bandwidth: '0171'
-    size: 500
-    x: 0
-    y: 0
   sentinel:
-    height: 40
-    latitude: 0
-    longitude: 234
-    scale: 0
-    width: 40
-    x: 900
-    y: 900
+    height: 400
+    latitude: 20.0
+    longitude: 9.0
+    scale: 400
+    width: 400
+    x: 1000
+    y: 1000
 settings:
   bg-color: '#000000'
   height: 1080

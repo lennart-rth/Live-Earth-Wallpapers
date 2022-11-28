@@ -326,7 +326,7 @@ class Ui_MainWindow(object):
         self.canvas_size.setBuddy(self.size_dropdown)
 
         self.retranslateUi(MainWindow)
-        self.tabWidget.setCurrentIndex(1)
+        self.tabWidget.setCurrentIndex(0)
         self.custom_size_checkbox.toggled['bool'].connect(self.size_dropdown.setDisabled) # type: ignore
         self.custom_size_checkbox.toggled['bool'].connect(self.x_label.setEnabled) # type: ignore
         self.custom_size_checkbox.toggled['bool'].connect(self.y_label.setEnabled) # type: ignore
@@ -391,13 +391,3 @@ class Ui_MainWindow(object):
         self.label_4.setText(_translate("MainWindow", "Status:"))
         self.status_label_text.setText(_translate("MainWindow", "Running"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.scheduler), _translate("MainWindow", "Scheduler"))
-
-
-if __name__ == "__main__":
-    import sys
-    app = QtWidgets.QApplication(sys.argv)
-    MainWindow = QtWidgets.QMainWindow()
-    ui = Ui_MainWindow()
-    ui.setupUi(MainWindow)
-    MainWindow.show()
-    sys.exit(app.exec_())

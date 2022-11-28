@@ -2,6 +2,10 @@ import argparse
 import sys
 import os
 
+# from utils import get_project_path, save_image, get_current_time
+# from image_parser import parse_image
+# from set_background import set_background
+
 from liewa.utils import get_project_path, save_image, get_current_time
 from liewa.image_parser import parse_image
 from liewa.set_background import set_background
@@ -12,7 +16,7 @@ def parseArgs():
         "-c",
         "--config",
         type=str,
-        default="config1",
+        default="gui_config",
         help="The config file location"
     )
     # parser.add_argument(
@@ -47,6 +51,7 @@ def main():
         args.config = os.path.join(get_project_path(),"recources","config3.yml")
         img = parse_image(args.config)
     else:
+        args.config = os.path.join(get_project_path(),"recources","gui_config.yml")
         img = parse_image(args.config)
 
     file_name = os.path.join(get_project_path(),"recources","backgroundImage.png")
@@ -58,4 +63,4 @@ def main():
         save_image(img, args.output, file_name)
 
 # if __name__ == '__main__':
-#   main() 
+#   main()

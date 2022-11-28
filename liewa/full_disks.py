@@ -8,6 +8,8 @@ import time
 from PIL import Image
 
 from liewa.utils import download
+# from utils import download
+
 
 sizes = {"goes-16":678,
 "goes-17":678,

@@ -5,7 +5,9 @@ import cv2
 import numpy as np
 from PIL import Image
 
+# from utils import download
 from liewa.utils import download
+
 
 
 def bounding_box(latitude_in_deg, longitude_in_deg, width_in_km, height_in_km):

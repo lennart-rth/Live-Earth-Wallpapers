@@ -4,12 +4,15 @@ from PyQt5.QtWidgets import QDialogButtonBox
 
 
 class PlanetDialog(QDialog, Ui_Dialog):
-    def __init__(self,planet,planet_config):
+    def __init__(self,planet,planet_config, view_config):
         super(PlanetDialog, self).__init__()
         self.setupUi(self)
         
         self.planet = planet
         self.settings = planet_config
+
+        if planet != "sentinel":
+            self.size_input.setValue(int(view_config["width"]/3))       #set size to 1/3 of image width
 
         self.filter = {"geostationary":["x","y","size","color"],"sdo":["x","y","size","bandwidth"],"apod":["x","y","size","fit"],"sentinel":["x","y","width","height","scale","latitude","longitude"]}
 

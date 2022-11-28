@@ -1,5 +1,5 @@
 [Unit]
-Description=Run very useful script every 30 
+Description=Liewa Timer
 [Timer]
 OnBootSec=10
 OnUnitActiveSec=30

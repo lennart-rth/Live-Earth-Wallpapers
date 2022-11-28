@@ -2,6 +2,7 @@ from PIL import Image
 
 import bisect
 from liewa.utils import download
+# from utils import download
 
 sizes = [512,1024,2048,4096]
 

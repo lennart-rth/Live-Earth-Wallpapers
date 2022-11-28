@@ -1,4 +1,6 @@
 import sys
+import subprocess
+import platform
 import yaml
 from PyQt5 import QtGui, QtCore, QtWidgets
 from designer_main import Ui_MainWindow
@@ -6,6 +8,8 @@ from planet_dialog import PlanetDialog
 from PyQt5.QtWidgets import QColorDialog, QFileDialog, QDialogButtonBox, QStyle
 from PyQt5.QtGui import QBrush
 from PyQt5.QtCore import Qt, QSize
+
+from scheduler import Systemd, Launchd, Schtasks
 
 class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def __init__(self, *args, obj=None, **kwargs):
@@ -61,11 +65,30 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.update_planet_list()
         self.update_preview()
         #########################Scheduler###########################
+        system = platform.system()
+        if system == "Windows":
+            self.scheduler = Schtasks()
+        elif system == "Darwin":
+            self.scheduler = Launchd()
+        elif system == "Linux":
+            self.scheduler = Systemd()
+        else:
+            print("Your OS-system is not supported!")
+            sys.exit(1)
+
         self.status = False
 
         pixmapi = QStyle.SP_BrowserReload
         icon = self.style().standardIcon(pixmapi)
         self.reload_status_btn.setIcon(icon)
+
+        self.reload_status_btn.clicked.connect(self.update_status)
+        self.create_schedueler_btn.clicked.connect(self.create_new_scheduler)
+        self.delete_scheduler_btn.clicked.connect(self.delete_scheduler)
+        self.reload_scheduler_btn.clicked.connect(self.reload_scheduler)
+        self.test_now_btn.clicked.connect(self.test_now)
+
+
 
         self.update_status()
 
@@ -215,7 +238,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.planet_list_selection.select(self.planet_list_model.index(0,0), QtCore.QItemSelectionModel.Select)
         
     def add_planet(self):
-        planet_dialog = PlanetDialog("goes-16",{})
+        planet_dialog = PlanetDialog("goes-16",{},self.parsed_config["settings"])
         if planet_dialog.settings:
             self.parsed_config["planets"][planet_dialog.planet] = planet_dialog.settings
             item = QtGui.QStandardItem(planet_dialog.planet)
@@ -228,7 +251,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         selected_item = self.planet_list_selection.selectedIndexes()
         if selected_item:
             selected_planet = self.planet_list_model.data(selected_item[0])
-            planet_dialog = PlanetDialog(selected_planet,self.parsed_config["planets"][selected_planet])
+            planet_dialog = PlanetDialog(selected_planet,self.parsed_config["planets"][selected_planet],self.parsed_config["settings"])
             if planet_dialog.settings:
                 self.parsed_config["planets"][planet_dialog.planet] = planet_dialog.settings
                 self.update_planet_list()
@@ -246,6 +269,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     ##############################Scheduler###########################################
 
     def update_status(self):
+        output, self.status = self.scheduler.update()
+
         if self.status:
             icon = self.style().standardIcon(QStyle.SP_DialogYesButton).pixmap(20,20)
             self.status_label_text.setText("Running")
@@ -253,6 +278,23 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             icon = self.style().standardIcon(QStyle.SP_DialogNoButton).pixmap(20,20)
             self.status_label_text.setText("Not running")
         self.status_label_color.setPixmap(icon)
+        self.status_output.setPlainText(output)
+
+    def create_new_scheduler(self):
+        self.scheduler.create_scheduler()
+        self.update_status()
+
+    def delete_scheduler(self):
+        self.scheduler.delete_scheduler()
+        self.update_status()
+    
+    def reload_scheduler(self):
+        self.scheduler.reload_scheduler()
+        self.update_status()
+
+    def test_now(self):
+        liewa_path = subprocess.check_output(['which','liewa']).decode('utf-8').strip()
+        subprocess.check_output(liewa_path)
 
 if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)
