@@ -1,5 +1,0 @@
-[Unit]
-Description=Liewa Service
-[Service]
-Type=simple
-ExecStart=/home/lennart/.local/bin/liewa
