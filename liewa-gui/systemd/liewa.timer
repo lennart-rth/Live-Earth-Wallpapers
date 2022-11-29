@@ -1,8 +1,0 @@
-[Unit]
-Description=Liewa Timer
-[Timer]
-OnBootSec=10
-OnUnitActiveSec=30
-AccuracySec=1ms
-[Install]
-WantedBy=timers.target
