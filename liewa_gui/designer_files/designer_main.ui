@@ -54,7 +54,7 @@
        <string/>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="image_compostion">
        <property name="whatsThis">
@@ -516,6 +516,28 @@ color: rgb(255, 0, 4);</string>
            </spacer>
           </item>
           <item>
+           <widget class="QDialogButtonBox" name="dialog_buttons">
+            <property name="maximumSize">
+             <size>
+              <width>200</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="layoutDirection">
+             <enum>Qt::RightToLeft</enum>
+            </property>
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="standardButtons">
+             <set>QDialogButtonBox::Apply|QDialogButtonBox::Cancel</set>
+            </property>
+            <property name="centerButtons">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
            <widget class="QPushButton" name="save_yml_btn">
             <property name="text">
              <string/>
@@ -668,24 +690,9 @@ color: rgb(255, 0, 4);</string>
      </widget>
     </item>
     <item>
-     <widget class="QDialogButtonBox" name="dialog_buttons">
-      <property name="maximumSize">
-       <size>
-        <width>200</width>
-        <height>16777215</height>
-       </size>
-      </property>
-      <property name="layoutDirection">
-       <enum>Qt::RightToLeft</enum>
-      </property>
-      <property name="orientation">
-       <enum>Qt::Horizontal</enum>
-      </property>
+     <widget class="QDialogButtonBox" name="close_btn">
       <property name="standardButtons">
-       <set>QDialogButtonBox::Apply|QDialogButtonBox::Cancel</set>
-      </property>
-      <property name="centerButtons">
-       <bool>true</bool>
+       <set>QDialogButtonBox::Close</set>
       </property>
      </widget>
     </item>

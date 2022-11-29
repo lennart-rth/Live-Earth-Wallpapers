@@ -1,13 +1,9 @@
 import yaml
 from PIL import Image, ImageColor, ImageOps
-from liewa.apod import load_apod
-from liewa.sentinel import load_sentinel
-from liewa.nasa_sdo import load_sdo
-from liewa.full_disks import load_geostationary
-# from apod import load_apod
-# from sentinel import load_sentinel
-# from nasa_sdo import load_sdo
-# from full_disks import load_geostationary
+from liewa_cli.apod import load_apod
+from liewa_cli.sentinel import load_sentinel
+from liewa_cli.nasa_sdo import load_sdo
+from liewa_cli.full_disks import load_geostationary
 
 
 def load_yaml(filename):
@@ -24,6 +20,7 @@ def parse_image(config_file_dir):
     bg_size = (image_settings["width"],image_settings["height"])
 
     bg = Image.new("RGB",bg_size,ImageColor.getrgb(bg_color))
+    bg.show()
 
     for satellite,value in config["planets"].items():
         if satellite == "sentinel":

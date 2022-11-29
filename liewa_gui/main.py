@@ -1,15 +1,17 @@
 import sys
+import os
 import subprocess
+import pathlib
 import platform
 import yaml
 from PyQt5 import QtGui, QtCore, QtWidgets
-from designer_main import Ui_MainWindow
-from planet_dialog import PlanetDialog
+from liewa_gui.designer_main import Ui_MainWindow
+from liewa_gui.planet_dialog import PlanetDialog
 from PyQt5.QtWidgets import QColorDialog, QFileDialog, QDialogButtonBox, QStyle
 from PyQt5.QtGui import QBrush
 from PyQt5.QtCore import Qt, QSize
 
-from scheduler import Systemd, Launchd, Schtasks
+from liewa_gui.scheduler import Systemd, Launchd, Schtasks
 
 class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def __init__(self, *args, obj=None, **kwargs):
@@ -23,6 +25,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.planet_list_table.setModel(self.planet_list_model)
 
         self.dialog_buttons.clicked.connect(self.handle_dialog_btn_click)
+        self.close_btn.clicked.connect(self.handle_close_btn_click)
         self.save_yml_btn.clicked.connect(self.save_yml)
         self.choose_color_btn.clicked.connect(self.open_colorpicker)
         self.browse_bg_file_btn.clicked.connect(self.get_bg_img_file)
@@ -73,8 +76,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         elif system == "Linux":
             self.scheduler = Systemd()
         else:
-            print("Your OS-system is not supported!")
-            sys.exit(1)
+            raise Exception("Unsupported operating system!")
 
         self.status = False
 
@@ -100,17 +102,26 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             if color.isValid():
                 self.selected_bg_color = color
                 self.choosen_color_label.setStyleSheet(f"background-color: {self.selected_bg_color.name()};\n"f"color: {self.selected_bg_color.name()};")
+                self.parsed_config['settings']['bg-color'] = self.selected_bg_color.name()
                 self.update_preview()
 
     def handle_dialog_btn_click(self, button):
         role = self.dialog_buttons.buttonRole(button)
         if role == QDialogButtonBox.ApplyRole:
-            with open('../liewa/recources/gui_config.yml', 'w') as file:
+            cwd = pathlib.Path(__file__).parent.resolve()
+            liewa = os.path.dirname(cwd)
+            liewa_cli = os.path.join(liewa,"liewa_cli","recources","gui_config.yml")
+            with open(liewa_cli, 'w') as file:
                 yaml.dump(self.parsed_config, file)
-            self.close()
             
         elif role == QDialogButtonBox.RejectRole:
-            self.close()   
+            self.selected_size = (1920, 1080)
+            self.parsed_config = {'settings': {'width': 1920, 'height': 1080, 'bg-color': '#000000'}, 'planets': {}}
+            self.update_planet_list()
+            self.update_preview()
+
+    def handle_close_btn_click(self,button):
+        self.close()   
 
     def get_config_file(self):
         try:
@@ -293,10 +304,18 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.update_status()
 
     def test_now(self):
-        liewa_path = subprocess.check_output(['which','liewa']).decode('utf-8').strip()
-        subprocess.check_output(liewa_path)
+        cwd = pathlib.Path(__file__).parent.resolve()
+        liewa_gui = os.path.dirname(cwd)
+        liewa_cli = os.path.join(liewa_gui,"liewa_cli","liewa-cli")
+        subprocess.check_output(liewa_cli)
 
-if __name__ == '__main__':
+def startup():
     app = QtWidgets.QApplication(sys.argv)
     window = MainWindow()
     app.exec()
+
+
+# if __name__ == '__main__':
+#     app = QtWidgets.QApplication(sys.argv)
+#     window = MainWindow()
+#     app.exec()

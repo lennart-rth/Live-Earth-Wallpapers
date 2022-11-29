@@ -1,1 +1,1 @@
-include liewa/recources/*.yml
+include liewa_cli/recources/*.yml

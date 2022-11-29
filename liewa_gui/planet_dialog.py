@@ -1,5 +1,5 @@
 from PyQt5.QtWidgets import QDialog, QSpinBox, QComboBox, QLabel, QDoubleSpinBox
-from designer_planet import Ui_Dialog
+from liewa_gui.designer_planet import Ui_Dialog
 from PyQt5.QtWidgets import QDialogButtonBox
 
 

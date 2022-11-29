@@ -6,7 +6,7 @@ import subprocess
 
 def execute(command):
     user_name = os.getlogin()
-    cwd = os.getcwd()
+    cwd = os.path.expanduser('~')
     pw_record = pwd.getpwnam(user_name)
     user_name      = pw_record.pw_name
     user_home_dir  = pw_record.pw_dir

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'designer_main.ui'
+# Form implementation generated from reading ui file 'designer_files/designer_main.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.7
 #
@@ -236,6 +236,14 @@ class Ui_MainWindow(object):
         self.horizontalLayout.setObjectName("horizontalLayout")
         spacerItem3 = QtWidgets.QSpacerItem(40, 10, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout.addItem(spacerItem3)
+        self.dialog_buttons = QtWidgets.QDialogButtonBox(self.image_compostion)
+        self.dialog_buttons.setMaximumSize(QtCore.QSize(200, 16777215))
+        self.dialog_buttons.setLayoutDirection(QtCore.Qt.RightToLeft)
+        self.dialog_buttons.setOrientation(QtCore.Qt.Horizontal)
+        self.dialog_buttons.setStandardButtons(QtWidgets.QDialogButtonBox.Apply|QtWidgets.QDialogButtonBox.Cancel)
+        self.dialog_buttons.setCenterButtons(True)
+        self.dialog_buttons.setObjectName("dialog_buttons")
+        self.horizontalLayout.addWidget(self.dialog_buttons)
         self.save_yml_btn = QtWidgets.QPushButton(self.image_compostion)
         self.save_yml_btn.setText("")
         self.save_yml_btn.setObjectName("save_yml_btn")
@@ -314,14 +322,10 @@ class Ui_MainWindow(object):
         self.verticalLayout_8.addLayout(self.verticalLayout_5)
         self.tabWidget.addTab(self.scheduler, "")
         self.verticalLayout_2.addWidget(self.tabWidget)
-        self.dialog_buttons = QtWidgets.QDialogButtonBox(self.centralwidget)
-        self.dialog_buttons.setMaximumSize(QtCore.QSize(200, 16777215))
-        self.dialog_buttons.setLayoutDirection(QtCore.Qt.RightToLeft)
-        self.dialog_buttons.setOrientation(QtCore.Qt.Horizontal)
-        self.dialog_buttons.setStandardButtons(QtWidgets.QDialogButtonBox.Apply|QtWidgets.QDialogButtonBox.Cancel)
-        self.dialog_buttons.setCenterButtons(True)
-        self.dialog_buttons.setObjectName("dialog_buttons")
-        self.verticalLayout_2.addWidget(self.dialog_buttons)
+        self.close_btn = QtWidgets.QDialogButtonBox(self.centralwidget)
+        self.close_btn.setStandardButtons(QtWidgets.QDialogButtonBox.Close)
+        self.close_btn.setObjectName("close_btn")
+        self.verticalLayout_2.addWidget(self.close_btn)
         MainWindow.setCentralWidget(self.centralwidget)
         self.canvas_size.setBuddy(self.size_dropdown)
 
@@ -391,3 +395,13 @@ class Ui_MainWindow(object):
         self.label_4.setText(_translate("MainWindow", "Status:"))
         self.status_label_text.setText(_translate("MainWindow", "Running"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.scheduler), _translate("MainWindow", "Scheduler"))
+
+
+if __name__ == "__main__":
+    import sys
+    app = QtWidgets.QApplication(sys.argv)
+    MainWindow = QtWidgets.QMainWindow()
+    ui = Ui_MainWindow()
+    ui.setupUi(MainWindow)
+    MainWindow.show()
+    sys.exit(app.exec_())

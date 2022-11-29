@@ -1,9 +1,8 @@
 import os
-import subprocess
-from getpass import getpass
 import re
+import pathlib
 
-from execute_command import execute
+from liewa_gui.execute_command import execute
 
 class Systemd:
     def __init__(self):
@@ -27,13 +26,18 @@ class Systemd:
         # print(output,errors)
     
     def create_scheduler(self):
-        with open("liewa.service", "w") as f:
-            f.write("""[Unit]
+        cwd = pathlib.Path(__file__).parent.resolve()
+        liewa_gui = os.path.dirname(cwd)
+        liewa_cli = os.path.join(liewa_gui,"liewa_cli","liewa-cli")
+        liewa_scripts = os.path.join(liewa_gui,"liewa_gui")
+        
+        with open(os.path.join(liewa_scripts,"liewa.service"), "w") as f:
+            f.write(f"""[Unit]
 Description=Liewa Service
 [Service]
 Type=simple
-ExecStart=$(which liewa)""")
-        with open("liewa.timer", "w") as f:
+ExecStart={liewa_cli}""")
+        with open(os.path.join(liewa_scripts,"liewa.timer"), "w") as f:
             f.write("""[Unit]
 Description=Liewa Timer
 [Timer]
@@ -43,19 +47,19 @@ AccuracySec=1ms
 [Install]
 WantedBy=timers.target""")
         os.system("mkdir -p ~/.config/systemd/user/")        
-
-        os.system(f"cp {self.service_name} ~/.config/systemd/user/")
-        os.system(f"cp {self.timer_name} ~/.config/systemd/user/")
+        
+        os.system(f"cp {os.path.join(liewa_scripts,self.service_name)} ~/.config/systemd/user/")
+        os.system(f"cp {os.path.join(liewa_scripts,self.timer_name)} ~/.config/systemd/user/")
 
         execute(f"systemctl --user enable {self.timer_name}")
         execute(f"systemctl --user start {self.timer_name}")
         execute(f"systemctl --user status {self.timer_name}")
 
-        os.system(f"rm {self.service_name}")
-        os.system(f"rm {self.timer_name}")
+        # os.system(f"rm {self.service_name}") #achtubg!!!
+        # os.system(f"rm {self.timer_name}")
 
     def delete_scheduler(self):
-        for unit_file in [self.service_name, self.timer_name]:
+        for unit_file in [self.timer_name,self.service_name]:
             execute(f"systemctl --user stop {unit_file}")
             execute(f"systemctl --user disable {unit_file}")
             os.system(f"rm ~/.config/systemd/user/{unit_file}")
@@ -101,11 +105,11 @@ class Schtasks:
     def reload_scheduler(self):
         pass
 
-if __name__ == '__main__':
-    scheduler = Systemd()
-    # scheduler.create_scheduler()
+# if __name__ == '__main__':
+#     scheduler = Systemd()
+#     scheduler.create_scheduler()
     # scheduler.delete_scheduler()
     # scheduler.reload_schedluer()
     # scheduler.test_now()
-    scheduler.update()
+    # scheduler.update()
 

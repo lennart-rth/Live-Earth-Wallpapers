@@ -1,9 +1,7 @@
 from bs4 import BeautifulSoup
 import requests
 
-# from utils import download
-from liewa.utils import download
-
+from liewa_cli.utils import download
 
 # ? this function scrapes the website if they add another image to the website before the apod image this function will not work, image does not have id tag.
 def load_apod():
