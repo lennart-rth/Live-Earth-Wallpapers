@@ -1,14 +1,9 @@
 planets:
-  goes-16:
-    color: natural_color
-    size: 640
-    x: 0
-    y: 0
-  goes-17:
-    color: natural_color
-    size: 640
-    x: 1900
-    y: 1200
+  meteosat-11:
+    color: geocolor
+    size: 1000
+    x: 960
+    y: 540
 settings:
   bg-color: '#000000'
   height: 1080

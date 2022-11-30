@@ -41,9 +41,8 @@ ExecStart={liewa_cli}""")
             f.write("""[Unit]
 Description=Liewa Timer
 [Timer]
-OnBootSec=10
-OnUnitActiveSec=30
-AccuracySec=1ms
+OnCalendar=*-*-* *:00:00
+OnCalendar=*-*-* *:30:00
 [Install]
 WantedBy=timers.target""")
         os.system("mkdir -p ~/.config/systemd/user/")        
@@ -52,6 +51,7 @@ WantedBy=timers.target""")
         os.system(f"cp {os.path.join(liewa_scripts,self.timer_name)} ~/.config/systemd/user/")
 
         execute(f"systemctl --user enable {self.timer_name}")
+        execute("systemctl --user daemon-reload")
         execute(f"systemctl --user start {self.timer_name}")
         execute(f"systemctl --user status {self.timer_name}")
 

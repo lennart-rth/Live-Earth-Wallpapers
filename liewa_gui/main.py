@@ -9,7 +9,7 @@ from liewa_gui.designer_main import Ui_MainWindow
 from liewa_gui.planet_dialog import PlanetDialog
 from PyQt5.QtWidgets import QColorDialog, QFileDialog, QDialogButtonBox, QStyle
 from PyQt5.QtGui import QBrush
-from PyQt5.QtCore import Qt, QSize
+from PyQt5.QtCore import Qt, QProcess
 
 from liewa_gui.scheduler import Systemd, Launchd, Schtasks
 
@@ -19,6 +19,14 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.setupUi(self)
 
         #########################Image Cmposition#########################
+        
+        #######Temporary DEACTIVATED!!!!########
+        self.background_img_checkbox.setEnabled(False)
+        self.browse_bg_file_btn.setEnabled(False)
+        #######Temporary DEACTIVATED!!!!########
+
+        self.process = None
+
         self.parsed_config = {'settings': {'width': 1920, 'height': 1080, 'bg-color': '#000000'}, 'planets': {}}
         
         self.planet_list_model = QtGui.QStandardItemModel(self.planet_list_table)
@@ -65,6 +73,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.add_drop_down_options()
         self.size_dropdown.setCurrentIndex(6)
 
+        self._open_yml_file()
+
         self.update_planet_list()
         self.update_preview()
         #########################Scheduler###########################
@@ -90,13 +100,22 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.reload_scheduler_btn.clicked.connect(self.reload_scheduler)
         self.test_now_btn.clicked.connect(self.test_now)
 
-
-
         self.update_status()
 
+
+        self.tabWidget.setCurrentIndex(0)
         self.show()
 
     #########################Image Cmposition#########################
+    def _open_yml_file(self):
+        cwd = pathlib.Path(__file__).parent.resolve()
+        liewa_filename = os.path.dirname(cwd)
+        liewa_filename = os.path.join(liewa_filename,"liewa_cli","recources","gui_config.yml")
+        with open(liewa_filename, "r") as ymlfile:
+                cfg = yaml.load(ymlfile,Loader=yaml.Loader)
+        self.parsed_config = cfg
+        self.planet_list_model.clear()
+
     def open_colorpicker(self):
             color = QColorDialog.getColor()
             if color.isValid():
@@ -304,10 +323,42 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.update_status()
 
     def test_now(self):
+        self.status_output.clear()
         cwd = pathlib.Path(__file__).parent.resolve()
         liewa_gui = os.path.dirname(cwd)
         liewa_cli = os.path.join(liewa_gui,"liewa_cli","liewa-cli")
-        subprocess.check_output(liewa_cli)
+        if self.process is None:
+            self.process = QProcess()  # Keep a reference to the QProcess (e.g. on self) while it's running.
+            self.process.readyReadStandardOutput.connect(self.handle_stdout)
+            self.process.readyReadStandardError.connect(self.handle_stderr)
+            self.process.stateChanged.connect(self.handle_state)
+            self.process.finished.connect(self.process_finished)  # Clean up once complete.
+            self.process.start(liewa_cli)
+        # output = subprocess.check_output(liewa_cli)
+        # self.status_output.append(output.decode('utf-8'))
+
+    def handle_stderr(self):
+        data = self.process.readAllStandardError()
+        stderr = bytes(data).decode("utf8")
+        self.status_output.append(stderr)
+
+    def handle_stdout(self):
+        data = self.process.readAllStandardOutput()
+        stdout = bytes(data).decode("utf8")
+        self.status_output.append(stdout)
+
+    def handle_state(self, state):
+        states = {
+            QProcess.NotRunning: 'Not running',
+            QProcess.Starting: 'Downloading Images...',
+            QProcess.Running: 'Running...',
+        }
+        state_name = states[state]
+        self.status_output.append(state_name)
+
+    def process_finished(self):
+        self.status_output.append("Images loaded successfully. \n Backgroundimage changed.")
+        self.process = None
 
 def startup():
     app = QtWidgets.QApplication(sys.argv)
@@ -316,6 +367,4 @@ def startup():
 
 
 # if __name__ == '__main__':
-#     app = QtWidgets.QApplication(sys.argv)
-#     window = MainWindow()
-#     app.exec()
+#     startup()

@@ -20,7 +20,6 @@ def parse_image(config_file_dir):
     bg_size = (image_settings["width"],image_settings["height"])
 
     bg = Image.new("RGB",bg_size,ImageColor.getrgb(bg_color))
-    bg.show()
 
     for satellite,value in config["planets"].items():
         if satellite == "sentinel":
