@@ -13,11 +13,7 @@ def check_for_program(program):
 def set_background(file_name):
     system = platform.system()
     
-    if check_for_program("feh"):
-        subprocess.call(["feh", "--bg-fill", file_name],timeout=10)
-    elif check_for_program("nitrogen"):
-        subprocess.call(["nitrogen", file_name],timeout=10)
-    elif system == "Windows":
+    if system == "Windows":
         try:
             import win32api
             import win32con
@@ -84,11 +80,20 @@ def set_background(file_name):
         ,timeout=10)
     elif system == "Linux":
         try:
-            subprocess.call(["gsettings", "set", "org.gnome.desktop.background", "picture-uri", "file:" + file_name],timeout=10) 
-            subprocess.call(["gsettings", "set", "org.gnome.desktop.background", "picture-uri-dark", "file:" + file_name],timeout=10) 
-            subprocess.call(["gsettings", "set", "org.gnome.desktop.background", "picture-options", "scaled"],timeout=10)
-            subprocess.call(["gsettings", "set", "org.gnome.desktop.background", "primary-color", "#000000"],timeout=10)
+            if check_for_program("feh"):
+                subprocess.call(["feh", "--bg-fill", file_name],timeout=10)
+            if check_for_program("nitrogen"):
+                subprocess.call(["nitrogen", file_name],timeout=10)
+            subprocess.call(["gsettings", "set", "org.gnome.desktop.background", "picture-uri", file_name],timeout=50) 
+            subprocess.call(["gsettings", "set", "org.gnome.desktop.background", "picture-uri-dark", file_name],timeout=50) 
+            subprocess.call(["gsettings", "set", "org.gnome.desktop.background", "picture-options", "scaled"],timeout=50)
+            subprocess.call(["gsettings", "set", "org.gnome.desktop.background", "primary-color", "#000000"],timeout=50)
         except: None  
+
+    elif check_for_program("feh"):
+        subprocess.call(["feh", "--bg-fill", file_name],timeout=10)
+    elif check_for_program("nitrogen"):
+        subprocess.call(["nitrogen", file_name],timeout=10)
 
     # # set the Ubuntu lock screen
     # # os.system(f"sudo ./ubuntu-gdm-set-background --image {filename}")

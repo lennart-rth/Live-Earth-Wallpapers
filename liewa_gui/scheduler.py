@@ -34,6 +34,8 @@ class Systemd:
         with open(os.path.join(liewa_scripts,"liewa.service"), "w") as f:
             f.write(f"""[Unit]
 Description=Liewa Service
+[Install]
+WantedBy=graphical.target
 [Service]
 Type=simple
 ExecStart={liewa_cli}""")
@@ -51,7 +53,7 @@ WantedBy=timers.target""")
         os.system(f"cp {os.path.join(liewa_scripts,self.timer_name)} ~/.config/systemd/user/")
 
         execute(f"systemctl --user enable {self.timer_name}")
-        execute("systemctl --user daemon-reload")
+        self.reload_scheduler()
         execute(f"systemctl --user start {self.timer_name}")
         execute(f"systemctl --user status {self.timer_name}")
 
@@ -63,6 +65,7 @@ WantedBy=timers.target""")
             execute(f"systemctl --user stop {unit_file}")
             execute(f"systemctl --user disable {unit_file}")
             os.system(f"rm ~/.config/systemd/user/{unit_file}")
+        self.reload_scheduler()
 
     def reload_scheduler(self):
         execute("systemctl --user daemon-reload")
