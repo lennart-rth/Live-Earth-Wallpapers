@@ -5,6 +5,6 @@ planets:
     x: 960
     y: 540
 settings:
-  bg-color: '#000000'
+  bg-color: '#fff152'
   height: 1080
   width: 1920

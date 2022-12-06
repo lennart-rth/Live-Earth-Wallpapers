@@ -2,9 +2,9 @@ import argparse
 import sys
 import os
 
-from liewa_cli.utils import get_project_path, save_image, get_current_time
-from liewa_cli.image_parser import parse_image
-from liewa_cli.set_background import set_background
+from liewa.utils import get_project_path, save_image, get_current_time
+from liewa.image_parser import parse_image
+from liewa.set_background import set_background
 
 def parseArgs():
     parser = argparse.ArgumentParser()

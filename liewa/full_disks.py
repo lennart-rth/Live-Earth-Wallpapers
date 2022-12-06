@@ -7,7 +7,7 @@ import time
 
 from PIL import Image
 
-from liewa_cli.utils import download
+from liewa.utils import download
 
 
 sizes = {"goes-16":678,

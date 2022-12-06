@@ -2,7 +2,7 @@ import os
 import re
 import pathlib
 
-from liewa_gui.execute_command import execute
+from liewa.execute_command import execute
 
 class Systemd:
     def __init__(self):
@@ -27,11 +27,10 @@ class Systemd:
     
     def create_scheduler(self):
         cwd = pathlib.Path(__file__).parent.resolve()
-        liewa_gui = os.path.dirname(cwd)
-        liewa_cli = os.path.join(liewa_gui,"liewa_cli","liewa-cli")
-        liewa_scripts = os.path.join(liewa_gui,"liewa_gui")
+        # liewa_gui = os.path.dirname(cwd)
+        liewa_cli = os.path.join(cwd,"app.py")
         
-        with open(os.path.join(liewa_scripts,"liewa.service"), "w") as f:
+        with open("liewa.service", "w") as f:
             f.write(f"""[Unit]
 Description=Liewa Service
 [Install]
@@ -39,7 +38,7 @@ WantedBy=graphical.target
 [Service]
 Type=simple
 ExecStart={liewa_cli}""")
-        with open(os.path.join(liewa_scripts,"liewa.timer"), "w") as f:
+        with open("liewa.timer", "w") as f:
             f.write("""[Unit]
 Description=Liewa Timer
 [Timer]
@@ -49,8 +48,8 @@ OnCalendar=*-*-* *:30:00
 WantedBy=timers.target""")
         os.system("mkdir -p ~/.config/systemd/user/")        
         
-        os.system(f"cp {os.path.join(liewa_scripts,self.service_name)} ~/.config/systemd/user/")
-        os.system(f"cp {os.path.join(liewa_scripts,self.timer_name)} ~/.config/systemd/user/")
+        os.system(f"cp {self.service_name} ~/.config/systemd/user/")
+        os.system(f"cp {self.timer_name} ~/.config/systemd/user/")
 
         execute(f"systemctl --user enable {self.timer_name}")
         self.reload_scheduler()

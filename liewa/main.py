@@ -1,17 +1,16 @@
 import sys
 import os
-import subprocess
 import pathlib
 import platform
 import yaml
 from PyQt5 import QtGui, QtCore, QtWidgets
-from liewa_gui.designer_main import Ui_MainWindow
-from liewa_gui.planet_dialog import PlanetDialog
+from liewa.designer_main import Ui_MainWindow
+from liewa.planet_dialog import PlanetDialog
 from PyQt5.QtWidgets import QColorDialog, QFileDialog, QDialogButtonBox, QStyle
 from PyQt5.QtGui import QBrush
 from PyQt5.QtCore import Qt, QProcess
 
-from liewa_gui.scheduler import Systemd, Launchd, Schtasks
+from liewa.scheduler import Systemd, Launchd, Schtasks
 
 class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def __init__(self, *args, obj=None, **kwargs):
@@ -109,8 +108,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     #########################Image Cmposition#########################
     def _open_yml_file(self):
         cwd = pathlib.Path(__file__).parent.resolve()
-        liewa_filename = os.path.dirname(cwd)
-        liewa_filename = os.path.join(liewa_filename,"liewa_cli","recources","gui_config.yml")
+        # liewa_filename = os.path.dirname(cwd)
+        liewa_filename = os.path.join(cwd,"recources","gui_config.yml")
         with open(liewa_filename, "r") as ymlfile:
                 cfg = yaml.load(ymlfile,Loader=yaml.Loader)
         self.parsed_config = cfg
@@ -128,8 +127,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         role = self.dialog_buttons.buttonRole(button)
         if role == QDialogButtonBox.ApplyRole:
             cwd = pathlib.Path(__file__).parent.resolve()
-            liewa = os.path.dirname(cwd)
-            liewa_cli = os.path.join(liewa,"liewa_cli","recources","gui_config.yml")
+            # liewa = os.path.dirname(cwd)
+            liewa_cli = os.path.join(cwd,"recources","gui_config.yml")
             with open(liewa_cli, 'w') as file:
                 yaml.dump(self.parsed_config, file)
             
@@ -326,14 +325,14 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.status_output.clear()
         cwd = pathlib.Path(__file__).parent.resolve()
         liewa_gui = os.path.dirname(cwd)
-        liewa_cli = os.path.join(liewa_gui,"liewa_cli","liewa-cli")
+        liewa_cli = os.path.join(liewa_gui,"cli.py")
         if self.process is None:
             self.process = QProcess()  # Keep a reference to the QProcess (e.g. on self) while it's running.
             self.process.readyReadStandardOutput.connect(self.handle_stdout)
             self.process.readyReadStandardError.connect(self.handle_stderr)
             self.process.stateChanged.connect(self.handle_state)
             self.process.finished.connect(self.process_finished)  # Clean up once complete.
-            self.process.start(liewa_cli)
+            self.process.start("python3 "+liewa_cli)
         # output = subprocess.check_output(liewa_cli)
         # self.status_output.append(output.decode('utf-8'))
 

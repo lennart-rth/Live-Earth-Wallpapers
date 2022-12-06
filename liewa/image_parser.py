@@ -1,9 +1,9 @@
 import yaml
 from PIL import Image, ImageColor, ImageOps
-from liewa_cli.apod import load_apod
-from liewa_cli.sentinel import load_sentinel
-from liewa_cli.nasa_sdo import load_sdo
-from liewa_cli.full_disks import load_geostationary
+from liewa.apod import load_apod
+from liewa.sentinel import load_sentinel
+from liewa.nasa_sdo import load_sdo
+from liewa.full_disks import load_geostationary
 
 
 def load_yaml(filename):
