@@ -333,6 +333,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.process.stateChanged.connect(self.handle_state)
             self.process.finished.connect(self.process_finished)  # Clean up once complete.
             self.process.start("python3 "+liewa_cli)
+            #todo python3 ? python?
         # output = subprocess.check_output(liewa_cli)
         # self.status_output.append(output.decode('utf-8'))
 

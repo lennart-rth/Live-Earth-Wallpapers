@@ -48,10 +48,13 @@ def main():
     file_name = os.path.join(get_project_path(),"recources","backgroundImage.png")
     save_image(img, file_name, None)
     set_background(file_name)
+    print(file_name)
 
     if args.output is not None:
         file_name = get_current_time() + ".png"
         save_image(img, args.output, file_name)
 
+def execute():
+    main()
 # if __name__ == '__main__':
 #   main()
