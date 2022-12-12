@@ -12,7 +12,7 @@ def parseArgs():
         "-c",
         "--config",
         type=str,
-        default="config1",
+        default="gui_config",
         help="The config file location"
     )
     parser.add_argument(
