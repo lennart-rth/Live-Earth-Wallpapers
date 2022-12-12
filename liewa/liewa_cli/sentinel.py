@@ -1,11 +1,13 @@
 import datetime
 import math
 
-import cv2
+import os
+# import cv2
+# os.environ.pop("QT_QPA_PLATFORM_PLUGIN_PATH")
 import numpy as np
 from PIL import Image
 
-from liewa.utils import download
+from liewa.liewa_cli.utils import download
 
 def bounding_box(latitude_in_deg, longitude_in_deg, width_in_km, height_in_km):
     width_in_m = width_in_km * 1000
@@ -59,19 +61,19 @@ def combine_url(args, satellite, time):
     return url
 
 
-def white_balance(pilImg):
-    img = np.asarray(pilImg)
-    result = cv2.cvtColor(img, cv2.COLOR_BGR2LAB)
-    avg_a = np.average(result[:, :, 1])
-    avg_b = np.average(result[:, :, 2])
-    result[:, :, 1] = result[:, :, 1] - (
-        (avg_a - 128) * (result[:, :, 0] / 255.0) * 1.1
-    )
-    result[:, :, 2] = result[:, :, 2] - (
-        (avg_b - 128) * (result[:, :, 0] / 255.0) * 1.1
-    )
-    result = cv2.cvtColor(result, cv2.COLOR_LAB2BGR)
-    return Image.fromarray(result)
+# def white_balance(pilImg):
+#     img = np.asarray(pilImg)
+#     result = cv2.cvtColor(img, cv2.COLOR_BGR2LAB)
+#     avg_a = np.average(result[:, :, 1])
+#     avg_b = np.average(result[:, :, 2])
+#     result[:, :, 1] = result[:, :, 1] - (
+#         (avg_a - 128) * (result[:, :, 0] / 255.0) * 1.1
+#     )
+#     result[:, :, 2] = result[:, :, 2] - (
+#         (avg_b - 128) * (result[:, :, 0] / 255.0) * 1.1
+#     )
+#     result = cv2.cvtColor(result, cv2.COLOR_LAB2BGR)
+#     return Image.fromarray(result)
 
 
 def load_sentinel(args):
@@ -108,5 +110,6 @@ def load_sentinel(args):
 
         bg.paste(img, (0, 0), img)
 
-    color_graded = white_balance(bg)
-    return color_graded
+    # color_graded = white_balance(bg)
+    # return color_graded
+    return bg

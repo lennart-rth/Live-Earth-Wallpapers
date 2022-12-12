@@ -1,8 +1,9 @@
 import os
 import re
 import pathlib
+import subprocess
 
-from liewa.execute_command import execute
+from liewa.liewa_gui.execute_command import execute
 
 class Systemd:
     def __init__(self):
@@ -10,64 +11,63 @@ class Systemd:
         self.timer_name = "liewa.timer"
 
     def update(self):
-        timer_output = execute(f"systemctl --user status {self.timer_name}").decode("utf-8")
-        service_output = execute(f"systemctl --user status {self.service_name}").decode("utf-8")
+        timer_cmd = f"systemctl --user status {self.timer_name}"
+        service_cmd = f"systemctl --user status {self.service_name}"
+        proc = subprocess.Popen(timer_cmd.split(), stdout=subprocess.PIPE)
+        timer_output = proc.communicate()[0].decode("utf-8")
+        proc = subprocess.Popen(service_cmd.split(), stdout=subprocess.PIPE)
+        service_output = proc.communicate()[0].decode("utf-8")
         running = False
         if re.search("(?<=Active:\s)\w*", timer_output):
             running = True
 
         return timer_output+'\n'+service_output,running
 
-
-        # password = "sudo_password"
-        # proc = subprocess.Popen(['sudo', 'systemctl', 'status', self.service_name], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        # proc.communicate(password.encode())
-        # output, errors = proc.communicate()
-        # print(output,errors)
-    
     def create_scheduler(self):
         cwd = pathlib.Path(__file__).parent.resolve()
-        # liewa_gui = os.path.dirname(cwd)
-        liewa_cli = os.path.join(cwd,"app.py")
-        
-        with open("liewa.service", "w") as f:
+        liewa_gui = os.path.dirname(cwd)
+
+        service = os.path.join(liewa_gui,"liewa.service")
+        timer = os.path.join(liewa_gui,"liewa.timer")
+
+        with open(service, "w") as f:
             f.write(f"""[Unit]
 Description=Liewa Service
-[Install]
-WantedBy=graphical.target
 [Service]
 Type=simple
-ExecStart={liewa_cli}""")
-        with open("liewa.timer", "w") as f:
+ExecStart={os.popen('which python3').read().strip()} /opt/liewa/cli_code.py
+[Install]
+WantedBy=graphical.target""")
+        with open(timer, "w") as f:
             f.write("""[Unit]
 Description=Liewa Timer
 [Timer]
 OnCalendar=*-*-* *:00:00
 OnCalendar=*-*-* *:30:00
+OnCalendar=*-*-* *:*:00
 [Install]
 WantedBy=timers.target""")
-        os.system("mkdir -p ~/.config/systemd/user/")        
-        
-        os.system(f"cp {self.service_name} ~/.config/systemd/user/")
-        os.system(f"cp {self.timer_name} ~/.config/systemd/user/")
 
-        execute(f"systemctl --user enable {self.timer_name}")
+        os.system(f"cp {service} ~/.config/systemd/user/")
+        os.system(f"cp {timer} ~/.config/systemd/user/")
+
+        os.system(f"systemctl --user enable {self.timer_name}")
         self.reload_scheduler()
-        execute(f"systemctl --user start {self.timer_name}")
-        execute(f"systemctl --user status {self.timer_name}")
+        os.system(f"systemctl --user start {self.timer_name}")
+        subprocess.Popen(f"systemctl --user status {self.timer_name}".split())
 
         # os.system(f"rm {self.service_name}") #achtubg!!!
         # os.system(f"rm {self.timer_name}")
 
     def delete_scheduler(self):
         for unit_file in [self.timer_name,self.service_name]:
-            execute(f"systemctl --user stop {unit_file}")
-            execute(f"systemctl --user disable {unit_file}")
+            os.system(f"systemctl --user stop {unit_file}")
+            os.system(f"systemctl --user disable {unit_file}")
             os.system(f"rm ~/.config/systemd/user/{unit_file}")
         self.reload_scheduler()
 
     def reload_scheduler(self):
-        execute("systemctl --user daemon-reload")
+        os.system("systemctl --user daemon-reload")
 
 
 class Launchd:

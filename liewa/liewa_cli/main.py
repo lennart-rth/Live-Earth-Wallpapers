@@ -2,9 +2,9 @@ import argparse
 import sys
 import os
 
-from liewa.utils import get_project_path, save_image, get_current_time
-from liewa.image_parser import parse_image
-from liewa.set_background import set_background
+from liewa.liewa_cli.utils import get_project_path, save_image, get_current_time
+from liewa.liewa_cli.image_parser import parse_image
+from liewa.liewa_cli.set_background import set_background
 
 def parseArgs():
     parser = argparse.ArgumentParser()
@@ -48,7 +48,6 @@ def main():
     file_name = os.path.join(get_project_path(),"recources","backgroundImage.png")
     save_image(img, file_name, None)
     set_background(file_name)
-    print(file_name)
 
     if args.output is not None:
         file_name = get_current_time() + ".png"

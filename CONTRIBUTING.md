@@ -22,11 +22,18 @@ Filter the issues for the "For Contributers" label to find them.
 
 ## Instructions for Developers
 
-### Installation
+### Building from source
 
 1. `python -m venv venv`
 2. `source env/bin/activate`
 3. `pip install -r requirements.txt`
 
-### building from source
-1. `python -m build` 
+Build for PyPi:
+1. `python -m build`
+
+Build for Linux:
+1. `pyinstaller app.spec`
+2. `./package_linux.sh`
+3. `fpm -C package -s dir -t deb -n "liewa" -v 0.1.0 -p liewa.deb`
+4. `sudo dpkg -i liewa.deb`
+Purge: `sudo dpkg -P liewa`

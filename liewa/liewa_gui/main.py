@@ -4,19 +4,20 @@ import pathlib
 import platform
 import yaml
 from PyQt5 import QtGui, QtCore, QtWidgets
-from liewa.designer_main import Ui_MainWindow
-from liewa.planet_dialog import PlanetDialog
+from liewa.liewa_gui.designer_main import Ui_MainWindow
+from liewa.liewa_gui.planet_dialog import PlanetDialog
 from PyQt5.QtWidgets import QColorDialog, QFileDialog, QDialogButtonBox, QStyle
 from PyQt5.QtGui import QBrush
 from PyQt5.QtCore import Qt, QProcess
 
-from liewa.scheduler import Systemd, Launchd, Schtasks
+from liewa.liewa_gui.scheduler import Systemd, Launchd, Schtasks
 
 class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def __init__(self, *args, obj=None, **kwargs):
         super(MainWindow, self).__init__(*args, **kwargs)
         self.setupUi(self)
 
+        self.setWindowTitle("Liewa")
         #########################Image Cmposition#########################
         
         #######Temporary DEACTIVATED!!!!########
@@ -108,11 +109,12 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     #########################Image Cmposition#########################
     def _open_yml_file(self):
         cwd = pathlib.Path(__file__).parent.resolve()
-        # liewa_filename = os.path.dirname(cwd)
-        liewa_filename = os.path.join(cwd,"recources","gui_config.yml")
+        liewa_filename = os.path.dirname(cwd)
+        liewa_filename = os.path.join(liewa_filename,"liewa_cli","recources","gui_config.yml")
         with open(liewa_filename, "r") as ymlfile:
                 cfg = yaml.load(ymlfile,Loader=yaml.Loader)
         self.parsed_config = cfg
+        self.selected_bg_color = QtGui.QColor(self.parsed_config['settings']['bg-color'])
         self.planet_list_model.clear()
 
     def open_colorpicker(self):
@@ -127,8 +129,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         role = self.dialog_buttons.buttonRole(button)
         if role == QDialogButtonBox.ApplyRole:
             cwd = pathlib.Path(__file__).parent.resolve()
-            # liewa = os.path.dirname(cwd)
-            liewa_cli = os.path.join(cwd,"recources","gui_config.yml")
+            liewa = os.path.dirname(cwd)
+            liewa_cli = os.path.join(liewa,"liewa_cli","recources","gui_config.yml")
             with open(liewa_cli, 'w') as file:
                 yaml.dump(self.parsed_config, file)
             
@@ -171,7 +173,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         
     def get_bg_img_file(self):
         fname = QFileDialog.getOpenFileName(self, 'Open file',"","Background files (*.png *.jpg)")
-        print(fname)
         return fname
 
     def save_yml(self):
@@ -307,6 +308,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             icon = self.style().standardIcon(QStyle.SP_DialogNoButton).pixmap(20,20)
             self.status_label_text.setText("Not running")
         self.status_label_color.setPixmap(icon)
+        self.status_output.clear()
         self.status_output.setPlainText(output)
 
     def create_new_scheduler(self):
@@ -325,15 +327,15 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.status_output.clear()
         cwd = pathlib.Path(__file__).parent.resolve()
         liewa_gui = os.path.dirname(cwd)
-        liewa_cli = os.path.join(liewa_gui,"cli.py")
+        liewa_gui = os.path.dirname(liewa_gui)
+        liewa_cli = os.path.join(liewa_gui,"cli_code.py")
         if self.process is None:
             self.process = QProcess()  # Keep a reference to the QProcess (e.g. on self) while it's running.
             self.process.readyReadStandardOutput.connect(self.handle_stdout)
             self.process.readyReadStandardError.connect(self.handle_stderr)
             self.process.stateChanged.connect(self.handle_state)
             self.process.finished.connect(self.process_finished)  # Clean up once complete.
-            self.process.start("python3 "+liewa_cli)
-            #todo python3 ? python?
+            self.process.start(os.popen('which python3').read().strip()+" "+liewa_cli)
         # output = subprocess.check_output(liewa_cli)
         # self.status_output.append(output.decode('utf-8'))
 
@@ -349,7 +351,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def handle_state(self, state):
         states = {
-            QProcess.NotRunning: 'Not running',
+            QProcess.NotRunning: 'Finished running',
             QProcess.Starting: 'Downloading Images...',
             QProcess.Running: 'Running...',
         }
@@ -357,11 +359,12 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.status_output.append(state_name)
 
     def process_finished(self):
-        self.status_output.append("Images loaded successfully. \n Backgroundimage changed.")
+        self.status_output.append("Images loaded successfully. \nBackgroundimage changed.")
         self.process = None
 
 def startup():
     app = QtWidgets.QApplication(sys.argv)
+    app.setWindowIcon(QtGui.QIcon(os.path.join("liewa","liewa","liewa_gui","icon.svg")))
     window = MainWindow()
     app.exec()
 
