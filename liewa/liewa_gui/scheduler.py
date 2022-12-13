@@ -3,8 +3,6 @@ import re
 import pathlib
 import subprocess
 
-from liewa.liewa_gui.execute_command import execute
-
 class Systemd:
     def __init__(self):
         self.service_name = "liewa.service"
@@ -25,17 +23,22 @@ class Systemd:
 
     def create_scheduler(self):
         cwd = pathlib.Path(__file__).parent.resolve()
-        liewa_gui = os.path.dirname(cwd)
+        zwi = os.path.dirname(cwd)
 
-        service = os.path.join(liewa_gui,"liewa.service")
-        timer = os.path.join(liewa_gui,"liewa.timer")
+        service = os.path.join(zwi,"liewa.service")
+        timer = os.path.join(zwi,"liewa.timer")
+
+        cwd = pathlib.Path(__file__).parent.resolve()
+        zwi = os.path.dirname(cwd)
+        zwi = os.path.dirname(zwi)
+        cli_dir = os.path.join(zwi,"cli_code.py")
 
         with open(service, "w") as f:
             f.write(f"""[Unit]
 Description=Liewa Service
 [Service]
 Type=simple
-ExecStart={os.popen('which python3').read().strip()} /opt/liewa/cli_code.py
+ExecStart={os.popen('which python3').read().strip()} {cli_dir}
 [Install]
 WantedBy=graphical.target""")
         with open(timer, "w") as f:

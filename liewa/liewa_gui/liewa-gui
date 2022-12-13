@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from liewa_gui.main import startup
+from liewa.liewa_gui.main import startup
 
 if __name__ == "__main__":
     startup()

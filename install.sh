@@ -1,6 +1,5 @@
 #!/bin/sh
 
-feh --bg-scale ~/Pictures/IMG_0522.jpg
 #PART1#####################
 pyinstaller --noconfirm app.spec
 #PART2#####################
