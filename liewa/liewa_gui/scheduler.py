@@ -31,7 +31,7 @@ class Systemd:
         cwd = pathlib.Path(__file__).parent.resolve()
         zwi = os.path.dirname(cwd)
         zwi = os.path.dirname(zwi)
-        cli_dir = os.path.join(zwi,"cli_code.py")
+        cli_dir = os.path.join(zwi,"cli.py")
 
         with open(service, "w") as f:
             f.write(f"""[Unit]

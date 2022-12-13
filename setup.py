@@ -40,7 +40,7 @@ setup(
     url = "https://github.com/lennart-rth/Live-Earth-Wallpapers",
     packages=find_packages(),
     # excluded = ['liewa_gui.*','liewa_cli.*']
-    py_modules=['cli_code'],
+    py_modules=['cli'],
     package_dir={'liewa': 'liewa',
                 'liewa.liewa_cli': 'liewa/liewa_cli',
                 'liewa.liewa_gui': 'liewa/liewa_gui',},

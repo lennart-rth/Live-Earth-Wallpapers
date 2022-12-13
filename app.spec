@@ -7,7 +7,7 @@ a = Analysis(
     ['app.py'],
     pathex=[],
     binaries=[],
-    datas=[('liewa','liewa'),('cli','.'),('cli_code.py','.'),('app.py','.')],     #('liewa/liewa_gui/icon.svg','liewa/liewa_gui'),('liewa/liewa.service','liewa'),('liewa/liewa.timer','liewa')
+    datas=[('liewa','liewa'),('cli.py','.'),('app.py','.')],     #('liewa/liewa_gui/icon.svg','liewa/liewa_gui'),('liewa/liewa.service','liewa'),('liewa/liewa.timer','liewa')
     hiddenimports=[],
     hookspath=[],
     hooksconfig={},

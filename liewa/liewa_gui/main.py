@@ -328,7 +328,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         cwd = pathlib.Path(__file__).parent.resolve()
         liewa_gui = os.path.dirname(cwd)
         liewa_gui = os.path.dirname(liewa_gui)
-        liewa_cli = os.path.join(liewa_gui,"cli_code.py")
+        liewa_cli = os.path.join(liewa_gui,"cli.py")
         if self.process is None:
             self.process = QProcess()  # Keep a reference to the QProcess (e.g. on self) while it's running.
             self.process.readyReadStandardOutput.connect(self.handle_stdout)

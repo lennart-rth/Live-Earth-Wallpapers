@@ -7,8 +7,7 @@ pyinstaller --noconfirm app.spec
 [ -e package ] && rm -r package
 
 chmod 755 app.py
-chmod 755 cli
-chmod 755 cli_code.py
+chmod 755 cli.py
 
 mkdir -p package/opt
 mkdir -p package/usr/share/applications
@@ -29,8 +28,7 @@ chmod 777 package/opt/liewa/liewa/liewa.service
 chmod 777 package/opt/liewa/liewa/liewa.timer
 chmod 777 package/opt/liewa/app
 chmod 777 package/opt/liewa/app.py
-chmod 777 package/opt/liewa/cli
-chmod 777 package/opt/liewa/cli_code.py
+chmod 777 package/opt/liewa/cli.py
 
 chmod +x package/opt/liewa/app
 
