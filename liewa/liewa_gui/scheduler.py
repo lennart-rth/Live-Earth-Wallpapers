@@ -2,6 +2,7 @@ import os
 import re
 import pathlib
 import subprocess
+import time
 
 class Systemd:
     def __init__(self):
@@ -94,27 +95,28 @@ class Launchd:
 
 class Schtasks:
     def __init__(self):
-        self.service_name = "liewa.service"
-        self.timer_name = "liewa.timer"
         self.update()
     
     def update(self):
-        pass
+        cmd = 'schtasks /Query /tn "liewa"'
+        proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, shell=True)
+        output,err = proc.communicate()
+        running = False
+        if re.search("Bereit", output.decode("ISO-8859-1")):
+            running = True
+
+        return output.decode("ISO-8859-1"), running
 
     def create_scheduler(self):
-        pass
+        cwd = pathlib.Path(__file__).parent.resolve()
+        zwi = os.path.dirname(cwd)
+        zwi = os.path.dirname(zwi)
+        cli_dir = os.path.join(zwi,"cli.vbs")
+        os.system(f'schtasks /Create /sc minute /mo 30 /tn "liewa" /tr "{cli_dir}" /f')
+        time.sleep(4)
 
     def delete_scheduler(self):
-        pass
+        os.system('schtasks /Delete /tn "liewa" /f')
 
     def reload_scheduler(self):
-        pass
-
-# if __name__ == '__main__':
-#     scheduler = Systemd()
-#     scheduler.create_scheduler()
-    # scheduler.delete_scheduler()
-    # scheduler.reload_schedluer()
-    # scheduler.test_now()
-    # scheduler.update()
-
+        os.system('schtasks /Run /tn "liewa"')

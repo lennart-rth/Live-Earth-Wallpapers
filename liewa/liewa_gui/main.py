@@ -1,5 +1,6 @@
 import sys
 import os
+import subprocess
 import pathlib
 import platform
 import yaml
@@ -324,20 +325,37 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.update_status()
 
     def test_now(self):
-        self.status_output.clear()
-        cwd = pathlib.Path(__file__).parent.resolve()
-        liewa_gui = os.path.dirname(cwd)
-        liewa_gui = os.path.dirname(liewa_gui)
-        liewa_cli = os.path.join(liewa_gui,"cli.py")
-        if self.process is None:
-            self.process = QProcess()  # Keep a reference to the QProcess (e.g. on self) while it's running.
-            self.process.readyReadStandardOutput.connect(self.handle_stdout)
-            self.process.readyReadStandardError.connect(self.handle_stderr)
-            self.process.stateChanged.connect(self.handle_state)
-            self.process.finished.connect(self.process_finished)  # Clean up once complete.
-            self.process.start(os.popen('which python3').read().strip()+" "+liewa_cli)
-        # output = subprocess.check_output(liewa_cli)
-        # self.status_output.append(output.decode('utf-8'))
+        system = platform.system()
+        if system == "Windows":
+            self.status_output.clear()
+            self.status_output.setPlainText("Downloading Images...")
+            QtGui.QGuiApplication.processEvents() #update gui for pyqt
+            cwd = pathlib.Path(__file__).parent.resolve()
+            liewa_gui = os.path.dirname(cwd)
+            liewa_gui = os.path.dirname(liewa_gui)
+            liewa_cli = os.path.join(liewa_gui,"cli.py")
+            print(liewa_cli)
+            output = subprocess.check_output("python "+liewa_cli)
+            self.status_output.setPlainText(output.decode())
+            
+
+        elif system == "Linux":
+            self.status_output.clear()
+            cwd = pathlib.Path(__file__).parent.resolve()
+            liewa_gui = os.path.dirname(cwd)
+            liewa_gui = os.path.dirname(liewa_gui)
+            liewa_cli = os.path.join(liewa_gui,"cli.py")
+            if self.process is None:
+                self.process = QProcess()  # Keep a reference to the QProcess (e.g. on self) while it's running.
+                self.process.readyReadStandardOutput.connect(self.handle_stdout)
+                self.process.readyReadStandardError.connect(self.handle_stderr)
+                self.process.stateChanged.connect(self.handle_state)
+                self.process.finished.connect(self.process_finished)  # Clean up once complete.
+                self.process.start(os.popen('which python3').read().strip()+" "+liewa_cli)
+            # output = subprocess.check_output(liewa_cli)
+            # self.status_output.append(output.decode('utf-8'))
+        elif system == "Darwin":
+            pass
 
     def handle_stderr(self):
         data = self.process.readAllStandardError()
