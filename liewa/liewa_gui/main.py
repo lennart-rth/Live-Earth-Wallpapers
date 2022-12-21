@@ -382,7 +382,13 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
 def startup():
     app = QtWidgets.QApplication(sys.argv)
-    app.setWindowIcon(QtGui.QIcon(os.path.join("liewa","liewa","liewa_gui","icon.svg")))
+    system = platform.system()
+    if system == "Windows":
+        app.setWindowIcon(QtGui.QIcon(os.path.join(".","liewa","liewa_gui","icon.svg")))
+    elif system == "Linux":
+        app.setWindowIcon(QtGui.QIcon(os.path.join("liewa","liewa","liewa_gui","icon.svg")))
+    elif system == "Darwin":
+        pass
     window = MainWindow()
     app.exec()
 

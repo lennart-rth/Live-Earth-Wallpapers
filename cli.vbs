@@ -1,4 +1,7 @@
-Dim WinScriptHost
-Set WinScriptHost = CreateObject("WScript.Shell")
-WinScriptHost.Run Chr(34) & "C:\Users\Michael\Live-Earth-Wallpapers\cli.bat" & Chr(34), 0
-Set WinScriptHost = Nothing
+Set objShell = CreateObject("Wscript.Shell")
+strPath = Wscript.ScriptFullName
+Set objFSO = CreateObject("Scripting.FileSystemObject")
+Set objFile = objFSO.GetFile(strPath)
+strFolder = objFSO.GetParentFolderName(objFile) 
+strPath = strFolder & "\cli.bat"
+objShell.Run strPath,0,True

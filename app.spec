@@ -7,7 +7,7 @@ a = Analysis(
     ['app.py'],
     pathex=[],
     binaries=[],
-    datas=[('liewa','liewa'),('cli.py','.'),('app.py','.')],     #('liewa/liewa_gui/icon.svg','liewa/liewa_gui'),('liewa/liewa.service','liewa'),('liewa/liewa.timer','liewa')
+    datas=[('liewa','liewa'),('cli.py','.'),('app.py','.'),('cli.bat','.'),('cli.vbs','.')],
     hiddenimports=[],
     hookspath=[],
     hooksconfig={},
@@ -30,12 +30,13 @@ exe = EXE(
     bootloader_ignore_signals=False,
     strip=False,
     upx=True,
-    console=True,
+    console=False,
     disable_windowed_traceback=False,
     argv_emulation=False,
     target_arch=None,
     codesign_identity=None,
     entitlements_file=None,
+    icon='icon.ico'
 )
 coll = COLLECT(
     exe,

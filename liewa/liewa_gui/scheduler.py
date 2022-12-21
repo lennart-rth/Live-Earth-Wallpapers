@@ -113,7 +113,7 @@ class Schtasks:
         zwi = os.path.dirname(zwi)
         cli_dir = os.path.join(zwi,"cli.vbs")
         os.system(f'schtasks /Create /sc minute /mo 30 /tn "liewa" /tr "{cli_dir}" /f')
-        time.sleep(4)
+        time.sleep(0.5)
 
     def delete_scheduler(self):
         os.system('schtasks /Delete /tn "liewa" /f')
