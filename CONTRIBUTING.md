@@ -40,5 +40,5 @@ uninstall: `sudo dpkg -P liewa`
 
 Windows;
 build: `pyinstaller app.spec`
-compile: Compile the winCompiler.iss file with the ![Inno Software](https://jrsoftware.org/isinfo.php).
+compile: Compile the winCompiler.iss file with the [Inno Software](https://jrsoftware.org/isinfo.php).
 install: Execute `liewaInstaller.exe`

@@ -2,7 +2,7 @@ import os
 import re
 import pathlib
 import subprocess
-import time
+import xml.etree.ElementTree as ET
 
 class Systemd:
     def __init__(self):
@@ -95,6 +95,18 @@ class Launchd:
 
 class Schtasks:
     def __init__(self):
+        #cwd = pathlib.Path(__file__).parent.resolve()
+        #zwi = os.path.dirname(cwd)
+        #zwi = os.path.dirname(zwi)
+        #filename = os.path.join(zwi,'liewaSchtask.xml')
+        #ET.register_namespace("", "http://schemas.microsoft.com/windows/2004/02/mit/task")
+        #tree = ET.parse(filename)
+        #root = tree.getroot()
+        #node = root[4][0][0]            #get the Command Node
+        #node.text = os.path.join(zwi,"cli.vbs")
+        #author = root[0][1]
+        #author.text = str(os.environ['COMPUTERNAME'])+"\\"+ str(os.getlogin())
+        #tree.write(os.path.join(zwi,'liewaSchtask.xml'))
         self.update()
     
     def update(self):
@@ -113,10 +125,14 @@ class Schtasks:
         zwi = os.path.dirname(zwi)
         cli_dir = os.path.join(zwi,"cli.vbs")
         os.system(f'schtasks /Create /sc minute /mo 30 /tn "liewa" /tr "{cli_dir}" /f')
-        time.sleep(0.5)
+        #os.system(f'schtasks /create /tn liewa /xml liewaSchtask.xml')
 
     def delete_scheduler(self):
         os.system('schtasks /Delete /tn "liewa" /f')
 
     def reload_scheduler(self):
         os.system('schtasks /Run /tn "liewa"')
+
+
+if __name__ == "__main__":
+    taks = Schtasks()
