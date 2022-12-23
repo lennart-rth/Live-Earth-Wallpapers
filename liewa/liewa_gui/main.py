@@ -103,6 +103,10 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
         self.update_status()
 
+        self.timer = QtCore.QTimer()
+        self.timer.timeout.connect(self.update_status)
+        self.timer.setInterval(5000)
+        self.timer.start()
 
         self.tabWidget.setCurrentIndex(0)
         self.show()
@@ -355,7 +359,20 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             # output = subprocess.check_output(liewa_cli)
             # self.status_output.append(output.decode('utf-8'))
         elif system == "Darwin":
-            pass
+            self.status_output.clear()
+            cwd = pathlib.Path(__file__).parent.resolve()
+            liewa_gui = os.path.dirname(cwd)
+            liewa_gui = os.path.dirname(liewa_gui)
+            liewa_cli = os.path.join(liewa_gui,"cli.py")
+            if self.process is None:
+                self.process = QProcess()  # Keep a reference to the QProcess (e.g. on self) while it's running.
+                self.process.readyReadStandardOutput.connect(self.handle_stdout)
+                self.process.readyReadStandardError.connect(self.handle_stderr)
+                self.process.stateChanged.connect(self.handle_state)
+                self.process.finished.connect(self.process_finished)  # Clean up once complete.
+                self.process.start(os.popen('which python3').read().strip()+" "+liewa_cli)
+            # output = subprocess.check_output(liewa_cli)
+            # self.status_output.append(output.decode('utf-8'))
 
     def handle_stderr(self):
         data = self.process.readAllStandardError()

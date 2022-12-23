@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-import PyQt5
 import numpy
 import bs4
 import os

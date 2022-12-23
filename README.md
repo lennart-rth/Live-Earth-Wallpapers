@@ -51,6 +51,8 @@ Supports all known **geostationary** satellites, high resolution **sentinel** im
 2. Execute `sudo dpkg -i liewa.deb`.
 
 ### MacOS
+1. Download the `liewa.dmg` drive from the [Releases Page](https://github.com/lennart-rth/Live-Earth-Wallpapers/releases).
+2. Drag and Drop the liewa software into the Program Folders.
 
 ### For detailed userguide, read the [wiki page](https://github.com/lennart-rth/Live-Earth-Wallpapers/wiki).
 

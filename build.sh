@@ -26,7 +26,7 @@ find package/usr/share -type f -exec chmod 644 -- {} +
 chmod -R 777 package/opt/liewa/liewa/liewa_cli/recources/
 chmod 777 package/opt/liewa/liewa/liewa.service
 chmod 777 package/opt/liewa/liewa/liewa.timer
-chmod 777 package/opt/liewa/app
+chmod 777 package/opt/liewa/liewa
 chmod 777 package/opt/liewa/app.py
 chmod 777 package/opt/liewa/cli.py
 

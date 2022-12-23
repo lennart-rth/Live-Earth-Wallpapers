@@ -3,11 +3,12 @@
 
 block_cipher = None
 
+
 a = Analysis(
     ['app.py'],
     pathex=[],
     binaries=[],
-    datas=[('liewa','liewa'),('cli.py','.'),('app.py','.'),('cli.bat','.'),('cli.vbs','.')],
+    datas=[('liewa','.'),('cli.py','.'),('app.py','.'),('cli.bat','.'),('cli.vbs','.'),('com.liewa.daemon.plist','.')],
     hiddenimports=['beautifulsoup4','Pillow','requests'],
     hookspath=[],
     hooksconfig={},
@@ -25,7 +26,7 @@ exe = EXE(
     a.scripts,
     [],
     exclude_binaries=True,
-    name='app',
+    name='liewa',
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,
@@ -46,5 +47,11 @@ coll = COLLECT(
     strip=False,
     upx=True,
     upx_exclude=[],
-    name='app',
+    name='liewa',
+)
+app = BUNDLE(
+    coll,
+    name='liewa.app',
+    icon='icon.ico',
+    bundle_identifier=None,
 )

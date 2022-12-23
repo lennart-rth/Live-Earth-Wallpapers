@@ -38,7 +38,12 @@ build: `./build.sh`
 install: `sudo dpkg -i liewa.deb` 
 uninstall: `sudo dpkg -P liewa`
 
-Windows;
+Windows:
 build: `pyinstaller app.spec`
 compile: Compile the winCompiler.iss file with the [Inno Software](https://jrsoftware.org/isinfo.php).
 install: Execute `liewaInstaller.exe`
+
+MacOS:
+build: `pyinstaller app.spec`
+build dmg: `./builddmg.sh`
+install by drag and drop from dmg

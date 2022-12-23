@@ -1,5 +1,6 @@
 import os
 import re
+import subprocess
 import pathlib
 import subprocess
 import xml.etree.ElementTree as ET
@@ -76,21 +77,50 @@ WantedBy=timers.target""")
 
 class Launchd:
     def __init__(self):
-        self.service_name = "liewa.service"
-        self.timer_name = "liewa.timer"
+        cwd = pathlib.Path(__file__).parent.resolve()
+        zwi = os.path.dirname(cwd)
+        zwi = os.path.dirname(zwi)
+        self.plist_path = os.path.join(zwi,"com.liewa.daemon.plist")
+        if not os.path.exists(os.path.join(zwi,'stderr.log')) : open(os.path.join(zwi,'stderr.log'), 'a').close()
+        if not os.path.exists(os.path.join(zwi,'stdout.log')) : open(os.path.join(zwi,'stdout.log'), 'a').close()
         self.update()
     
     def update(self):
-        pass
+        cwd = pathlib.Path(__file__).parent.resolve()
+        zwi = os.path.dirname(cwd)
+        zwi = os.path.dirname(zwi)
+        out = os.path.join(zwi,"stdout.log")
+        with open(out,"r+") as f:
+            out_lines = f.readlines()
+        print(" ".join(out_lines))
+        with open(out,"w") as f:
+            f.seek(0)
+            f.truncate()
+        out = os.path.join(zwi,"stderr.log")
+        with open(out,"r+") as f:
+            err_lines = f.readlines()
+        print(" ".join(err_lines))
+        with open(out,"w") as f:
+            f.seek(0)
+            f.truncate()
+        
+        if len(" ".join(err_lines)) >= 5:
+            return "Error occurred!\n\n"+" ".join(err_lines) + "\n\nError occurred!", True
+        
+        if len(" ".join(out_lines)) >= 5:
+            return "Success!\n\n"+" ".join(out_lines) + "\n\nSuccess!", True
+        
+        return " ".join(err_lines) + " ".join(out_lines), True
 
     def create_scheduler(self):
-        pass
+        subprocess.run(f"launchctl load {self.plist_path}",shell=True)
 
     def delete_scheduler(self):
-        pass
+        subprocess.run(f"launchctl unload {self.plist_path}",shell=True)
 
     def reload_scheduler(self):
-        pass
+        subprocess.run(f"launchctl start {self.plist_path}",shell=True)
+
 
 
 class Schtasks:

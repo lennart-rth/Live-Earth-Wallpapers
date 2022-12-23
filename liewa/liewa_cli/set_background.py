@@ -78,6 +78,7 @@ def set_background(file_name):
                 'end tell'
             ]
         ,timeout=10)
+        os.system('killall Dock')
     elif system == "Linux":
         try:
             if check_for_program("feh"):
