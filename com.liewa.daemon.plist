@@ -13,10 +13,10 @@
     <integer>30</integer>
 
     <key>StandardErrorPath</key>
-    <string>/Users/macbook/Documents/Live-Earth-Wallpapers/dist/app/stderr.log</string>
+    <string>/Users/macbook/Documents/Live-Earth-Wallpapers/dist/app.app/stderr.log</string>
 
     <key>StandardOutPath</key>
-    <string>/Users/macbook/Documents/Live-Earth-Wallpapers/dist/app/stdout.log</string>
+    <string>/Users/macbook/Documents/Live-Earth-Wallpapers/dist/app.app/stdout.log</string>
 
     <key>EnvironmentVariables</key>
     <dict>
@@ -30,7 +30,7 @@
     <key>ProgramArguments</key>
     <array>
       <string>/Users/macbook/Documents/Live-Earth-Wallpapers/venv/bin/python</string>
-      <string>/Users/macbook/Documents/Live-Earth-Wallpapers/dist/app/cli.py</string>
+      <string>/Users/macbook/Documents/Live-Earth-Wallpapers/dist/app.app/Contents/MacOS/cli.py</string>
     </array>
 
   </dict>

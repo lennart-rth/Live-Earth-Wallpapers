@@ -15,7 +15,7 @@ def OSdependentReqs():
                 "PyYAML",
                 "requests",
                 "PyQt5",
-                "pywin32"]
+                "pywin32",]
     else:
         return ["beautifulsoup4",
                 "Pillow", 

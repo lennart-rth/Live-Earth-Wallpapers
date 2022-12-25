@@ -313,8 +313,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             icon = self.style().standardIcon(QStyle.SP_DialogNoButton).pixmap(20,20)
             self.status_label_text.setText("Not running")
         self.status_label_color.setPixmap(icon)
-        self.status_output.clear()
-        self.status_output.setPlainText(output)
+        if len(output) >= 5:
+            self.status_output.clear()
+            self.status_output.setPlainText(output)
 
     def create_new_scheduler(self):
         self.scheduler.create_scheduler()

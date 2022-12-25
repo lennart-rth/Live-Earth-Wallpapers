@@ -5,6 +5,7 @@ import pathlib
 import subprocess
 import xml.etree.ElementTree as ET
 
+
 class Systemd:
     def __init__(self):
         self.service_name = "liewa.service"
@@ -83,7 +84,58 @@ class Launchd:
         self.plist_path = os.path.join(zwi,"com.liewa.daemon.plist")
         if not os.path.exists(os.path.join(zwi,'stderr.log')) : open(os.path.join(zwi,'stderr.log'), 'a').close()
         if not os.path.exists(os.path.join(zwi,'stdout.log')) : open(os.path.join(zwi,'stdout.log'), 'a').close()
+        error_log_path = os.path.join(zwi,"stderr.log")
+        out_log_path = os.path.join(zwi,"stdout.log")
+        working_dir_path = zwi
+        python_interpreter_path = os.popen("which python3").read().strip()
+        cli_path = os.path.join(zwi,"cli.py")
+
+        with open(self.plist_path,"w") as f:
+            f.write(f"""<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+  <dict>
+
+    <key>Label</key>
+    <string>com.liewa.daemon.plist</string>
+
+    <key>RunAtLoad</key>
+    <true/>
+
+    <key>StartInterval</key>
+    <integer>1800</integer>
+
+    <key>StandardErrorPath</key>
+    <string>{error_log_path}</string>
+
+    <key>StandardOutPath</key>
+    <string>{out_log_path}</string>
+
+    <key>EnvironmentVariables</key>
+    <dict>
+      <key>PATH</key>
+      <string><![CDATA[/usr/local/bin:/usr/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin]]></string>
+    </dict>
+
+    <key>WorkingDirectory</key>
+    <string>{working_dir_path}</string>
+
+    <key>ProgramArguments</key>
+    <array>
+      <string>{python_interpreter_path}</string>
+      <string>{cli_path}</string>
+    </array>
+
+  </dict>
+</plist>""")
         self.update()
+
+    def get_node(self,tree,name):
+        for _,node in tree:
+            if node.text == name:
+                break
+        print(next(tree)[1].text)
+        return next(tree)[1]
     
     def update(self):
         cwd = pathlib.Path(__file__).parent.resolve()

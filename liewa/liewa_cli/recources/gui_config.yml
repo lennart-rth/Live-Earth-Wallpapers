@@ -1,6 +1,6 @@
 planets:
   goes-16:
-    color: geocolor
+    color: natural_color
     size: 900
     x: 910
     y: 540
