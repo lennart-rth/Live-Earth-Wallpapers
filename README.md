@@ -31,37 +31,31 @@ Supports all known **geostationary** satellites, high resolution **sentinel** im
 <!-- ![alt text](examples/apod-cover.png) -->
 ![](https://github.com/lennart-rth/Live-Earth-Wallpapers/blob/main/examples/apod-cover.png)
 *Example Output for astronomy picture of the day feed (apod)(2022 November 15).*
-### Build images to your needs by writing your own config.yml file.
+### Build images to your needs by writing your own config.yml file or using the GUI.
 ### Read more on the [Wiki Page](https://github.com/lennart-rth/Live-Earth-Wallpapers/wiki).
-### You can present your creations in the [Discussions Page](https://github.com/lennart-rth/Live-Earth-Wallpapers/discussions/) under "Show and tell"
-
 ***
 ## Installation
-1. `pip install liewa`
-2. Run the program routinely\
-*Note: this is only temporary and will be replaced with automatic systemd installation.*
-  * **For Linux, Mac:**
-    * Run `execute `env | grep -i display` to find your exact DISPLAY name. (probably :0 or :0.0)` To find your Display Name.
-    * Paste this into a file called `run_script.py`: 
-    ```
-    from liewa import __main__
-    __main__.main()
-    ```
-    * Paste  `*/30 * * * * DISPLAY=:{your display name from 1.} python3 path/to/your/run_script.py` in your crontab file. You can open the file with `crontab -e`. This will execute the background change every 30 min.
-    * Paste  `@reboot liewa` in your crontab file. You can open the file with `crontab -e`. This will execute execute the background change on startup.\
-  * **For Windows:**
-    * Set a Taks with Windows Task-Scheduler to execute a `run_script.bat` file (Set this as Programm `C:\\path\to\folder\run_script.bat`). Content of the File:
-    ```
-    @echo off
-    START /wait /B liewa -c C:\\Users\ab\Desktop\config_mama.yml
-    ```
-3. customize the image composition by writing your own `config.yml` file or using the preinstalled. (See [Usage](#Usage))
 
-**Make sure that the pip directory for packages is in the system Path Variable!**\
-If not see tutorials for [Unix](https://linuxhint.com/add-path-permanently-linux/) or [Windows](https://www.computerhope.com/issues/ch000549.htm).\
-*Test the installation with `liewa`. Your background should have changed.*
+**You need Python installed and added to your System-path-variable!**
 
-***
+### Using PyPi (Linux,MacOs)
+1. Install liewa-software from [pypi Package]()
+2. execute command line Interface by `liewa-cli` or the Gui by `liewa-gui`.
+
+### Windows
+1. Download the `liewaInstaller.exe` from [Releases Page](https://github.com/lennart-rth/Live-Earth-Wallpapers/releases) and execute the GUI.
+2. If the desktopimage hasn´t changed, take a look at the [Known bugs](##Known-Bugs) section.
+
+### Linux
+1. Download the `liewa.deb` file from [Releases Page](https://github.com/lennart-rth/Live-Earth-Wallpapers/releases).
+2. Execute `sudo dpkg -i liewa.deb`.
+
+### MacOS
+1. Download the `liewa.dmg` drive from the [Releases Page](https://github.com/lennart-rth/Live-Earth-Wallpapers/releases).
+2. Drag and Drop the liewa software into the Program Folders.
+
+### For detailed userguide, read the [wiki page](https://github.com/lennart-rth/Live-Earth-Wallpapers/wiki).
+
 ## Usage
 ### Script Parameters:
 | short | long     | type   | default                              | help                                                                 |
@@ -77,3 +71,10 @@ Read the [Wiki](https://github.com/lennart-rth/Live-Earth-Wallpapers/wiki) for a
 1. Read the [Contributing](CONTRIBUTING.md) Readme.
 2. Filter Discussions by "For Contributers" Label to find topics to work on.
 3. Feel free to add your own ideas, features or open a Discussion in the Discussions tab.
+
+## Known Bugs
+### Pypi
+1. If `liewa-cli` or `liewa-gui` is not known, add python pip itepackages to system PATH.
+### Windows
+1. On some Systems the Taskscheduler cant automaticly be set to execute the Programm even when the cimputer is in Battery mode. Therefore you have to manualy unchek this flag in the TaskScheduler for the `liewa` Task.
+2. On some Systems the python Packages need to be manualy installed. Do so by typing `pip install bs4 pillow pyyaml requests` into CMD.

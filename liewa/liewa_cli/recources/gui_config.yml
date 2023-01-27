@@ -1,0 +1,10 @@
+planets:
+  goes-16:
+    color: natural_color
+    size: 900
+    x: 910
+    y: 540
+settings:
+  bg-color: '#000000'
+  height: 1080
+  width: 1920

@@ -22,11 +22,28 @@ Filter the Discussions or Issues for the "For Contributers" label to find them.
 
 ## Instructions for Developers
 
-### Installation
+### Building from source
 
 1. `python -m venv venv`
 2. `source env/bin/activate`
 3. `pip install -r requirements.txt`
 
-### building from source
-1. `python -m build` 
+PyPi:
+build: `python -m build`
+install: `pip install liewa`
+uninstall: `pip uninstall liewa`
+
+Linux:
+build: `./build.sh`
+install: `sudo dpkg -i liewa.deb` 
+uninstall: `sudo dpkg -P liewa`
+
+Windows:
+build: `pyinstaller app.spec`
+compile: Compile the winCompiler.iss file with the [Inno Software](https://jrsoftware.org/isinfo.php).
+install: Execute `liewaInstaller.exe`
+
+MacOS:
+build: `pyinstaller app.spec`
+build dmg: `./builddmg.sh`
+install by drag and drop from dmg

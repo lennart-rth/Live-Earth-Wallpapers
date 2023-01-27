@@ -1,1 +1,4 @@
-include liewa/recources/*.yml
+include liewa/liewa_cli/recources/*.yml
+include liewa/liewa_cli/liewa-cli
+include liewa/liewa_gui/liewa-gui
+include liewa/liewa_gui/icon.svg

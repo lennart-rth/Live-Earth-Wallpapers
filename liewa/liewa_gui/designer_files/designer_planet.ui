@@ -1,0 +1,395 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Dialog</class>
+ <widget class="QDialog" name="Dialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>276</width>
+    <height>422</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>0</width>
+    <height>0</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>Dialog</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QLabel" name="satellite_label">
+       <property name="font">
+        <font>
+         <pointsize>12</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
+         <underline>true</underline>
+        </font>
+       </property>
+       <property name="text">
+        <string>Satellite:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="satellite_selector">
+       <item>
+        <property name="text">
+         <string>goes-16</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>goes-17</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>goes-18</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>meteosat-9</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>meteosat-11</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>himawari</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>sdo</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>sentinel</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>apod</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="x_layout">
+     <item>
+      <widget class="QLabel" name="x_label">
+       <property name="text">
+        <string>x:</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QSpinBox" name="x_input">
+       <property name="minimum">
+        <number>-9999</number>
+       </property>
+       <property name="maximum">
+        <number>9999</number>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="y_layout">
+     <item>
+      <widget class="QLabel" name="y_label">
+       <property name="text">
+        <string>y:</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QSpinBox" name="y_input">
+       <property name="minimum">
+        <number>-9999</number>
+       </property>
+       <property name="maximum">
+        <number>9999</number>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="width_layout">
+     <item>
+      <widget class="QLabel" name="width_label">
+       <property name="text">
+        <string>width:</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QSpinBox" name="width_input">
+       <property name="maximum">
+        <number>9999</number>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="height_layout">
+     <item>
+      <widget class="QLabel" name="height_label">
+       <property name="text">
+        <string>height:</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QSpinBox" name="height_input">
+       <property name="maximum">
+        <number>9999</number>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="sizelayout">
+     <item>
+      <widget class="QLabel" name="size_label">
+       <property name="text">
+        <string>size:</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QSpinBox" name="size_input">
+       <property name="maximum">
+        <number>9999</number>
+       </property>
+       <property name="value">
+        <number>400</number>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="scale_layout">
+     <item>
+      <widget class="QLabel" name="scale_label">
+       <property name="text">
+        <string>scale:</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QSpinBox" name="scale_input">
+       <property name="maximum">
+        <number>999999</number>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="laytitude_layout">
+     <item>
+      <widget class="QLabel" name="latitude_label">
+       <property name="text">
+        <string>latitude:</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QDoubleSpinBox" name="latitude_input">
+       <property name="decimals">
+        <number>6</number>
+       </property>
+       <property name="maximum">
+        <double>999999.000000000000000</double>
+       </property>
+       <property name="value">
+        <double>20.000000000000000</double>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="longitude_layout">
+     <item>
+      <widget class="QLabel" name="longitude_label">
+       <property name="text">
+        <string>longitude:</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QDoubleSpinBox" name="longitude_input">
+       <property name="decimals">
+        <number>6</number>
+       </property>
+       <property name="maximum">
+        <double>9999999.000000000000000</double>
+       </property>
+       <property name="value">
+        <double>9.000000000000000</double>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="color_layout">
+     <item>
+      <widget class="QLabel" name="color_label">
+       <property name="text">
+        <string>color:</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="color_input">
+       <item>
+        <property name="text">
+         <string>natural_color</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>geocolor</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="bandwidth_layout">
+     <item>
+      <widget class="QLabel" name="bandwidth_label">
+       <property name="text">
+        <string>bandwidth:</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="bandwidth_input">
+       <item>
+        <property name="text">
+         <string>0171</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>0171pfss</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>0304</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>0304pfss</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>HMIIC</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="fit_layout">
+     <item>
+      <widget class="QLabel" name="fit_label">
+       <property name="text">
+        <string>fit:</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="fit_input">
+       <item>
+        <property name="text">
+         <string>fill</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>contain</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>coer</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QDialogButtonBox" name="dialog_buttons">
+     <property name="standardButtons">
+      <set>QDialogButtonBox::Apply|QDialogButtonBox::Cancel</set>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

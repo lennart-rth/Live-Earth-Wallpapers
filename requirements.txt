@@ -1,7 +1,5 @@
 beautifulsoup4==4.11.1
-numpy==1.23.4
-opencv_python==4.6.0.66
 Pillow==9.3.0
 PyYAML==6.0
 requests==2.28.1
-win32gui==221.6
+setuptools==65.5.0

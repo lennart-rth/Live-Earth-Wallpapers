@@ -8,18 +8,22 @@ def read(fname):
 def OSdependentReqs():
     system = platform.system()
     if system == 'Windows':
-        return ["Pillow", 
+        return ["beautifulsoup4",
+                "Pillow", 
                 "numpy", 
                 "opencv_python", 
                 "PyYAML",
                 "requests",
-                "win32gui;platform_system=='Linux'"]
+                "PyQt5",
+                "pywin32",]
     else:
-        return ["Pillow", 
+        return ["beautifulsoup4",
+                "Pillow", 
                 "numpy", 
                 "opencv_python", 
                 "PyYAML",
-                "requests"]
+                "requests",
+                "PyQt5"]
 
 # read the contents of your README file
 from pathlib import Path
@@ -28,19 +32,27 @@ long_description = (this_directory / "README.md").read_text()
 
 setup(
     name = "liewa",
-    version = "2.1",
+    version = "2.6",
     author = "lennart-rth",
     description = "Generate synthetic background images with near real time satellite images.",
     license = "GNU",
     keywords =  "Desktop Backgroundimage Satellite Live Earth meteosat himawari goes Space Images",
     url = "https://github.com/lennart-rth/Live-Earth-Wallpapers",
     packages=find_packages(),
-    package_dir={'liewa': 'liewa'},
-    package_data={'liewa': ['recources/*.yml']},
+    # excluded = ['liewa_gui.*','liewa_cli.*']
+    py_modules=['cli'],
+    package_dir={'liewa': 'liewa',
+                'liewa.liewa_cli': 'liewa/liewa_cli',
+                'liewa.liewa_gui': 'liewa/liewa_gui',},
+    package_data={
+        "liewa": ["liewa_cli/recources/*.yml","liewa_gui/icon.svg"],
+    },
+    # package_data={'liewa': [os.path.join('recources','*.yml'),'liewa-cli','liewa_gui': ['liewa-gui']]},
     long_description=long_description,
     long_description_content_type='text/markdown',
     install_requires=OSdependentReqs(),
-    entry_points = {'console_scripts': ['liewa=liewa.__main__:main'],},
+    scripts=[os.path.join('liewa','liewa_cli','liewa-cli'),os.path.join('liewa','liewa_gui','liewa-gui')],
+    # entry_points = {'console_scripts': ['liewa-gui=liewa.liewa_gui.'],},
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
