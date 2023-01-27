@@ -20,14 +20,14 @@ Supports all known **geostationary** satellites, high resolution **sentinel** im
 ![](https://github.com/lennart-rth/Live-Earth-Wallpapers/blob/main/examples/config3.png)
 *Example Output of the config3.yml file. Use this by passing config3 to -o flag.*
 <!-- ![alt text](examples/caribic.png) -->
-![](https://github.com/lennart-rth/Live-Earth-Wallpapers/blob/main/examples/caribic.png)
-*Example Output of the Sentinel satellite. Learn how to generate custom images for your location at the [Wiki Page](https://github.com/lennart-rth/Live-Earth-Wallpapers/wiki)*
+<!-- ![](https://github.com/lennart-rth/Live-Earth-Wallpapers/blob/main/examples/caribic.png)
+*Example Output of the Sentinel satellite. Learn how to generate custom images for your location at the [Wiki Page](https://github.com/lennart-rth/Live-Earth-Wallpapers/wiki)* -->
 <!-- ![alt text](examples/arctic.png) -->
-![](https://github.com/lennart-rth/Live-Earth-Wallpapers/blob/main/examples/arctic.png)
-*Example Output of the Sentinel satellite. Learn how to generate custom images for your location at the [Wiki Page](https://github.com/lennart-rth/Live-Earth-Wallpapers/wiki)*
+<!-- ![](https://github.com/lennart-rth/Live-Earth-Wallpapers/blob/main/examples/arctic.png)
+*Example Output of the Sentinel satellite. Learn how to generate custom images for your location at the [Wiki Page](https://github.com/lennart-rth/Live-Earth-Wallpapers/wiki)* -->
 <!-- ![alt text](examples/desert.png) -->
-![](https://github.com/lennart-rth/Live-Earth-Wallpapers/blob/main/examples/desert.png)
-*Example Output of the Sentinel satellite. Learn how to generate custom images for your location at the [Wiki Page](https://github.com/lennart-rth/Live-Earth-Wallpapers/wiki)*
+<!-- ![](https://github.com/lennart-rth/Live-Earth-Wallpapers/blob/main/examples/desert.png)
+*Example Output of the Sentinel satellite. Learn how to generate custom images for your location at the [Wiki Page](https://github.com/lennart-rth/Live-Earth-Wallpapers/wiki)* -->
 <!-- ![alt text](examples/apod-cover.png) -->
 ![](https://github.com/lennart-rth/Live-Earth-Wallpapers/blob/main/examples/apod-cover.png)
 *Example Output for astronomy picture of the day feed (apod)(2022 November 15).*
