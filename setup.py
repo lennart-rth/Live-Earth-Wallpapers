@@ -32,7 +32,7 @@ long_description = (this_directory / "README.md").read_text()
 
 setup(
     name = "liewa",
-    version = "2.6",
+    version = "3.1",
     author = "lennart-rth",
     description = "Generate synthetic background images with near real time satellite images.",
     license = "GNU",

@@ -39,7 +39,7 @@ Supports all known **geostationary** satellites, high resolution **sentinel** im
 **You need Python installed and added to your System-path-variable!**
 
 ### Using PyPi (Linux,MacOs)
-1. Install liewa-software from [pypi Package]()
+1. Install liewa-software from [pypi Package](https://pypi.org/project/liewa/)
 2. execute command line Interface by `liewa-cli` or the Gui by `liewa-gui`.
 
 ### Windows
