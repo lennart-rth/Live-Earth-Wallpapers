@@ -25,25 +25,29 @@ Filter the Discussions or Issues for the "For Contributers" label to find them.
 ### Building from source
 
 1. `python -m venv venv`
-2. `source env/bin/activate`
+2. `source venv/bin/activate`
 3. `pip install -r requirements.txt`
 
 PyPi:
+activate: `source venv/bin/activate`
 build: `python -m build`
 install: `pip install liewa`
 uninstall: `pip uninstall liewa`
 
 Linux:
+activate: `source venv/bin/activate`
 build: `./build.sh`
 install: `sudo dpkg -i liewa.deb` 
 uninstall: `sudo dpkg -P liewa`
 
 Windows:
+activate: `source venv/bin/activate`
 build: `pyinstaller app.spec`
 compile: Compile the winCompiler.iss file with the [Inno Software](https://jrsoftware.org/isinfo.php).
 install: Execute `liewaInstaller.exe`
 
 MacOS:
+activate: `source venv/bin/activate`
 build: `pyinstaller app.spec`
 build dmg: `./builddmg.sh`
 install by drag and drop from dmg
