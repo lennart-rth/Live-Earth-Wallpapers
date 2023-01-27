@@ -4,7 +4,7 @@ mkdir -p "dist/dmg"
 # Empty the dmg folder.
 rm -r dist/dmg/*
 # Copy the app bundle to the dmg folder.
-cp -r "dist/liewa./b.app" "dist/dmg"
+cp -r "dist/liewa.app" "dist/dmg"
 # If the DMG already exists, delete it.
 test -f "dist/liewa.dmg" && rm "dist/liewa.dmg"
 create-dmg \
