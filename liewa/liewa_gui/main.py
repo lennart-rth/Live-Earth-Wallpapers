@@ -308,7 +308,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
         if self.status:
             icon = self.style().standardIcon(QStyle.SP_DialogYesButton).pixmap(20,20)
-            self.status_label_text.setText("Running")
+            self.i.setText("Running")
         else:
             icon = self.style().standardIcon(QStyle.SP_DialogNoButton).pixmap(20,20)
             self.status_label_text.setText("Not running")

@@ -89,7 +89,15 @@ def set_background(file_name):
             subprocess.call(["gsettings", "set", "org.gnome.desktop.background", "picture-uri-dark", file_name],timeout=50) 
             subprocess.call(["gsettings", "set", "org.gnome.desktop.background", "picture-options", "scaled"],timeout=50)
             subprocess.call(["gsettings", "set", "org.gnome.desktop.background", "primary-color", "#000000"],timeout=50)
-        except: None  
+        except:
+            try:
+                subprocess.call(["feh", "--bg-fill", file_name],timeout=10)
+            except:
+                try:
+                    subprocess.call(["nitrogen", file_name],timeout=10)
+                except:
+                    pass
+
 
     elif check_for_program("feh"):
         subprocess.call(["feh", "--bg-fill", file_name],timeout=10)
