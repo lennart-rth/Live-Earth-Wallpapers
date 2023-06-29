@@ -1,8 +1,9 @@
 [![PyPI version](https://badge.fury.io/py/liewa.svg)](https://badge.fury.io/py/liewa)
-![Linux](https://svgshare.com/i/Zhy.svg)
-![macOS](https://svgshare.com/i/ZjP.svg)
-![Windows](https://svgshare.com/i/ZhY.svg)
 ![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)
+
+![Linux](https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&logo=linux&logoColor=black)
+![MacOs](https://img.shields.io/badge/mac%20os-000000?style=for-the-badge&logo=apple&logoColor=white)
+![Windows](https://img.shields.io/badge/Windows-0078D6?style=for-the-badge&logo=windows&logoColor=white)
 
 # Live-Earth-Wallpapers aka liewa
 Set your Desktop background to near real-time pictures of the earth.
