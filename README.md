@@ -67,7 +67,7 @@ Read the [Wiki](https://github.com/lennart-rth/Live-Earth-Wallpapers/wiki) for a
 3. Feel free to add your own ideas, features or open a discussion in the [Discussions tab](https://github.com/lennart-rth/Live-Earth-Wallpapers/discussions).
 
 ## Known Bugs
-1. As of June 27, 2023, there are no images available of Goes-17. Stopt sending images???
+1. As of June 27, 2023, there are no images available of Goes-17 meteosat-11.
 ### Pypi
 1. If `liewa-cli` or `liewa-gui` is not known, add python pip itepackages to system `PATH`.
 ### Windows

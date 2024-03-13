@@ -49,8 +49,6 @@ WantedBy=graphical.target""")
 Description=Liewa Timer
 [Timer]
 OnCalendar=*-*-* *:00:00
-OnCalendar=*-*-* *:30:00
-OnCalendar=*-*-* *:*:00
 [Install]
 WantedBy=timers.target""")
 
@@ -103,7 +101,7 @@ class Launchd:
     <true/>
 
     <key>StartInterval</key>
-    <integer>1800</integer>
+    <integer>3600</integer>
 
     <key>StandardErrorPath</key>
     <string>{error_log_path}</string>
