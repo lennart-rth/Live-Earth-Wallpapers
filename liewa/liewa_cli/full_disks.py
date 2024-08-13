@@ -11,14 +11,14 @@ from liewa.liewa_cli.utils import download
 
 
 sizes = {"goes-16":678,
-"goes-17":678,
 "goes-18":678,
 "himawari":688,
+"gk2a":688,
 "meteosat-9":464,
-"meteosat-11":464}
+"meteosat-0deg":464}
 
-def get_time_code(sat):
-    url = f"https://rammb-slider.cira.colostate.edu/data/json/{sat}/full_disk/natural_color/latest_times.json"
+def get_time_code(sat, name):
+    url = f"https://rammb-slider.cira.colostate.edu/data/json/{sat}/full_disk/{name}/latest_times.json"
     f = urllib.request.urlopen(url)
     data = json.load(f)
     latest = data["timestamps_int"][0]
@@ -37,15 +37,12 @@ def calc_tile_coordinates(zoomLevel):
 def calc_scale(args,satellite):
     size = sizes[satellite]
     minimum_side = args["size"]
-    return int(minimum_side/size)
+    scale = int(minimum_side/size)
+    return scale.bit_length() - 1
 
 def build_url(args,satellite,scale):
-    if (
-        satellite == "meteosat-9" or satellite == "meteorsat-10"
-    ) and scale > 4:
-        sys.exit("Meteosat does not support Zoom Levels greater than 4.")
-
-    time_code, date = get_time_code(satellite)
+    if scale > 4:
+        sys.exit("Does not support Zoom Levels greater than 4.")
 
     name = args["color"]
     if name == None:
@@ -56,6 +53,8 @@ def build_url(args,satellite,scale):
         raise ValueError(
             "Wrong parameter for colorMode: Meteorsat and Goes only support 'natural_color' or 'geocolor' as colorMode!"
         )
+
+    time_code, date = get_time_code(satellite, name)
 
     base_url = f"https://rammb-slider.cira.colostate.edu/data/imagery/{date}/{satellite}---full_disk/{name}/{time_code}/0{scale}"
     return base_url
