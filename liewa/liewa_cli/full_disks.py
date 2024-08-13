@@ -15,7 +15,7 @@ sizes = {"goes-16":678,
 "himawari":688,
 "gk2a":688,
 "meteosat-9":464,
-"meteosat-11":464}
+"meteosat-10":464}
 
 def get_time_code(sat, name):
     url = f"https://rammb-slider.cira.colostate.edu/data/json/{sat}/full_disk/{name}/latest_times.json"
