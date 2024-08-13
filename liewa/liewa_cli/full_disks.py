@@ -37,8 +37,8 @@ def calc_tile_coordinates(zoomLevel):
 def calc_scale(args,satellite):
     size = sizes[satellite]
     minimum_side = args["size"]
-    scale = int(minimum_side/size)
-    return scale.bit_length() - 1
+    scale = int(minimum_side/size/1.2) # up scale < 120%
+    return scale.bit_length()
 
 def build_url(args,satellite,scale):
     if scale > 4:
