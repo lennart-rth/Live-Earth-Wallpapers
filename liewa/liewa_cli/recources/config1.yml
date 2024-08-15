@@ -4,7 +4,7 @@ settings:
   bg-color: "#000000"
 
 planets:
-  meteosat-11:
+  meteosat-0deg:
     x: 960
     y: 540
     size: 1040

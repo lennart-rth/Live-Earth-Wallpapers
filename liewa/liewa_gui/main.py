@@ -217,7 +217,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         for index in range(self.planet_list_model.rowCount()):  #iterate through every planet in the list
             item = self.planet_list_model.item(index)
             if item.text() not in ["sentinel","apod"]:
-                if item.text() in ["goes-16","goes-17","goes-18","himawari","meteosat-9","meteosat-11"]:
+                if item.text() in ["goes-16","goes-18","himawari","gk2a","meteosat-9","meteosat-0deg"]:
                     color = QtGui.QColor(QtCore.Qt.blue)
                 elif item.text() == "sdo":
                     color = QtGui.QColor(QtCore.Qt.yellow)

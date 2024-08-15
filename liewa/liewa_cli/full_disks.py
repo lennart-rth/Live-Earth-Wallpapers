@@ -10,12 +10,16 @@ from PIL import Image
 from liewa.liewa_cli.utils import download
 
 
-sizes = {"goes-16":678,
-"goes-17":678,
-"goes-18":678,
-"himawari":688,
-"meteosat-9":464,
-"meteosat-11":464}
+sizes = {
+    "goes-16":678,
+    "goes-17":678,
+    "goes-18":678,
+    "himawari":688,
+    "gk2a":688,
+    "meteosat-9":464,
+    "meteosat-0deg":464,
+    "meteorsat-11":464,
+}
 
 def get_time_code(sat):
     url = f"https://rammb-slider.cira.colostate.edu/data/json/{sat}/full_disk/natural_color/latest_times.json"
