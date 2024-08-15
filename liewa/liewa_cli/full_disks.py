@@ -18,7 +18,7 @@ sizes = {
     "gk2a":688,
     "meteosat-9":464,
     "meteosat-0deg":464,
-    "meteorsat-11":464,
+    "meteosat-11":464,
 }
 
 def get_time_code(sat, name):
