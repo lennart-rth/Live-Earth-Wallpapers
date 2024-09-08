@@ -38,7 +38,7 @@ class PlanetDialog(QDialog, Ui_Dialog):
             self.close()
 
     def get_values(self):
-        planet_group = "geostationary" if self.satellite_selector.currentText() in ["goes-16","goes-17","goes-18","himawari","meteosat-9","meteosat-11"] else self.satellite_selector.currentText()
+        planet_group = "geostationary" if self.satellite_selector.currentText() in ["goes-16","goes-18","himawari","gk2a","meteosat-9","meteosat-0deg"] else self.satellite_selector.currentText()
         all_values = {}
         for widget in self.children():
             if isinstance(widget, QSpinBox) or isinstance(widget,QDoubleSpinBox):
@@ -50,7 +50,7 @@ class PlanetDialog(QDialog, Ui_Dialog):
         self.settings = {par:all_values[par] for par in self.filter[planet_group]}
 
     def filter_dialog(self):
-        planet_group = "geostationary" if self.satellite_selector.currentText() in ["goes-16","goes-17","goes-18","himawari","meteosat-9","meteosat-11"] else self.satellite_selector.currentText()
+        planet_group = "geostationary" if self.satellite_selector.currentText() in ["goes-16","goes-18","himawari","gk2a","meteosat-9","meteosat-0deg"] else self.satellite_selector.currentText()
         parameter_list = []
         for par in self.filter[planet_group]:
             parameter_list.append(par+"_label")
@@ -71,7 +71,7 @@ class PlanetDialog(QDialog, Ui_Dialog):
     def parse_values_in_dialog(self):
         self.planet = self.satellite_selector.currentText()
 
-        planet_group = "geostationary" if self.satellite_selector.currentText() in ["goes-16","goes-17","goes-18","himawari","meteosat-9","meteosat-11"] else self.satellite_selector.currentText()
+        planet_group = "geostationary" if self.satellite_selector.currentText() in ["goes-16","goes-18","himawari","gk2a","meteosat-9","meteosat-0deg"] else self.satellite_selector.currentText()
         
         for widget in self.children():
             if isinstance(widget, QSpinBox):

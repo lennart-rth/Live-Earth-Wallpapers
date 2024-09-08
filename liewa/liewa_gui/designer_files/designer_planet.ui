@@ -46,11 +46,6 @@
        </item>
        <item>
         <property name="text">
-         <string>goes-17</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
          <string>goes-18</string>
         </property>
        </item>
@@ -61,12 +56,17 @@
        </item>
        <item>
         <property name="text">
-         <string>meteosat-11</string>
+         <string>meteosat-0deg</string>
         </property>
        </item>
        <item>
         <property name="text">
          <string>himawari</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>gk2a</string>
         </property>
        </item>
        <item>

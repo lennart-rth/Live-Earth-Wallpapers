@@ -10,15 +10,19 @@ from PIL import Image
 from liewa.liewa_cli.utils import download
 
 
-sizes = {"goes-16":678,
-"goes-17":678,
-"goes-18":678,
-"himawari":688,
-"meteosat-9":464,
-"meteosat-11":464}
+sizes = {
+    "goes-16":678,
+    "goes-17":678,
+    "goes-18":678,
+    "himawari":688,
+    "gk2a":688,
+    "meteosat-9":464,
+    "meteosat-0deg":464,
+    "meteosat-11":464,
+}
 
-def get_time_code(sat):
-    url = f"https://rammb-slider.cira.colostate.edu/data/json/{sat}/full_disk/natural_color/latest_times.json"
+def get_time_code(sat, name):
+    url = f"https://rammb-slider.cira.colostate.edu/data/json/{sat}/full_disk/{name}/latest_times.json"
     f = urllib.request.urlopen(url)
     data = json.load(f)
     latest = data["timestamps_int"][0]
@@ -37,15 +41,12 @@ def calc_tile_coordinates(zoomLevel):
 def calc_scale(args,satellite):
     size = sizes[satellite]
     minimum_side = args["size"]
-    return int(minimum_side/size)
+    scale = int(minimum_side / size / 1.2) # up scale < 120%
+    return scale.bit_length()
 
 def build_url(args,satellite,scale):
-    if (
-        satellite == "meteosat-9" or satellite == "meteorsat-10"
-    ) and scale > 4:
-        sys.exit("Meteosat does not support Zoom Levels greater than 4.")
-
-    time_code, date = get_time_code(satellite)
+    if scale > 4:
+        sys.exit("Does not support Zoom Levels greater than 4.")
 
     name = args["color"]
     if name == None:
@@ -57,6 +58,7 @@ def build_url(args,satellite,scale):
             "Wrong parameter for colorMode: Meteorsat and Goes only support 'natural_color' or 'geocolor' as colorMode!"
         )
 
+    time_code, date = get_time_code(satellite, name)
     base_url = f"https://rammb-slider.cira.colostate.edu/data/imagery/{date}/{satellite}---full_disk/{name}/{time_code}/0{scale}"
     return base_url
 
@@ -84,7 +86,6 @@ def load_geostationary(args,satellite):
         img_map[str(r) + ":" + str(c)] = img
         return img
 
-    
 
     start = time.time()
 
@@ -92,19 +93,11 @@ def load_geostationary(args,satellite):
         pool.map(download_func, row_col_pairs)
         print("Stiching images...")
 
-    bg = Image.new("RGB", (0, 0))
-
-    # stich the images together based n the position in the grid.
-    for r in row:
-        for c in col:
-            img = img_map[str(r) + ":" + str(c)]
-            new_bg = Image.new(
-                "RGB", (img.width * (max(col) + 1), img.height * (max(row) + 1))
-            )
-            new_bg.paste(bg, (0, 0))
-            new_bg.paste(img, (img.width * (c), (r) * img.height))
-
-            bg = new_bg
+    # stich the images together based on the position in the grid.
+    bg = Image.new("RGB", (sizes[satellite] * (max(col) + 1), sizes[satellite] * (max(row) + 1)))
+    for r, c in row_col_pairs:
+        img = img_map[str(r) + ":" + str(c)]
+        bg.paste(img, (img.width * (c), (r) * img.height))
 
     end = time.time()
     print("Downloads took: ", end - start)
