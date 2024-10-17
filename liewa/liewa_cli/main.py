@@ -45,13 +45,13 @@ def main():
         args.config = os.path.join(get_project_path(),"recources","gui_config.yml")
         img = parse_image(args.config)
 
-    file_name = os.path.join(get_project_path(),"recources","backgroundImage.png")
-    save_image(img, file_name, None)
-    set_background(file_name)
-
     if args.output is not None:
-        file_name = get_current_time() + ".png"
-        save_image(img, args.output, file_name)
+        save_image(img, args.output, None)
+        set_background(args.output)
+    else:
+        file_name = os.path.join(get_project_path(),"recources","backgroundImage.png")
+        save_image(img, file_name, None)
+        set_background(file_name)
 
 def execute():
     main()
