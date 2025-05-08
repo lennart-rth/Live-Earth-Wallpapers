@@ -11,7 +11,7 @@ from liewa.liewa_cli.utils import download
 
 sizes = {
     "goes-16": 678,
-    "goes-17": 678,
+    # "goes-17": 678,
     "goes-18": 678,
     "himawari": 688,
     "gk2a": 688,
