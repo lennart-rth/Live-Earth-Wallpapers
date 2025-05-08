@@ -9,20 +9,20 @@ from PIL import Image
 
 from liewa.liewa_cli.utils import download
 
-
 sizes = {
-    "goes-16":678,
-    "goes-17":678,
-    "goes-18":678,
-    "himawari":688,
-    "gk2a":688,
-    "meteosat-9":464,
-    "meteosat-0deg":464,
-    "meteosat-11":464,
+    "goes-16": 678,
+    "goes-17": 678,
+    "goes-18": 678,
+    "himawari": 688,
+    "gk2a": 688,
+    "meteosat-9": 464,
+    "meteosat-0deg": 464,
+    # "meteosat-11": 464,
 }
 
-def get_time_code(sat, name):
-    url = f"https://rammb-slider.cira.colostate.edu/data/json/{sat}/full_disk/{name}/latest_times.json"
+
+def get_time_code(satellite, name):
+    url = f"https://rammb-slider.cira.colostate.edu/data/json/{satellite}/full_disk/{name}/latest_times.json"
     f = urllib.request.urlopen(url)
     data = json.load(f)
     latest = data["timestamps_int"][0]
@@ -31,26 +31,31 @@ def get_time_code(sat, name):
     return latest, date
 
 
-def calc_tile_coordinates(zoomLevel):
-    # zoomlevel 0-3 or 0-4 (depending on the satellite)
-    t_n = 2**zoomLevel
-    row = range(0, t_n)
-    col = range(0, t_n)
+def calc_tile_coordinates(scale):
+    # Zoom level 0-3 or 0-4 (depending on the satellite)
+    tiles_n = 2 ** scale
+    row = range(0, tiles_n)
+    col = range(0, tiles_n)
     return list(row), list(col)
 
-def calc_scale(args,satellite):
-    size = sizes[satellite]
-    minimum_side = args["size"]
-    scale = int(minimum_side / size / 1.2) # up scale < 120%
-    return scale.bit_length()
 
-def build_url(args,satellite,scale):
+def calc_scale(satellite, **kwargs):
+    size = sizes[satellite]
+    minimum_side = kwargs.get("size", 1024)
+    scale = int(minimum_side / size / 1.2)  # up scale < 120%
+
+    scale = max(min(scale.bit_length(), 4), 0)   # log_2 scale between 0-4
+    if satellite.lower().startswith("meteosat") and scale == 4:
+        scale = 3  # Meteosat 9 and 0deg only support up to 8x zoom
+
+    return scale
+
+
+def build_url(satellite, scale, **kwargs):
     if scale > 4:
         sys.exit("Does not support Zoom Levels greater than 4.")
 
-    name = args["color"]
-    if name == None:
-        name = "natural_color"  # default color mode
+    name = kwargs.get("color", "natural_color")
 
     supported_args = ["geocolor", "natural_color"]
     if name not in supported_args:
@@ -63,9 +68,9 @@ def build_url(args,satellite,scale):
     return base_url
 
 
-def load_geostationary(args,satellite):
-    scale = calc_scale(args,satellite)
-    base_url = build_url(args,satellite,scale)
+def load_geostationary(satellite, **kwargs):
+    scale = calc_scale(satellite, **kwargs)
+    base_url = build_url(satellite, scale, **kwargs)
     row, col = calc_tile_coordinates(scale)
 
     row_col_pairs = []
@@ -85,7 +90,6 @@ def load_geostationary(args,satellite):
         # store the images in a dict so we don't have to care about the order they're downloaded in
         img_map[str(r) + ":" + str(c)] = img
         return img
-
 
     start = time.time()
 

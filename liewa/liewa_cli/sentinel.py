@@ -1,13 +1,12 @@
 import datetime
 import math
 
-import os
 # import cv2
 # os.environ.pop("QT_QPA_PLATFORM_PLUGIN_PATH")
-import numpy as np
 from PIL import Image
 
 from liewa.liewa_cli.utils import download
+
 
 def bounding_box(latitude_in_deg, longitude_in_deg, width_in_km, height_in_km):
     width_in_m = width_in_km * 1000
@@ -45,8 +44,9 @@ def calc_coord_dimension(args):
     else:
         height_in_km = zoom_level
         width_in_km = height_in_km / (16 / 9)
-        
+
     return width_in_km, height_in_km
+
 
 def combine_url(args, satellite, time):
     width_in_km, height_in_km = calc_coord_dimension(args)
@@ -78,15 +78,15 @@ def combine_url(args, satellite, time):
 
 def load_sentinel(args):
     date_with_delay = datetime.datetime.now(datetime.timezone.utc)
-    #date_with_delay = date_with_delay - datetime.timedelta(hours=3)
+    # date_with_delay = date_with_delay - datetime.timedelta(hours=3)
 
     from multiprocessing.pool import ThreadPool as Pool
 
     def download_func(day):
         time = (
-            date_with_delay.strftime("%Y-%m-")
-            + str(date_with_delay.day - day).zfill(2)
-            + "T20:45:00.000Z"
+                date_with_delay.strftime("%Y-%m-")
+                + str(date_with_delay.day - day).zfill(2)
+                + "T20:45:00.000Z"
         )
         url = combine_url(args, "copernicus:daily_sentinel3ab_olci_l1_rgb_fulres", time)
         print(f"Downloading Image from {time}...\nwith URl:   {url}")
