@@ -17,6 +17,8 @@ Supports all known **geostationary** satellites, high resolution **sentinel** im
 *Example Output of the config2.yml file. Use this by passing config2 to -c flag.*
 ![alt text](examples/config3.png)
 *Example Output of the config3.yml file. Use this by passing config3 to -c flag.*
+![alt text](examples/config4.png)
+*Example Output of the config4.yml file. Use this by passing config4 to -c flag.*
 ![alt text](examples/caribic.png)
 *Example Output of the Sentinel satellite. Learn how to generate custom images for your location at the [Wiki Page](https://github.com/lennart-rth/Live-Earth-Wallpapers/wiki)*
 ![alt text](examples/arctic.png)
