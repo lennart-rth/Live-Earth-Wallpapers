@@ -13,6 +13,21 @@ def load_yaml(filename):
     return cfg
 
 
+def calc_load_region(satellite_size, canvas_size, satellite_center):
+    # canvas origin relative to satellite image upper-left corner
+    canvas_origin_x = -(satellite_center[0] - satellite_size[0] / 2)
+    canvas_origin_y = -(satellite_center[1] - satellite_size[1] / 2)
+    region_left = max(0, int(canvas_origin_x))
+    region_top = max(0, int(canvas_origin_y))
+    region_right = min(satellite_size[0], int(canvas_origin_x + canvas_size[0]))
+    region_bottom = min(satellite_size[1], int(canvas_origin_y + canvas_size[1]))
+    region_right = max(region_left, region_right)
+    region_bottom = max(region_top, region_bottom)
+    load_region = [region_top, region_left, region_bottom, region_right]
+    print(f"load region: {load_region}")
+    return load_region
+
+
 def parse_image(config_file_dir):
     config = load_yaml(config_file_dir)
     image_settings = config["settings"]
@@ -50,9 +65,14 @@ def parse_image(config_file_dir):
 
         # meteosat, goes or himawari
         else:
+            load_region = calc_load_region((value["size"], value["size"]), bg_size, (value["x"], value["y"]))
+
             args = value
-            raw_img = load_geostationary(satellite, **args)
-            resized_img = raw_img.resize((value["size"], value["size"]))
+            raw_img = load_geostationary(satellite, region=load_region, **args)
+
+            scale_ratio = value["size"] / max(raw_img.size)
+            new_width, new_height = (int(dim * scale_ratio) for dim in raw_img.size)
+            resized_img = raw_img.resize((new_width, new_height))   # keep aspect ratio of the raw image
 
         pos = (int(value["x"] - (resized_img.width / 2)), int(value["y"] - (resized_img.height / 2)))
         bg.paste(resized_img, pos)

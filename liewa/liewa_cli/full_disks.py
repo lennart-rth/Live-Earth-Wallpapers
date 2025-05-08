@@ -68,18 +68,38 @@ def build_url(satellite, scale, **kwargs):
     return base_url
 
 
-def load_geostationary(satellite, **kwargs):
+def load_geostationary(satellite, region=None, **kwargs):
+    # load region_ can be [top, left, bottom, right] in pixels
+    # or a list [[row1,col1], [row2,col2]] in indexes
     scale = calc_scale(satellite, **kwargs)
     base_url = build_url(satellite, scale, **kwargs)
     row, col = calc_tile_coordinates(scale)
 
-    row_col_pairs = []
+    tilesize = sizes[satellite]
+    fullsize = tilesize * (2 ** scale)
+    tgt_size = kwargs.get("size", 1024)
 
-    for r in row:
-        for c in col:
-            row_col_pairs.append([r, c])
+    if region is None:
+        region = [0, 0, fullsize, fullsize]
+
+    if len(region) == 4 and all(isinstance(item, (int, float)) for item in region):
+        # Scale the load region_ to the full size of the image
+        load_region = [item * fullsize / tgt_size for item in region]
+
+        top, left, bottom, right = [item / tilesize for item in load_region]
+        print(top, left, bottom, right)
+        row_col_pairs = [[r, c]
+                         for r in row if top-1 < r < bottom
+                         for c in col if left-1 < c < right
+                         ]
+
+    elif all(len(i) == 2 and isinstance(i, list) and all(isinstance(j, int) for j in i) for i in region):
+        row_col_pairs = region
+    else:
+        raise ValueError("Invalid region parameter.")
 
     img_map = {}
+    print(f"Downloading {len(row_col_pairs)} images...")
 
     def download_func(row_col):
         r = row_col[0]
@@ -95,13 +115,13 @@ def load_geostationary(satellite, **kwargs):
 
     with Pool(len(row_col_pairs)) as pool:
         pool.map(download_func, row_col_pairs)
-        print("Stiching images...")
 
+    print("Stiching images...")
     # stich the images together based on the position in the grid.
-    bg = Image.new("RGB", (sizes[satellite] * (max(col) + 1), sizes[satellite] * (max(row) + 1)))
+    bg = Image.new("RGB", (tilesize * (max(col) + 1), tilesize * (max(row) + 1)))
     for r, c in row_col_pairs:
         img = img_map[str(r) + ":" + str(c)]
-        bg.paste(img, (img.width * (c), (r) * img.height))
+        bg.paste(img, (img.width * c, img.height * r))
 
     end = time.time()
     print("Downloads took: ", end - start)

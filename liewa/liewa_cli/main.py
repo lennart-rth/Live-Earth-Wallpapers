@@ -43,6 +43,9 @@ def main():
     elif args.config == "config3":
         args.config = os.path.join(get_project_path(), "recources", "config3.yml")
         img = parse_image(args.config)
+    elif args.config == "config4":
+        args.config = os.path.join(get_project_path(), "recources", "config4.yml")
+        img = parse_image(args.config)
     else:
         args.config = os.path.join(get_project_path(), "recources", "gui_config.yml")
         img = parse_image(args.config)
@@ -60,5 +63,5 @@ def execute():
     main()
 
 
-# if __name__ == '__main__':
-#     main()
+if __name__ == '__main__':
+    main()
