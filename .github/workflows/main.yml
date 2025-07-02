@@ -12,7 +12,7 @@ jobs:
       contents: read
 
     env:
-      VERSION: ${{ github.event.release.tag_name }}
+      VERSION: ${{ github.event.release.tag_name || 'dev' }}
 
     steps:
       - name: Checkout repo
