@@ -1,6 +1,5 @@
 #!/bin/sh
 set -e
-trap 'echo "FAILED on line $LINENO"' ERR
 
 #PART1#####################
 pyinstaller --noconfirm app.spec
