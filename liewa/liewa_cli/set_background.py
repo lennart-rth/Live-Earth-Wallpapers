@@ -3,6 +3,7 @@ import subprocess
 from PIL import Image
 import os
 
+
 def check_for_program(program):
     try:
         subprocess.check_output(["which", "--", program])
@@ -10,9 +11,10 @@ def check_for_program(program):
     except:
         return False
 
+
 def set_background(file_name):
     system = platform.system()
-    
+
     if system == "Windows":
         # try:
         #     import win32api
@@ -34,11 +36,11 @@ def set_background(file_name):
         #     )
         #     os.remove(bmp_img_path)
         # except:
-            try:
-                import ctypes
-                ctypes.windll.user32.SystemParametersInfoW(20, 0, file_name, 0)
-            except:
-                raise ValueError("Could not set the Wallpaper.")
+        try:
+            import ctypes
+            ctypes.windll.user32.SystemParametersInfoW(20, 0, file_name, 0)
+        except:
+            raise ValueError("Could not set the Wallpaper.")
     elif system == "Darwin":
         # subprocess.call(
         #     [
@@ -69,7 +71,7 @@ def set_background(file_name):
                 '-e',
                 '\t\ttell desktop desktopNumber\n',
                 '-e',
-                '\t\t\tset picture to "'+file_name+'"\n',
+                '\t\t\tset picture to "' + file_name + '"\n',
                 '-e',
                 '\t\tend tell\n',
                 '-e',
@@ -77,33 +79,34 @@ def set_background(file_name):
                 '-e',
                 'end tell'
             ]
-        ,timeout=10)
+            , timeout=10)
         os.system('killall Dock')
     elif system == "Linux":
         try:
             if check_for_program("feh"):
-                subprocess.call(["feh", "--bg-fill", file_name],timeout=10)
+                subprocess.call(["feh", "--bg-fill", file_name], timeout=10)
             if check_for_program("nitrogen"):
-                subprocess.call(["nitrogen", file_name],timeout=10)
-            subprocess.call(["gsettings", "set", "org.gnome.desktop.background", "picture-uri", file_name],timeout=50) 
-            subprocess.call(["gsettings", "set", "org.gnome.desktop.background", "picture-uri-dark", file_name],timeout=50) 
-            subprocess.call(["gsettings", "set", "org.gnome.desktop.background", "picture-options", "scaled"],timeout=50)
-            subprocess.call(["gsettings", "set", "org.gnome.desktop.background", "primary-color", "#000000"],timeout=50)
+                subprocess.call(["nitrogen", file_name], timeout=10)
+            subprocess.call(["gsettings", "set", "org.gnome.desktop.background", "picture-uri", file_name], timeout=50)
+            subprocess.call(["gsettings", "set", "org.gnome.desktop.background", "picture-uri-dark", file_name],
+                            timeout=50)
+            subprocess.call(["gsettings", "set", "org.gnome.desktop.background", "picture-options", "scaled"],
+                            timeout=50)
+            subprocess.call(["gsettings", "set", "org.gnome.desktop.background", "primary-color", "#000000"],
+                            timeout=50)
         except:
             try:
-                subprocess.call(["feh", "--bg-fill", file_name],timeout=10)
+                subprocess.call(["feh", "--bg-fill", file_name], timeout=10)
             except:
                 try:
-                    subprocess.call(["nitrogen", file_name],timeout=10)
+                    subprocess.call(["nitrogen", file_name], timeout=10)
                 except:
                     pass
 
-
     elif check_for_program("feh"):
-        subprocess.call(["feh", "--bg-fill", file_name],timeout=10)
+        subprocess.call(["feh", "--bg-fill", file_name], timeout=10)
     elif check_for_program("nitrogen"):
-        subprocess.call(["nitrogen", file_name],timeout=10)
+        subprocess.call(["nitrogen", file_name], timeout=10)
 
     # # set the Ubuntu lock screen
     # # os.system(f"sudo ./ubuntu-gdm-set-background --image {filename}")
-

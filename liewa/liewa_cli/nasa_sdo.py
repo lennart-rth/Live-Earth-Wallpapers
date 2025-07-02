@@ -3,19 +3,19 @@ from PIL import Image
 import bisect
 from liewa.liewa_cli.utils import download
 
-sizes = [512,1024,2048,4096]
+sizes = [512, 1024, 2048, 4096]
+
 
 def calc_scale(args):
     min_side = args["size"]
-    return sizes[bisect.bisect_left(sizes,min_side)]
-
+    return sizes[bisect.bisect_left(sizes, min_side)]
 
 
 def load_sdo(args):
     name = args["bandwidth"]
     supported_args = ["0171", "0171pfss", "0304", "0304pfss", "HMIIC"]
 
-    if name == None:
+    if name is None:
         name = "0304"  # default color mode
 
     if name not in supported_args:
