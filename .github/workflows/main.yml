@@ -78,10 +78,21 @@ jobs:
           name: liewa-deb
           path: liewa.deb
           
-      - name: Publish workflow file to GitHub Release
+      - name: Get latest release upload URL
+        id: get_latest_release
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const release = await github.rest.repos.getLatestRelease({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+            });
+            return release.data.upload_url;
+      
+      - name: Upload liewa.deb to latest release
         uses: actions/upload-release-asset@v1
         with:
-          upload_url: ${{ github.event.release.upload_url }}
-          asset_path: .github/workflows/ci-build-artifact.yml
-          asset_name: ci-build-artifact.yml
-          asset_content_type: text/yaml
+          upload_url: ${{ steps.get_latest_release.outputs.result }}
+          asset_path: ./liewa.deb
+          asset_name: liewa.deb
+          asset_content_type: application/vnd.debian.binary-package
