@@ -87,7 +87,7 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
             });
-            return release.data.upload_url;
+            return release.data.upload_url.replace('{?name,label}', '');;
       
       - name: Upload liewa.deb to latest release
         uses: actions/upload-release-asset@v1
