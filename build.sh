@@ -33,7 +33,9 @@ chmod 777 package/opt/liewa/_internal/cli.py
 chmod +x package/opt/liewa/app
 
 #PART3#####################
-rm liewa.deb
-fpm -C package -s dir -t deb -n "liewa" -v 0.1.0 -p liewa.deb
+[ -f liewa.deb ] && rm liewa.deb
+
+#The rest is done in the gitlab ci scipt
+# fpm -C package -s dir -t deb -n "liewa" -v 0.1.0 -p liewa.deb
 #PART4#####################
-sudo dpkg -i liewa.deb 
+# sudo dpkg -i liewa.deb 
