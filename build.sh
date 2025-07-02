@@ -1,10 +1,14 @@
 #!/bin/sh
+set -e
+trap 'echo "FAILED on line $LINENO"' ERR
 
 #PART1#####################
 pyinstaller --noconfirm app.spec
 #PART2#####################
 # Create folders.
 [ -e package ] && rm -r package
+
+ls -la
 
 chmod 755 app.py
 chmod 755 cli.py
@@ -33,7 +37,7 @@ chmod 777 package/opt/liewa/_internal/cli.py
 chmod +x package/opt/liewa/app
 
 #PART3#####################
-[ -f liewa.deb ] && rm liewa.deb
+#[ -f liewa.deb ] && rm liewa.deb
 
 #The rest is done in the gitlab ci scipt
 # fpm -C package -s dir -t deb -n "liewa" -v 0.1.0 -p liewa.deb
