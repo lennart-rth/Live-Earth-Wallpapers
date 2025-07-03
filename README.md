@@ -1,5 +1,8 @@
-[![PyPI version](https://badge.fury.io/py/liewa.svg)](https://badge.fury.io/py/liewa)
+![Build Status](https://github.com/lennart-rth/Live-Earth-Wallpapers/actions/workflows/main.yml/badge.svg)
+![PyPI](https://img.shields.io/pypi/v/liewa.svg)
 ![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)
+
+
 
 ![Linux](https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&logo=linux&logoColor=black)
 ![MacOs](https://img.shields.io/badge/mac%20os-000000?style=for-the-badge&logo=apple&logoColor=white)
