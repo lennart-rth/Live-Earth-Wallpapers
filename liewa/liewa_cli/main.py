@@ -1,10 +1,10 @@
 import argparse
-import sys
 import os
+import sys
 
-from liewa.liewa_cli.utils import get_project_path, save_image, get_current_time
 from liewa.liewa_cli.image_parser import parse_image
 from liewa.liewa_cli.set_background import set_background
+from liewa.liewa_cli.utils import get_current_time, get_project_path, save_image
 
 
 def parseArgs():
@@ -14,13 +14,10 @@ def parseArgs():
         "--config",
         type=str,
         default="gui_config",
-        help="The config file location"
+        help="The config file location",
     )
     parser.add_argument(
-        "-o",
-        "--output",
-        type=str,
-        help="Dir where the images are saved."
+        "-o", "--output", type=str, help="Dir where the images are saved."
     )
 
     try:
@@ -36,19 +33,25 @@ def main():
 
     if args.config == "config1":
         args.config = os.path.join(get_project_path(), "recources", "config1.yml")
-        img = parse_image(args.config)
     elif args.config == "config2":
         args.config = os.path.join(get_project_path(), "recources", "config2.yml")
-        img = parse_image(args.config)
     elif args.config == "config3":
         args.config = os.path.join(get_project_path(), "recources", "config3.yml")
-        img = parse_image(args.config)
     elif args.config == "config4":
         args.config = os.path.join(get_project_path(), "recources", "config4.yml")
-        img = parse_image(args.config)
-    else:
+    elif args.config == "gui_config":
         args.config = os.path.join(get_project_path(), "recources", "gui_config.yml")
-        img = parse_image(args.config)
+    else:
+        if not os.path.exists(args.config):
+            res_path = os.path.join(get_project_path(), "recources", args.config)
+            if os.path.exists(res_path):
+                args.config = res_path
+            else:
+                args.config = os.path.join(
+                    get_project_path(), "recources", "gui_config.yml"
+                )
+
+    img = parse_image(args.config)
 
     if args.output is not None:
         save_image(img, args.output, None)
@@ -63,5 +66,5 @@ def execute():
     main()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
